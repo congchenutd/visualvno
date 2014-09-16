@@ -30,6 +30,7 @@ import com.fujitsu.us.visualvno.model.RectangularShape;
 import com.fujitsu.us.visualvno.model.Shape;
 import com.fujitsu.us.visualvno.model.commands.ConnectionCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ConnectionReconnectCommand;
+import com.fujitsu.us.visualvno.views.LabeledFigureAdapter;
 
 /**
  * EditPart used for Shape instances
@@ -130,9 +131,11 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     private IFigure createFigureForModel()
     {
         if(getModel() instanceof EllipticalShape)
-            return new Ellipse();
+//            return new Ellipse();
+            return new LabeledFigureAdapter("Text", new Ellipse());
         else if(getModel() instanceof RectangularShape)
-            return new RectangleFigure();
+            return new LabeledFigureAdapter("Text", new RectangleFigure());
+//            return new RectangleFigure();
         else
             // if Shapes gets extended the conditions above must be updated
             throw new IllegalArgumentException();
@@ -188,12 +191,10 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     {
         String prop = evt.getPropertyName();
         if(Shape.SIZE_PROP    .equals(prop) ||
-           Shape.LOCATION_PROP.equals(prop))
+           Shape.LOCATION_PROP.equals(prop) ||
+           Shape.NAME_PROP    .equals(prop)) {
             refreshVisuals();
-//        else if(Shape.SOURCE_CONNECTIONS_PROP.equals(prop))
-//            refreshSourceConnections();
-//        else if(Shape.TARGET_CONNECTIONS_PROP.equals(prop))
-//            refreshTargetConnections();
+        }
         else {
             refreshSourceConnections();
             refreshTargetConnections();
@@ -209,5 +210,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart
         ((GraphicalEditPart) getParent()).setLayoutConstraint(this, 
                                                               getFigure(), 
                                                               bounds);
+        LabeledFigureAdapter figure = (LabeledFigureAdapter) getFigure();
+        figure.setText(getCastedModel().getName());
     }
 }
