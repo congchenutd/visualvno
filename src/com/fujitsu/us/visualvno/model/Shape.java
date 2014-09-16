@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -31,6 +35,7 @@ public abstract class Shape extends ModelBase
     public  static final String SOURCE_PROP     = "Shape.SourceConnections";
     public  static final String TARGET_PROP     = "Shape.TargetConnections";
     public  static final String NAME_PROP       = "Shape.Name";
+    public  static final String COLOR_PROP      = "Shape.Color";
     
     private static final String HEIGHT_PROP     = "Shape.Height";
     private static final String WIDTH_PROP      = "Shape.Width";
@@ -40,19 +45,22 @@ public abstract class Shape extends ModelBase
     private final Point     location = new Point(0, 0);
     private final Dimension size     = new Dimension(50, 50);
     private       String    name     = new String();
+    private       RGB       color    = new RGB(0, 255, 0);
+    
     private final List<Connection> sourceConnections = new ArrayList<Connection>();
     private final List<Connection> targetConnections = new ArrayList<Connection>();
 
-    // initialize the proper descriptors
+    // initialize the property descriptors (for those appear in the property view)
     static
     {
         descriptors = new IPropertyDescriptor[]
         {
-            new TextPropertyDescriptor(XPOS_PROP,   "X"), 
-            new TextPropertyDescriptor(YPOS_PROP,   "Y"),
-            new TextPropertyDescriptor(WIDTH_PROP,  "Width"),
-            new TextPropertyDescriptor(HEIGHT_PROP, "Height"),
-            new TextPropertyDescriptor(NAME_PROP,   "Name"),
+            new TextPropertyDescriptor (XPOS_PROP,   "X"), 
+            new TextPropertyDescriptor (YPOS_PROP,   "Y"),
+            new TextPropertyDescriptor (WIDTH_PROP,  "Width"),
+            new TextPropertyDescriptor (HEIGHT_PROP, "Height"),
+            new TextPropertyDescriptor (NAME_PROP,   "Name"),
+            new ColorPropertyDescriptor(COLOR_PROP,  "Color"),
         };
         
         // use a custom cell editor validator for all four array entries
@@ -90,25 +98,11 @@ public abstract class Shape extends ModelBase
         });
     } // static
 
-    /**
-     * Utility method for generating a image from a file
-     */
-    protected static Image createImage(String fileName)
-    {
-        InputStream stream = ShapesPlugin.class.getResourceAsStream(fileName);
-        Image image = new Image(null, stream);
-        try {
-            stream.close();
-        }
-        catch(IOException e)
-        {}
-        return image;
-    }
-
     void addConnection(Connection connection)
     {
         if(connection == null || connection.getSource() == connection.getTarget())
             throw new IllegalArgumentException();
+        
         if(connection.getSource() == this)
         {
             sourceConnections.add(connection);
@@ -125,6 +119,7 @@ public abstract class Shape extends ModelBase
     {
         if(connection == null)
             throw new IllegalArgumentException();
+        
         if(connection.getSource() == this)
         {
             sourceConnections.remove(connection);
@@ -138,14 +133,9 @@ public abstract class Shape extends ModelBase
     }
 
     /**
-     * Return a pictogram (small icon) describing this model element.
-     * @return a 16x16 Image or null
+     * Return a 16x16 icon for this model element.
      */
     public abstract Image getIcon();
-
-    public Point getLocation() {
-        return location.getCopy();
-    }
 
     @Override
     public IPropertyDescriptor[] getPropertyDescriptors() {
@@ -158,53 +148,57 @@ public abstract class Shape extends ModelBase
      * obtain the value of the corresponding properties.
      */
     @Override
-    public Object getPropertyValue(Object propertyId)
+    public Object getPropertyValue(Object id)
     {
-        if(XPOS_PROP.equals(propertyId))
+        if(XPOS_PROP.equals(id))
             return Integer.toString(location.x);
-        if(YPOS_PROP.equals(propertyId))
+        if(YPOS_PROP.equals(id))
             return Integer.toString(location.y);
-        if(HEIGHT_PROP.equals(propertyId))
+        if(HEIGHT_PROP.equals(id))
             return Integer.toString(size.height);
-        if(WIDTH_PROP.equals(propertyId))
+        if(WIDTH_PROP.equals(id))
             return Integer.toString(size.width);
-        if(NAME_PROP.equals(propertyId))
+        if(NAME_PROP.equals(id))
             return getName();
-        return super.getPropertyValue(propertyId);
+        if(COLOR_PROP.equals(id))
+            return getColor();
+        return super.getPropertyValue(id);
     }
     
     /**
-     * Set the property value for the given property id. If no matching id is
-     * found, the call is forwarded to the superclass.
+     * Set the property value for the given property id.
      */
     @Override
-    public void setPropertyValue(Object propertyId, Object value)
+    public void setPropertyValue(Object id, Object value)
     {
-        if(XPOS_PROP.equals(propertyId))
+        if(XPOS_PROP.equals(id))
         {
             int x = Integer.parseInt((String) value);
             setLocation(new Point(x, location.y));
         }
-        else if(YPOS_PROP.equals(propertyId))
+        else if(YPOS_PROP.equals(id))
         {
             int y = Integer.parseInt((String) value);
             setLocation(new Point(location.x, y));
         }
-        else if(HEIGHT_PROP.equals(propertyId))
+        else if(HEIGHT_PROP.equals(id))
         {
             int height = Integer.parseInt((String) value);
             setSize(new Dimension(size.width, height));
         }
-        else if(WIDTH_PROP.equals(propertyId))
+        else if(WIDTH_PROP.equals(id))
         {
             int width = Integer.parseInt((String) value);
             setSize(new Dimension(width, size.height));
         }
-        else if(NAME_PROP.equals(propertyId)) {
+        else if(NAME_PROP.equals(id)) {
             setName((String) value);
         }
+        else if(COLOR_PROP.equals(id)) {
+            setColor((RGB) value);
+        }
         else {
-            super.setPropertyValue(propertyId, value);
+            super.setPropertyValue(id, value);
         }
     }
 
@@ -214,11 +208,47 @@ public abstract class Shape extends ModelBase
 
     public void setSize(Dimension newSize)
     {
-        if(newSize != null)
-        {
-            size.setSize(newSize);
-            firePropertyChange(SIZE_PROP, null, size);
-        }
+        size.setSize(newSize);
+        firePropertyChange(SIZE_PROP, null, size);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        if(name == null)
+            throw new IllegalArgumentException();
+        
+        this.name = name;
+        firePropertyChange(NAME_PROP, null, name);
+    }
+        
+    public Point getLocation() {
+        return location.getCopy();
+    }
+        
+    public void setLocation(Point newLocation)
+    {
+        if(newLocation == null)
+            throw new IllegalArgumentException();
+        
+        location.setLocation(newLocation);
+        firePropertyChange(LOCATION_PROP, null, location);
+    }
+    
+    public RGB getColor() {
+        return color;
+    }
+
+    public void setColor(RGB color)
+    {
+        if(color == null)
+            throw new IllegalArgumentException();
+        
+        this.color = color;
+        firePropertyChange(COLOR_PROP, null, color);
     }
     
     public List<Connection> getSourceConnections() {
@@ -227,14 +257,6 @@ public abstract class Shape extends ModelBase
 
     public List<Connection> getTargetConnections() {
         return new ArrayList<Connection>(targetConnections);
-    }
-
-    public void setLocation(Point newLocation)
-    {
-        if(newLocation == null)
-            throw new IllegalArgumentException();
-        location.setLocation(newLocation);
-        firePropertyChange(LOCATION_PROP, null, location);
     }
 
     /**
@@ -256,18 +278,24 @@ public abstract class Shape extends ModelBase
         return false;
     }
     
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name)
-    {
-        this.name = name;
-        firePropertyChange(NAME_PROP, null, name);
-    }
-    
     @Override
     public String toString() {
         return getName();
     }
+    
+    /**
+     * Utility method for generating a image from a file
+     */
+    protected static Image createImage(String fileName)
+    {
+        InputStream stream = ShapesPlugin.class.getResourceAsStream(fileName);
+        Image image = new Image(null, stream);
+        try {
+            stream.close();
+        }
+        catch(IOException e)
+        {}
+        return image;
+    }
+
 }

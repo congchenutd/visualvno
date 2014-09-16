@@ -22,6 +22,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
+import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.model.Connection;
 import com.fujitsu.us.visualvno.model.EllipticalShape;
@@ -192,7 +193,8 @@ class ShapeEditPart extends AbstractGraphicalEditPart
         String prop = evt.getPropertyName();
         if(Shape.SIZE_PROP    .equals(prop) ||
            Shape.LOCATION_PROP.equals(prop) ||
-           Shape.NAME_PROP    .equals(prop)) {
+           Shape.NAME_PROP    .equals(prop) ||
+           Shape.COLOR_PROP   .equals(prop)) {
             refreshVisuals();
         }
         else {
@@ -212,5 +214,6 @@ class ShapeEditPart extends AbstractGraphicalEditPart
                                                               bounds);
         LabeledFigureAdapter figure = (LabeledFigureAdapter) getFigure();
         figure.setText(getCastedModel().getName());
+        figure.setBackgroundColor(new Color(null, getCastedModel().getColor()));
     }
 }
