@@ -68,7 +68,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart
     protected IFigure createFigure()
     {
         PolylineConnection connection = (PolylineConnection) super.createFigure();
-        connection.setTargetDecoration(new PolygonDecoration());
+//        connection.setTargetDecoration(new PolygonDecoration());
         connection.setLineStyle(getCastedModel().getLineStyle());
         return connection;
     }

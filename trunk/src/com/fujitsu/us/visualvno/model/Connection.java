@@ -45,6 +45,12 @@ public class Connection extends ModelBase
         return target;
     }
     
+    public Shape getTheOther(Shape end) {
+        return end.equals(source) ? getTarget() 
+                                  : end.equals(target) ? getSource() 
+                                                       : null;
+    }
+    
     public int getLineStyle() {
         return lineStyle;
     }
