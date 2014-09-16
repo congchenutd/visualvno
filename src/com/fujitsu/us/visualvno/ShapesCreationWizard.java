@@ -17,7 +17,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * Create a new .vno file.
@@ -76,7 +76,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 
 		/** Return a new ShapesDiagram instance. */
 		private Object createDefaultContent() {
-			return new ShapesDiagram();
+			return new Diagram();
 		}
 
 		/**

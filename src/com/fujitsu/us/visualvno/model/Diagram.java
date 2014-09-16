@@ -7,7 +7,7 @@ import java.util.List;
  * A container for multiple shapes.
  * This is the root of the model data structure.
  */
-public class ShapesDiagram extends ModelBase
+public class Diagram extends ModelBase
 {
 	public static final String CHILD_ADDED_PROP   = "ShapesDiagram.ChildAdded";
 	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";

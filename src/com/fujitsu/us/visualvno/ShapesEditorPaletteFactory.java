@@ -14,8 +14,8 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 
 import com.fujitsu.us.visualvno.model.Connection;
-import com.fujitsu.us.visualvno.model.EllipticalShape;
-import com.fujitsu.us.visualvno.model.RectangularShape;
+import com.fujitsu.us.visualvno.model.Switch;
+import com.fujitsu.us.visualvno.model.Host;
 
 /**
  * Utility class that can create a GEF Palette.
@@ -30,22 +30,22 @@ final class ShapesEditorPaletteFactory
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
 			    "Switch",
 				"Create a Switch",
-				EllipticalShape.class,
-				new SimpleFactory(EllipticalShape.class),
+				Switch.class,
+				new SimpleFactory(Switch.class),
 				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   EllipticalShape.imageFileSmall),
+											   Switch.imageFileSmall),
 				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   EllipticalShape.imageFileBig)));
+											   Switch.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
 						"Host",
 						"Create a Host",
-						RectangularShape.class,
-						new SimpleFactory(RectangularShape.class),
+						Host.class,
+						new SimpleFactory(Host.class),
 						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   RectangularShape.imageFileSmall),
+													   Host.imageFileSmall),
 						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   RectangularShape.imageFileBig)));
+													   Host.imageFileBig)));
 
 		return componentsDrawer;
 	}

@@ -4,7 +4,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * Factory that maps model elements to TreeEditParts.
@@ -17,8 +17,8 @@ public class ShapesTreeEditPartFactory implements EditPartFactory
     {
         if(model instanceof Shape)
             return new ShapeTreeEditPart((Shape) model);
-        if(model instanceof ShapesDiagram)
-            return new DiagramTreeEditPart((ShapesDiagram) model);
+        if(model instanceof Diagram)
+            return new DiagramTreeEditPart((Diagram) model);
         return null; // will not show an entry for the corresponding model
     }
 

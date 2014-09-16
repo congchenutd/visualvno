@@ -5,7 +5,7 @@ import org.eclipse.gef.EditPartFactory;
 
 import com.fujitsu.us.visualvno.model.Connection;
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * Factory that maps model elements to edit parts.
@@ -28,7 +28,7 @@ public class ShapesEditPartFactory implements EditPartFactory
      */
     private EditPart getPartForElement(Object modelElement)
     {
-        if(modelElement instanceof ShapesDiagram)
+        if(modelElement instanceof Diagram)
             return new DiagramEditPart();
         if(modelElement instanceof Shape)
             return new ShapeEditPart();
