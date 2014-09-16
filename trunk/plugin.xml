@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+     <extension point="org.eclipse.ui.editors">
+      <editor name="Visual VNO"
+              extensions="vno"
+              icon="Networks.png"
+              default="true"
+              class="com.fujitsu.us.visualvno.ShapesEditor"
+              contributorClass="com.fujitsu.us.visualvno.ShapesEditorActionBarContributor"
+              id="Visual VNO Editor">
+      </editor>
+   </extension>
+   <extension point="org.eclipse.ui.newWizards">
+      <category name="Examples"
+                parentCategory="org.eclipse.ui.Examples"
+                id="org.eclipse.gef.examples"/>
+      <wizard name="VNO Diagram"
+              icon="Networks.png"
+              category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+              class="com.fujitsu.us.visualvno.ShapesCreationWizard"
+              id="com.fujitsu.us.visualvno.ShapesCreationWizard">
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+</plugin>
