@@ -5,7 +5,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * An elliptical shape.
  */
-public class EllipticalShape extends Shape
+public class Switch extends Shape
 {
     public  static final String imageFileSmall = "icons/ellipse16.gif";
     public  static final String imageFileBig   = "icons/ellipse24.gif";

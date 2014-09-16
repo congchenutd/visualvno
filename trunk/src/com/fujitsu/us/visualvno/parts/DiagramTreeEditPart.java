@@ -12,7 +12,7 @@ import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * TreeEditPart for a ShapesDiagram instance. 
@@ -22,7 +22,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart
                           implements PropertyChangeListener
 {
 
-	DiagramTreeEditPart(ShapesDiagram model) {
+	DiagramTreeEditPart(Diagram model) {
 		super(model);
 	}
 
@@ -46,8 +46,8 @@ class DiagramTreeEditPart extends AbstractTreeEditPart
         }
     }
     
-    private ShapesDiagram getCastedModel() {
-        return (ShapesDiagram) getModel();
+    private Diagram getCastedModel() {
+        return (Diagram) getModel();
     }
 
     @Override
@@ -75,9 +75,9 @@ class DiagramTreeEditPart extends AbstractTreeEditPart
     public void propertyChange(PropertyChangeEvent evt)
     {
         String prop = evt.getPropertyName();
-        if(ShapesDiagram.CHILD_ADDED_PROP.equals(prop))
+        if(Diagram.CHILD_ADDED_PROP.equals(prop))
             addChild(createChild(evt.getNewValue()), -1);
-        else if(ShapesDiagram.CHILD_REMOVED_PROP.equals(prop))
+        else if(Diagram.CHILD_REMOVED_PROP.equals(prop))
             removeChild(getEditPartForChild(evt.getNewValue()));
         else
             refreshVisuals();

@@ -49,7 +49,7 @@ import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 import com.fujitsu.us.visualvno.parts.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.ShapesTreeEditPartFactory;
 
@@ -62,7 +62,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 {
 
 	/** This is the root of the editor's model. */
-	private ShapesDiagram		diagram;
+	private Diagram		diagram;
 
 	/** Palette component, holding the tools and shapes. */
 	private static PaletteRoot	PALETTE_MODEL;
@@ -226,7 +226,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 		return super.getAdapter(type);
 	}
 
-	ShapesDiagram getModel() {
+	Diagram getModel() {
 		return diagram;
 	}
 
@@ -242,7 +242,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 	{
 		System.err.println("** Load failed. Using default model. **");
 		e.printStackTrace();
-		diagram = new ShapesDiagram();
+		diagram = new Diagram();
 	}
 
 	@Override
@@ -269,7 +269,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 		{
 			IFile file = ((IFileEditorInput) input).getFile();
 			ObjectInputStream in = new ObjectInputStream(file.getContents());
-			diagram = (ShapesDiagram) in.readObject();
+			diagram = (Diagram) in.readObject();
 			in.close();
 			setPartName(file.getName());
 		}

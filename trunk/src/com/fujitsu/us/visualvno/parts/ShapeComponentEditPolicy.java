@@ -5,7 +5,7 @@ import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 import com.fujitsu.us.visualvno.model.commands.ShapeDeleteCommand;
 
 /**
@@ -18,9 +18,9 @@ class ShapeComponentEditPolicy extends ComponentEditPolicy
     {
         Object parent = getHost().getParent().getModel();
         Object child  = getHost().getModel();
-        if(parent instanceof ShapesDiagram &&
+        if(parent instanceof Diagram &&
            child  instanceof Shape)
-            return new ShapeDeleteCommand((ShapesDiagram) parent, (Shape) child);
+            return new ShapeDeleteCommand((Diagram) parent, (Shape) child);
         return super.createDeleteCommand(deleteRequest);
     }
 }

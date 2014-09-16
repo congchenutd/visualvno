@@ -22,11 +22,11 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
-import com.fujitsu.us.visualvno.model.EllipticalShape;
+import com.fujitsu.us.visualvno.model.Switch;
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.RectangularShape;
+import com.fujitsu.us.visualvno.model.Host;
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 import com.fujitsu.us.visualvno.model.commands.ShapeCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ShapeSetConstraintCommand;
 
@@ -57,8 +57,8 @@ class DiagramEditPart extends AbstractGraphicalEditPart
         }
     }
     
-    private ShapesDiagram getCastedModel() {
-        return (ShapesDiagram) getModel();
+    private Diagram getCastedModel() {
+        return (Diagram) getModel();
     }
 
     @Override
@@ -98,8 +98,8 @@ class DiagramEditPart extends AbstractGraphicalEditPart
         // these properties are fired when Shapes are added into or removed from
         // the ShapeDiagram instance and must cause a call of refreshChildren()
         // to update the diagram's contents.
-        if(ShapesDiagram.CHILD_ADDED_PROP  .equals(prop) ||
-           ShapesDiagram.CHILD_REMOVED_PROP.equals(prop))
+        if(Diagram.CHILD_ADDED_PROP  .equals(prop) ||
+           Diagram.CHILD_REMOVED_PROP.equals(prop))
             refreshChildren();
     }
 
@@ -133,12 +133,12 @@ class DiagramEditPart extends AbstractGraphicalEditPart
         protected Command getCreateCommand(CreateRequest request)
         {
             Object childClass = request.getNewObjectType();
-            if(childClass == EllipticalShape.class || 
-               childClass == RectangularShape.class)
+            if(childClass == Switch.class || 
+               childClass == Host.class)
             {
                 // return a command that can add a Shape to a ShapesDiagram
                 return new ShapeCreateCommand((Shape) request.getNewObject(),
-                                              (ShapesDiagram) getHost().getModel(),
+                                              (Diagram) getHost().getModel(),
                                               (Rectangle) getConstraintFor(request));
             }
             return null;

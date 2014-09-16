@@ -7,7 +7,7 @@ import org.eclipse.gef.commands.Command;
 
 import com.fujitsu.us.visualvno.model.Connection;
 import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.ShapesDiagram;
+import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * A command to remove a shape from its parent.
@@ -18,7 +18,7 @@ public class ShapeDeleteCommand extends Command
     private final Shape         child;
 
     /** ShapeDiagram to remove from. */
-    private final ShapesDiagram parent;
+    private final Diagram parent;
     
     /** Holds a copy of the outgoing connections of child. */
     private List<Connection>    sourceConnections;
@@ -29,7 +29,7 @@ public class ShapeDeleteCommand extends Command
     /** True, if child was removed from its parent. */
     private boolean             wasRemoved;
 
-    public ShapeDeleteCommand(ShapesDiagram parent, Shape child)
+    public ShapeDeleteCommand(Diagram parent, Shape child)
     {
         if(parent == null || child == null)
             throw new IllegalArgumentException();

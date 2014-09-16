@@ -25,9 +25,9 @@ import org.eclipse.gef.requests.ReconnectRequest;
 import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.model.Connection;
-import com.fujitsu.us.visualvno.model.EllipticalShape;
+import com.fujitsu.us.visualvno.model.Switch;
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.RectangularShape;
+import com.fujitsu.us.visualvno.model.Host;
 import com.fujitsu.us.visualvno.model.Shape;
 import com.fujitsu.us.visualvno.model.commands.ConnectionCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ConnectionReconnectCommand;
@@ -131,10 +131,10 @@ class ShapeEditPart extends AbstractGraphicalEditPart
      */
     private IFigure createFigureForModel()
     {
-        if(getModel() instanceof EllipticalShape)
+        if(getModel() instanceof Switch)
 //            return new Ellipse();
             return new LabeledFigureAdapter("Text", new Ellipse());
-        else if(getModel() instanceof RectangularShape)
+        else if(getModel() instanceof Host)
             return new LabeledFigureAdapter("Text", new RectangleFigure());
 //            return new RectangleFigure();
         else
@@ -146,9 +146,9 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     {
         if(anchor == null)
         {
-            if(getModel() instanceof EllipticalShape)
+            if(getModel() instanceof Switch)
                 anchor = new EllipseAnchor(getFigure());
-            else if(getModel() instanceof RectangularShape)
+            else if(getModel() instanceof Host)
                 anchor = new ChopboxAnchor(getFigure());
             else
                 // if Shapes gets extended the conditions above must be updated
