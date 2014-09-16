@@ -7,14 +7,15 @@ import org.eclipse.swt.graphics.Image;
  */
 public class EllipticalShape extends Shape
 {
-	/** A 16x16 pictogram of an elliptical shape. */
-	private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif");
+    public  static final String imageFileSmall = "icons/ellipse16.gif";
+    public  static final String imageFileBig   = "icons/ellipse24.gif";
+    private static final Image ICON = createImage(imageFileSmall);
 
 	private static final long serialVersionUID = 1;
 
 	@Override
     public Image getIcon() {
-		return ELLIPSE_ICON;
+		return ICON;
 	}
 
 }
