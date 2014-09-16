@@ -30,12 +30,12 @@ public abstract class Shape extends ModelBase
     public  static final String SIZE_PROP       = "Shape.Size";
     public  static final String SOURCE_PROP     = "Shape.SourceConnections";
     public  static final String TARGET_PROP     = "Shape.TargetConnections";
+    public  static final String NAME_PROP       = "Shape.Name";
     
     private static final String HEIGHT_PROP     = "Shape.Height";
     private static final String WIDTH_PROP      = "Shape.Width";
     private static final String XPOS_PROP       = "Shape.X";
     private static final String YPOS_PROP       = "Shape.Y";
-    private static final String NAME_PROP       = "Shape.Name";
     
     private final Point     location = new Point(0, 0);
     private final Dimension size     = new Dimension(50, 50);
@@ -260,8 +260,10 @@ public abstract class Shape extends ModelBase
         return name;
     }
     
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
+        firePropertyChange(NAME_PROP, null, name);
     }
     
     @Override

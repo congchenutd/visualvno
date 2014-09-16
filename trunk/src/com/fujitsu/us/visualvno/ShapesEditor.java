@@ -40,6 +40,8 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.ToggleGridAction;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
@@ -85,10 +87,11 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 		viewer.setKeyHandler     (new GraphicalViewerKeyHandler(viewer));
 
 		// configure the context menu provider
-		ContextMenuProvider cmProvider 
-			= new ShapesEditorContextMenuProvider(viewer, getActionRegistry());
-		viewer.setContextMenu(cmProvider);
-		getSite().registerContextMenu(cmProvider, viewer);
+		viewer.setContextMenu(new ShapesEditorContextMenuProvider(viewer, 
+		                                                          getActionRegistry()));
+		
+		getActionRegistry().registerAction(new ToggleGridAction(getGraphicalViewer()));
+        getActionRegistry().registerAction(new ToggleSnapToGeometryAction(getGraphicalViewer()));
 	}
 
 	@Override
