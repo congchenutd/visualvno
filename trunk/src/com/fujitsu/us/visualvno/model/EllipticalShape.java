@@ -17,8 +17,4 @@ public class EllipticalShape extends Shape
 		return ELLIPSE_ICON;
 	}
 
-	@Override
-    public String toString() {
-		return "Switch " + hashCode();
-	}
 }

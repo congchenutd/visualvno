@@ -26,31 +26,37 @@ public abstract class Shape extends ModelBase
     private static final long serialVersionUID = 1;
 
     /** Property IDs **/
-    public  static final String LOCATION_PROP           = "Shape.Location";
-    public  static final String SIZE_PROP               = "Shape.Size";
-    public  static final String SOURCE_CONNECTIONS_PROP = "Shape.SourceConn";
-    public  static final String TARGET_CONNECTIONS_PROP = "Shape.TargetConn";
-    private static final String HEIGHT_PROP             = "Shape.Height";
-    private static final String WIDTH_PROP              = "Shape.Width";
-    private static final String XPOS_PROP               = "Shape.xPos";
-    private static final String YPOS_PROP               = "Shape.yPos";
+    public  static final String LOCATION_PROP   = "Shape.Location";
+    public  static final String SIZE_PROP       = "Shape.Size";
+    public  static final String SOURCE_PROP     = "Shape.SourceConnections";
+    public  static final String TARGET_PROP     = "Shape.TargetConnections";
+    
+    private static final String HEIGHT_PROP     = "Shape.Height";
+    private static final String WIDTH_PROP      = "Shape.Width";
+    private static final String XPOS_PROP       = "Shape.X";
+    private static final String YPOS_PROP       = "Shape.Y";
+    private static final String NAME_PROP       = "Shape.Name";
     
     private final Point     location = new Point(0, 0);
     private final Dimension size     = new Dimension(50, 50);
+    private       String    name     = new String();
     private final List<Connection> sourceConnections = new ArrayList<Connection>();
     private final List<Connection> targetConnections = new ArrayList<Connection>();
 
     // initialize the proper descriptors
     static
     {
-        descriptors = new IPropertyDescriptor[] {
-            new TextPropertyDescriptor(XPOS_PROP, "X"), 
-            new TextPropertyDescriptor(YPOS_PROP, "Y"),
-            new TextPropertyDescriptor(WIDTH_PROP, "Width"),
-            new TextPropertyDescriptor(HEIGHT_PROP, "Height") };
+        descriptors = new IPropertyDescriptor[]
+        {
+            new TextPropertyDescriptor(XPOS_PROP,   "X"), 
+            new TextPropertyDescriptor(YPOS_PROP,   "Y"),
+            new TextPropertyDescriptor(WIDTH_PROP,  "Width"),
+            new TextPropertyDescriptor(HEIGHT_PROP, "Height"),
+            new TextPropertyDescriptor(NAME_PROP,   "Name"),
+        };
         
         // use a custom cell editor validator for all four array entries
-        for(int i = 0; i < descriptors.length; i++)
+        for(int i = 0; i < 4; i++)
         {
             PropertyDescriptor descriptor = (PropertyDescriptor) descriptors[i];
             descriptor.setValidator(
@@ -71,6 +77,17 @@ public abstract class Shape extends ModelBase
                     }
                 });
         }
+        
+        ((PropertyDescriptor) descriptors[4]).setValidator(new ICellEditorValidator()
+        {
+            @Override
+            public String isValid(Object value)
+            {
+                String name = (String) value;
+                return name != null && !name.isEmpty() ? null 
+                                                       : "Name can't be empty";
+            }
+        });
     } // static
 
     /**
@@ -95,12 +112,12 @@ public abstract class Shape extends ModelBase
         if(connection.getSource() == this)
         {
             sourceConnections.add(connection);
-            firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
+            firePropertyChange(SOURCE_PROP, null, connection);
         }
         else if(connection.getTarget() == this)
         {
             targetConnections.add(connection);
-            firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);
+            firePropertyChange(TARGET_PROP, null, connection);
         }
     }
     
@@ -111,12 +128,12 @@ public abstract class Shape extends ModelBase
         if(connection.getSource() == this)
         {
             sourceConnections.remove(connection);
-            firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
+            firePropertyChange(SOURCE_PROP, null, connection);
         }
         else if(connection.getTarget() == this)
         {
             targetConnections.remove(connection);
-            firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);
+            firePropertyChange(TARGET_PROP, null, connection);
         }
     }
 
@@ -151,6 +168,8 @@ public abstract class Shape extends ModelBase
             return Integer.toString(size.height);
         if(WIDTH_PROP.equals(propertyId))
             return Integer.toString(size.width);
+        if(NAME_PROP.equals(propertyId))
+            return getName();
         return super.getPropertyValue(propertyId);
     }
     
@@ -180,6 +199,9 @@ public abstract class Shape extends ModelBase
         {
             int width = Integer.parseInt((String) value);
             setSize(new Dimension(width, size.height));
+        }
+        else if(NAME_PROP.equals(propertyId)) {
+            setName((String) value);
         }
         else {
             super.setPropertyValue(propertyId, value);
@@ -232,5 +254,18 @@ public abstract class Shape extends ModelBase
                 return true;
         
         return false;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return getName();
     }
 }
