@@ -7,14 +7,15 @@ import org.eclipse.swt.graphics.Image;
  */
 public class RectangularShape extends Shape
 {
-    /** A 16x16 pictogram of a rectangular shape. */
-    private static final Image RECTANGLE_ICON   = createImage("icons/rectangle16.gif");
+    public  static final String imageFileSmall = "icons/rectangle16.gif";
+    public  static final String imageFileBig   = "icons/rectangle24.gif";
+    private static final Image ICON = createImage(imageFileSmall);
 
     private static final long  serialVersionUID = 1;
 
     @Override
     public Image getIcon() {
-        return RECTANGLE_ICON;
+        return ICON;
     }
 
 }

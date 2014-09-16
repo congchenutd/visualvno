@@ -33,9 +33,9 @@ final class ShapesEditorPaletteFactory
 				EllipticalShape.class,
 				new SimpleFactory(EllipticalShape.class),
 				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   "icons/ellipse16.gif"),
+											   EllipticalShape.imageFileSmall),
 				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   "icons/ellipse24.gif")));
+											   EllipticalShape.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
 						"Host",
@@ -43,9 +43,9 @@ final class ShapesEditorPaletteFactory
 						RectangularShape.class,
 						new SimpleFactory(RectangularShape.class),
 						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   "icons/rectangle16.gif"),
+													   RectangularShape.imageFileSmall),
 						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   "icons/rectangle24.gif")));
+													   RectangularShape.imageFileBig)));
 
 		return componentsDrawer;
 	}
