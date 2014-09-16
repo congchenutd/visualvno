@@ -228,7 +228,7 @@ public abstract class Shape extends ModelBase
                 return true;
         
         for(Iterator<Connection> it = getTargetConnections().iterator(); it.hasNext();)
-            if(it.next().getTarget().equals(that))
+            if(it.next().getSource().equals(that))
                 return true;
         
         return false;
