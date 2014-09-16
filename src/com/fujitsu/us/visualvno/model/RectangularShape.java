@@ -17,8 +17,4 @@ public class RectangularShape extends Shape
         return RECTANGLE_ICON;
     }
 
-    @Override
-    public String toString() {
-        return "Host " + hashCode();
-    }
 }
