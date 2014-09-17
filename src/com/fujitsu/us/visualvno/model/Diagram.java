@@ -11,7 +11,6 @@ public class Diagram extends ModelBase
 {
 	public static final String CHILD_ADDED_PROP   = "ShapesDiagram.ChildAdded";
 	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";
-	private static final long serialVersionUID = 1;
 	private final List<Shape> shapes = new ArrayList<Shape>();
 
     public boolean addChild(Shape shape)

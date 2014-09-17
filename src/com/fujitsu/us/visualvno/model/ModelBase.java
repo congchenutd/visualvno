@@ -17,8 +17,6 @@ public abstract class ModelBase implements IPropertySource, Serializable
     /** An empty property descriptor. */
     private static final IPropertyDescriptor[] EMPTY_ARRAY = new IPropertyDescriptor[0];
 
-    private static final long serialVersionUID = 1;
-
     /** A delegate to handle events */
     private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
 

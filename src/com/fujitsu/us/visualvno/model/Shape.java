@@ -24,22 +24,21 @@ import com.fujitsu.us.visualvno.ShapesPlugin;
  */
 public abstract class Shape extends ModelBase
 {
-    private static IPropertyDescriptor[] descriptors;
-    private static final long serialVersionUID = 1;
+    protected static IPropertyDescriptor[] descriptors;
 
-    /** Property IDs **/
-    public  static final String LOCATION_PROP   = "Shape.Location";
-    public  static final String SIZE_PROP       = "Shape.Size";
-    public  static final String SOURCE_PROP     = "Shape.SourceConnections";
-    public  static final String TARGET_PROP     = "Shape.TargetConnections";
-    public  static final String NAME_PROP       = "Shape.Name";
-    public  static final String COLOR_PROP      = "Shape.Color";
+    // property IDs
+    public static final String LOCATION_PROP    = "Shape.Location";
+    public static final String SIZE_PROP        = "Shape.Size";
+    public static final String SOURCE_PROP      = "Shape.SourceConnections";
+    public static final String TARGET_PROP      = "Shape.TargetConnections";
+    public static final String NAME_PROP        = "Shape.Name";
+    public static final String COLOR_PROP       = "Shape.Color";
+    public static final String HEIGHT_PROP      = "Shape.Height";
+    public static final String WIDTH_PROP       = "Shape.Width";
+    public static final String XPOS_PROP        = "Shape.X";
+    public static final String YPOS_PROP        = "Shape.Y";
     
-    private static final String HEIGHT_PROP     = "Shape.Height";
-    private static final String WIDTH_PROP      = "Shape.Width";
-    private static final String XPOS_PROP       = "Shape.X";
-    private static final String YPOS_PROP       = "Shape.Y";
-    
+    // properties
     private final Point     location = new Point(0, 0);
     private final Dimension size     = new Dimension(50, 50);
     private       String    name     = new String();
@@ -59,6 +58,7 @@ public abstract class Shape extends ModelBase
             new TextPropertyDescriptor (HEIGHT_PROP, "Height"),
             new TextPropertyDescriptor (NAME_PROP,   "Name"),
             new ColorPropertyDescriptor(COLOR_PROP,  "Color"),
+            new TextPropertyDescriptor("Test",  "Test"),
         };
         
         // use a custom cell editor validator for all four array entries
@@ -160,6 +160,8 @@ public abstract class Shape extends ModelBase
             return getName();
         if(COLOR_PROP.equals(id))
             return getColor();
+        if(((String)id).equals("Test"))
+            return "Test";
         return super.getPropertyValue(id);
     }
     
