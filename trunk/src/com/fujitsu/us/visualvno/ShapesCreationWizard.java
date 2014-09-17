@@ -21,7 +21,7 @@ import com.fujitsu.us.visualvno.model.Diagram;
 
 /**
  * Create a new .vno file.
- * Those files can be used with the ShapesEditor (see plugin.xml).
+ * Those files can be used with the Editor (see plugin.xml).
  */
 public class ShapesCreationWizard extends Wizard implements INewWizard
 {
@@ -45,7 +45,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 	}
 
 	/**
-	 * This WizardPage can create an empty .vno file for the ShapesEditor.
+	 * This WizardPage can create an empty .vno file for the Editor.
 	 */
 	private class CreationPage extends WizardNewFileCreationPage
 	{

@@ -7,7 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
@@ -27,6 +29,7 @@ import org.eclipse.draw2d.parts.Thumbnail;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.TransferDropTargetListener;
@@ -37,6 +40,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
@@ -46,16 +50,21 @@ import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
+import org.eclipse.gef.ui.actions.ZoomInAction;
+import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
@@ -72,7 +81,7 @@ import com.fujitsu.us.visualvno.parts.ShapesTreeEditPartFactory;
  * binding between the .shapes file extension and this editor is done in
  * plugin.xml
  */
-public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
+public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 {
 
 	/** This is the root of the editor's model. */
@@ -81,9 +90,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 	/** Palette component, holding the tools and shapes. */
 	private static PaletteRoot PALETTE_MODEL;
 
-	/** Create a new ShapesEditor instance. Called by the Workspace. */
-	public ShapesEditor()
-	{
+	/** Called by the Workspace. */
+	public VNOEditor() {
 		setEditDomain(new DefaultEditDomain(this));
 	}
 
@@ -96,16 +104,37 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 		super.configureGraphicalViewer();
 
 		GraphicalViewer viewer = getGraphicalViewer();
+		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+		viewer.setRootEditPart   (root);
 		viewer.setEditPartFactory(new ShapesEditPartFactory());
-		viewer.setRootEditPart   (new ScalableFreeformRootEditPart());
 		viewer.setKeyHandler     (new GraphicalViewerKeyHandler(viewer));
 
 		// configure the context menu provider
-		viewer.setContextMenu(new ShapesEditorContextMenuProvider(viewer, 
-		                                                          getActionRegistry()));
+		ContextMenuProvider menuProvider = new ShapesEditorContextMenuProvider(
+		                                           viewer, getActionRegistry());
+		viewer.setContextMenu(menuProvider);
 		
-		getActionRegistry().registerAction(new ToggleGridAction(getGraphicalViewer()));
-        getActionRegistry().registerAction(new ToggleSnapToGeometryAction(getGraphicalViewer()));
+//        List zoomLevels = new ArrayList(3);
+//        zoomLevels.add(ZoomManager.FIT_ALL);
+//        zoomLevels.add(ZoomManager.FIT_WIDTH);
+//        zoomLevels.add(ZoomManager.FIT_HEIGHT);
+//        root.getZoomManager().setZoomLevelContributions(zoomLevels);
+
+        IAction zoomIn  = new ZoomInAction (root.getZoomManager());
+        IAction zoomOut = new ZoomOutAction(root.getZoomManager());
+        getActionRegistry().registerAction(zoomIn);
+        getActionRegistry().registerAction(zoomOut);
+
+        IHandlerService service = (IHandlerService) getSite().getService(IHandlerService.class);
+        service.activateHandler(zoomIn.getActionDefinitionId(),
+                                new ActionHandler(zoomIn));
+        service.activateHandler(zoomOut.getActionDefinitionId(),
+                                new ActionHandler(zoomOut));
+        
+        // scroll-wheel Zoom
+        getGraphicalViewer().setProperty(
+            MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
+            MouseWheelZoomHandler.SINGLETON);
 	}
 
 	@Override
