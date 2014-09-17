@@ -12,10 +12,25 @@ public class Switch extends Shape
     private static final Image ICON = createImage(imageFileSmall);
 
 	private static final long serialVersionUID = 1;
+	
+	public static final String DPID_PROP = "Switch.DPID";
+	
+	private String dpid = null;
+	
+	public String getDPID() {
+		return dpid;
+	}
+	
+	public void setDPID(String dpid) {
+		this.dpid = dpid;
+		
+	}
 
 	@Override
     public Image getIcon() {
 		return ICON;
 	}
+	
+	
 
 }
