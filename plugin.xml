@@ -7,7 +7,7 @@
               extensions="vno"
               icon="Networks.png"
               default="true"
-              class="com.fujitsu.us.visualvno.ShapesEditor"
+              class="com.fujitsu.us.visualvno.VNOEditor"
               contributorClass="com.fujitsu.us.visualvno.ShapesEditorActionBarContributor"
               id="Visual VNO Editor">
       </editor>

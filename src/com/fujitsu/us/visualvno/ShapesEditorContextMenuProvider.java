@@ -34,7 +34,7 @@ class ShapesEditorContextMenuProvider extends ContextMenuProvider
 	public void buildContextMenu(IMenuManager menu)
 	{
 		// Add standard action groups to the menu
-		 GEFActionConstants.addStandardActionGroups(menu);
+		GEFActionConstants.addStandardActionGroups(menu);
 		
 		menu.add(new Separator(GEFActionConstants.GROUP_UNDO));
 		menu.add(new Separator(GEFActionConstants.GROUP_EDIT));
