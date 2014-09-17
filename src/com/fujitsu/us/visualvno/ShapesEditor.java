@@ -9,6 +9,10 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -17,7 +21,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.parts.ScrollableThumbnail;
+import org.eclipse.draw2d.parts.Thumbnail;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -28,11 +42,14 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
@@ -54,7 +71,7 @@ import com.fujitsu.us.visualvno.parts.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.ShapesTreeEditPartFactory;
 
 /**
- * A graphical editor with flyout palette that can edit .shapes files. The
+ * A graphical editor with flyout palette that can edit .vno files. The
  * binding between the .shapes file extension and this editor is done in
  * plugin.xml
  */
@@ -62,10 +79,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 {
 
 	/** This is the root of the editor's model. */
-	private Diagram		diagram;
+	private Diagram diagram;
 
 	/** Palette component, holding the tools and shapes. */
-	private static PaletteRoot	PALETTE_MODEL;
+	private static PaletteRoot PALETTE_MODEL;
 
 	/** Create a new ShapesEditor instance. Called by the Workspace. */
 	public ShapesEditor()
@@ -222,7 +239,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 	public Object getAdapter(Class type)
 	{
 		if(type == IContentOutlinePage.class)
-			return new ShapesOutlinePage(new TreeViewer());
+			return new OutlinePage(new TreeViewer());
 		return super.getAdapter(type);
 	}
 
@@ -346,5 +363,182 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 			bars.setGlobalActionHandler(id, registry.getAction(id));
 		}
 	}
+	
+	
+	class OutlinePage extends ContentOutlinePage
+	{
+        private PageBook        pageBook;
+        private Control         outline;
+        private Canvas          overview;
+        private IAction         showOutlineAction;
+        private IAction         showOverviewAction;
+        private Thumbnail       thumbnail;
+        private DisposeListener disposeListener;
+        
+        static final int ID_OUTLINE     = 0;
+        static final int ID_OVERVIEW    = 1;
+        
+
+        public OutlinePage(EditPartViewer viewer) {
+            super(viewer);
+        }
+
+        @Override
+        public void init(IPageSite pageSite)
+        {
+            super.init(pageSite);
+            ActionRegistry registry = getActionRegistry();
+            IActionBars bars = pageSite.getActionBars();
+            String id = ActionFactory.UNDO.getId();
+            bars.setGlobalActionHandler(id, registry.getAction(id));
+            id = ActionFactory.REDO.getId();
+            bars.setGlobalActionHandler(id, registry.getAction(id));
+            id = ActionFactory.DELETE.getId();
+            bars.setGlobalActionHandler(id, registry.getAction(id));
+            bars.updateActionBars(); 
+        }
+
+        protected void configureOutlineViewer()
+        {
+            getViewer().setEditDomain(getEditDomain());
+            getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
+            
+//            ContextMenuProvider provider = new LogicContextMenuProvider(
+//                    getViewer(), getActionRegistry());
+//            getViewer().setContextMenu(provider);
+//            getSite().registerContextMenu(
+//                    "org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
+//                    provider, getSite().getSelectionProvider());
+//            
+//            getViewer().setKeyHandler(getCommonKeyHandler());
+//            getViewer()
+//                    .addDropTargetListener(
+//                            (TransferDropTargetListener) new TemplateTransferDropTargetListener(
+//                                    getViewer()));
+            
+            IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+            showOutlineAction = new Action() {
+                @Override
+                public void run() {
+                    showPage(ID_OUTLINE);
+                }
+            };
+            showOutlineAction.setImageDescriptor(ImageDescriptor
+                    .createFromFile(ShapesPlugin.class, "icons/outline.gif")); //$NON-NLS-1$
+            showOutlineAction
+                    .setToolTipText("Show Outline");
+            tbm.add(showOutlineAction);
+            
+            showOverviewAction = new Action() {
+                @Override
+                public void run() {
+                    showPage(ID_OVERVIEW);
+                }
+            };
+            showOverviewAction.setImageDescriptor(ImageDescriptor
+                    .createFromFile(ShapesPlugin.class, "icons/overview.gif")); //$NON-NLS-1$
+            showOverviewAction
+                    .setToolTipText("Show Thumbnail");
+            tbm.add(showOverviewAction);
+            
+            showPage(ID_OUTLINE);
+        }
+
+        @Override
+        public void createControl(Composite parent)
+        {
+            pageBook = new PageBook(parent, SWT.NONE);
+            outline = getViewer().createControl(pageBook);
+            overview = new Canvas(pageBook, SWT.NONE);
+            pageBook.showPage(outline);
+            configureOutlineViewer();
+            hookOutlineViewer();
+            initializeOutlineViewer();
+        }
+
+        @Override
+        public void dispose()
+        {
+            unhookOutlineViewer();
+            if (thumbnail != null) {
+                thumbnail.deactivate();
+                thumbnail = null;
+            }
+            super.dispose();
+//            LogicEditor.this.outlinePage = null;
+//            outlinePage = null;
+        }
+
+        @Override
+        public Control getControl() {
+            return pageBook;
+        }
+
+        protected void hookOutlineViewer() {
+            getSelectionSynchronizer().addViewer(getViewer());
+        }
+
+        protected void initializeOutlineViewer() {
+            setContents(getModel());
+        }
+
+        protected void initializeOverview() {
+            LightweightSystem lws = new LightweightSystem(overview);
+            RootEditPart rep = getGraphicalViewer().getRootEditPart();
+            if (rep instanceof ScalableFreeformRootEditPart) {
+                ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
+                thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
+                thumbnail.setBorder(new MarginBorder(3));
+                thumbnail.setSource(root
+                        .getLayer(LayerConstants.PRINTABLE_LAYERS));
+                lws.setContents(thumbnail);
+                disposeListener = new DisposeListener() {
+                    @Override
+                    public void widgetDisposed(DisposeEvent e)
+                    {
+                        if (thumbnail != null) {
+                            thumbnail.deactivate();
+                            thumbnail = null;
+                        }
+                    }
+                };
+                getCanvas().addDisposeListener(disposeListener);
+            }
+        }
+
+        public void setContents(Object contents) {
+            getViewer().setContents(contents);
+        }
+
+        protected void showPage(int id) {
+            if (id == ID_OUTLINE) {
+                showOutlineAction.setChecked(true);
+                showOverviewAction.setChecked(false);
+                pageBook.showPage(outline);
+                if (thumbnail != null)
+                    thumbnail.setVisible(false);
+            } else if (id == ID_OVERVIEW) {
+                if (thumbnail == null)
+                    initializeOverview();
+                showOutlineAction.setChecked(false);
+                showOverviewAction.setChecked(true);
+                pageBook.showPage(overview);
+                thumbnail.setVisible(true);
+            }
+        }
+
+        protected void unhookOutlineViewer()
+        {
+            getSelectionSynchronizer().removeViewer(getViewer());
+            if(disposeListener != null && 
+               getCanvas()     != null &&
+               !getCanvas().isDisposed())
+                getCanvas().removeDisposeListener(disposeListener);
+        }
+    }
+	
+	protected FigureCanvas getCanvas() {
+        return (FigureCanvas) getGraphicalViewer().getControl();
+    }
 
 }
