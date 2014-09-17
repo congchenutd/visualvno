@@ -38,14 +38,14 @@ final class ShapesEditorPaletteFactory
 											   Switch.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
-						"Host",
-						"Create a Host",
-						Host.class,
-						new SimpleFactory(Host.class),
-						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   Host.imageFileSmall),
-						ImageDescriptor.createFromFile(ShapesPlugin.class,
-													   Host.imageFileBig)));
+				"Host",
+				"Create a Host", 
+				Host.class, 
+				new SimpleFactory(Host.class),
+				ImageDescriptor.createFromFile(ShapesPlugin.class,
+											   Host.imageFileSmall), 
+				ImageDescriptor.createFromFile(ShapesPlugin.class, 
+											   Host.imageFileBig)));
 
 		return componentsDrawer;
 	}
@@ -74,26 +74,29 @@ final class ShapesEditorPaletteFactory
 		// Add a marquee tool to the group
 		toolbar.add(new MarqueeToolEntry());
 
-		// Add (solid-line) connection tool
-		toolbar.add(new ConnectionCreationToolEntry(
-					"Link",
-					"Create a Link",
-					new CreationFactory()
-					{
-						@Override
-						public Object getNewObject() {
-							return null;
-						}
+		// Add a connection tool
+		toolbar.add(
+			new ConnectionCreationToolEntry(
+				"Link",
+				"Create a Link",
+				new CreationFactory()
+				{
+					@Override
+					public Object getNewObject() {
+						return null;
+					}
 
-						@Override
-						public Object getObjectType() {
-							return Connection.SOLID_CONNECTION;
-						}
-					},
-					ImageDescriptor.createFromFile(ShapesPlugin.class,
-												   "icons/connection_s16.gif"),
-					ImageDescriptor.createFromFile(ShapesPlugin.class,
-												   "icons/connection_s24.gif")));
+					@Override
+					public Object getObjectType() {
+						return Connection.SOLID_CONNECTION;
+					}
+				},
+				ImageDescriptor.createFromFile(ShapesPlugin.class,
+											   Connection.imageFileSmall),
+				ImageDescriptor.createFromFile(ShapesPlugin.class,
+											   Connection.imageFileBig)
+			)
+		);
 		return toolbar;
 	}
 
