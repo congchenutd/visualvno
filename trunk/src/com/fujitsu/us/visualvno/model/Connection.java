@@ -10,7 +10,7 @@ import org.eclipse.draw2d.Graphics;
  */
 public class Connection extends ModelBase
 {
-	public static final String imageFileSmall = "icons/Link.png";
+    public static final String imageFileSmall = "icons/Link.png";
 	public static final String imageFileBig   = "icons/Link.png";
     public static final Integer SOLID_CONNECTION  = new Integer(Graphics.LINE_SOLID);
     public static final Integer DASHED_CONNECTION = new Integer(Graphics.LINE_DASH);
@@ -21,7 +21,6 @@ public class Connection extends ModelBase
     private static final String SOLID_STR   = "Solid";
     private static final String DASHED_STR  = "Dashed";
 
-    private static final long serialVersionUID  = 1;
 
     private boolean isConnected;
     private int     lineStyle = Graphics.LINE_SOLID;
