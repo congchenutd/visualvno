@@ -10,8 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -21,7 +19,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Viewport;
@@ -301,83 +298,19 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	/**
-	 * Creates an outline page for this editor.
-	 */
-	public class ShapesOutlinePage extends ContentOutlinePage
-	{
-		public ShapesOutlinePage(EditPartViewer viewer)	{
-			super(viewer);
-		}
-
-		@Override
-		public void createControl(Composite parent)
-		{
-			// create outline viewer page
-			getViewer().createControl(parent);
-			
-			// configure outline viewer
-			getViewer().setEditDomain(getEditDomain());
-			getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
-			
-			// configure & add context menu to viewer
-			ContextMenuProvider cmProvider 
-				= new ShapesEditorContextMenuProvider(getViewer(),
-													  getActionRegistry());
-			getViewer().setContextMenu(cmProvider);
-			getSite().registerContextMenu("com.fujitsu.us.outline.contextmenu",
-										  cmProvider, 
-										  getSite().getSelectionProvider());
-			
-			// hook up outline viewer
-			getSelectionSynchronizer().addViewer(getViewer());
-			
-			// initialize outline viewer with model
-			getViewer().setContents(getModel());
-		}
-
-		@Override
-		public void dispose()
-		{
-			// unhook outline viewer
-			getSelectionSynchronizer().removeViewer(getViewer());
-			super.dispose();
-		}
-
-		@Override
-		public Control getControl() {
-			return getViewer().getControl();
-		}
-
-		@Override
-		public void init(IPageSite pageSite)
-		{
-			super.init(pageSite);
-			ActionRegistry registry = getActionRegistry();
-			IActionBars bars = pageSite.getActionBars();
-			String id = ActionFactory.UNDO.getId();
-			bars.setGlobalActionHandler(id, registry.getAction(id));
-			id = ActionFactory.REDO.getId();
-			bars.setGlobalActionHandler(id, registry.getAction(id));
-			id = ActionFactory.DELETE.getId();
-			bars.setGlobalActionHandler(id, registry.getAction(id));
-		}
-	}
-	
 	
 	class OutlinePage extends ContentOutlinePage
 	{
-        private PageBook        pageBook;
-        private IAction         showOutlineAction;
-        private IAction         showOverviewAction;
-        private Control         outline;
-        private Canvas          overview;
-        private Thumbnail       thumbnail;
+        private PageBook    pageBook;
+        private IAction     showOutlineAction;
+        private IAction     showOverviewAction;
+        private Control     outline;
+        private Canvas      overview;
+        private Thumbnail   thumbnail;
         
         static final int ID_OUTLINE     = 0;
         static final int ID_OVERVIEW    = 1;
         
-
         public OutlinePage(EditPartViewer viewer) {
             super(viewer);
         }
@@ -397,7 +330,42 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             bars.updateActionBars(); 
         }
 
-        protected void configureOutlineViewer()
+        @Override
+        public void createControl(Composite parent)
+        {
+            pageBook = new PageBook(parent, SWT.NONE);
+
+            // thumbnail
+            overview = new Canvas(pageBook, SWT.NONE);
+            initThumbnail();
+            
+            // outline
+            outline  = getViewer().createControl(pageBook);
+            initOutline();
+            getSelectionSynchronizer().addViewer(getViewer());
+            getViewer().setContents(getModel());
+        }
+
+        @Override
+        public void dispose()
+        {
+            // unhook OutlineViewer
+            getSelectionSynchronizer().removeViewer(getViewer());
+            
+            if(thumbnail != null)
+            {
+                thumbnail.deactivate();
+                thumbnail = null;
+            }
+            super.dispose();
+        }
+
+        @Override
+        public Control getControl() {
+            return pageBook;
+        }
+
+        private void initOutline()
         {
             getViewer().setEditDomain(getEditDomain());
             getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
@@ -441,44 +409,11 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             showOverviewAction.setToolTipText("Show thumbnail");
             tbm.add(showOverviewAction);
             
-            // default
+            // default page
             showPage(ID_OUTLINE);
         }
 
-        @Override
-        public void createControl(Composite parent)
-        {
-            pageBook = new PageBook(parent, SWT.NONE);
-            outline = getViewer().createControl(pageBook);
-            overview = new Canvas(pageBook, SWT.NONE);
-            pageBook.showPage(outline);
-            configureOutlineViewer();
-            // hook OutlineViewer
-            getSelectionSynchronizer().addViewer(getViewer());
-            // init OutlineViewer
-            getViewer().setContents(getModel());
-        }
-
-        @Override
-        public void dispose()
-        {
-            // unhook OutlineViewer
-            getSelectionSynchronizer().removeViewer(getViewer());
-            
-            if(thumbnail != null)
-            {
-                thumbnail.deactivate();
-                thumbnail = null;
-            }
-            super.dispose();
-        }
-
-        @Override
-        public Control getControl() {
-            return pageBook;
-        }
-
-        protected void initOverview()
+        private void initThumbnail()
         {
             LightweightSystem lws = new LightweightSystem(overview);
             RootEditPart rep = getGraphicalViewer().getRootEditPart();
@@ -491,21 +426,18 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
                 lws.setContents(thumbnail);
             }
         }
-
-        protected void showPage(int id)
+        
+        private void showPage(int id)
         {
             if(id == ID_OUTLINE)
             {
                 showOutlineAction .setChecked(true);
                 showOverviewAction.setChecked(false);
                 pageBook.showPage(outline);
-                if(thumbnail != null)
-                    thumbnail.setVisible(false);
+                thumbnail.setVisible(false);
             }
             else if(id == ID_OVERVIEW)
             {
-                if(thumbnail == null)
-                    initOverview();
                 showOutlineAction .setChecked(false);
                 showOverviewAction.setChecked(true);
                 pageBook.showPage(overview);
@@ -513,10 +445,6 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             }
         }
 
-    }
-	
-	protected FigureCanvas getCanvas() {
-        return (FigureCanvas) getGraphicalViewer().getControl();
     }
 
 }
