@@ -368,12 +368,11 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
 	class OutlinePage extends ContentOutlinePage
 	{
         private PageBook        pageBook;
-        private Control         outline;
-        private Canvas          overview;
         private IAction         showOutlineAction;
         private IAction         showOverviewAction;
+        private Control         outline;
+        private Canvas          overview;
         private Thumbnail       thumbnail;
-        private DisposeListener disposeListener;
         
         static final int ID_OUTLINE     = 0;
         static final int ID_OVERVIEW    = 1;
@@ -403,19 +402,20 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             getViewer().setEditDomain(getEditDomain());
             getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
             
-//            ContextMenuProvider provider = new LogicContextMenuProvider(
-//                    getViewer(), getActionRegistry());
-//            getViewer().setContextMenu(provider);
-//            getSite().registerContextMenu(
-//                    "org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
-//                    provider, getSite().getSelectionProvider());
-//            
-//            getViewer().setKeyHandler(getCommonKeyHandler());
-//            getViewer()
-//                    .addDropTargetListener(
-//                            (TransferDropTargetListener) new TemplateTransferDropTargetListener(
-//                                    getViewer()));
+            // context menu
+            ContextMenuProvider menuProvider 
+                = new ShapesEditorContextMenuProvider(getViewer(),
+                                                      getActionRegistry());
+            getViewer().setContextMenu(menuProvider);
+            getSite().registerContextMenu("com.fujitsu.us.outline.contextmenu",
+                                          menuProvider, 
+                                          getSite().getSelectionProvider());
             
+            getViewer().addDropTargetListener(
+                  (TransferDropTargetListener)
+                  new TemplateTransferDropTargetListener(getViewer()));
+            
+            // 2 actions: "Show outline" and "Show thumbnail"
             IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
             showOutlineAction = new Action() {
                 @Override
@@ -423,10 +423,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
                     showPage(ID_OUTLINE);
                 }
             };
-            showOutlineAction.setImageDescriptor(ImageDescriptor
-                    .createFromFile(ShapesPlugin.class, "icons/outline.gif")); //$NON-NLS-1$
-            showOutlineAction
-                    .setToolTipText("Show Outline");
+            showOutlineAction.setImageDescriptor(
+                 ImageDescriptor.createFromFile(ShapesPlugin.class, 
+                                                "icons/outline.gif"));
+            showOutlineAction.setToolTipText("Show outline");
             tbm.add(showOutlineAction);
             
             showOverviewAction = new Action() {
@@ -435,12 +435,13 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
                     showPage(ID_OVERVIEW);
                 }
             };
-            showOverviewAction.setImageDescriptor(ImageDescriptor
-                    .createFromFile(ShapesPlugin.class, "icons/overview.gif")); //$NON-NLS-1$
-            showOverviewAction
-                    .setToolTipText("Show Thumbnail");
+            showOverviewAction.setImageDescriptor(
+                  ImageDescriptor.createFromFile(ShapesPlugin.class, 
+                                                 "icons/overview.gif"));
+            showOverviewAction.setToolTipText("Show thumbnail");
             tbm.add(showOverviewAction);
             
+            // default
             showPage(ID_OUTLINE);
         }
 
@@ -452,21 +453,24 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             overview = new Canvas(pageBook, SWT.NONE);
             pageBook.showPage(outline);
             configureOutlineViewer();
-            hookOutlineViewer();
-            initializeOutlineViewer();
+            // hook OutlineViewer
+            getSelectionSynchronizer().addViewer(getViewer());
+            // init OutlineViewer
+            getViewer().setContents(getModel());
         }
 
         @Override
         public void dispose()
         {
-            unhookOutlineViewer();
-            if (thumbnail != null) {
+            // unhook OutlineViewer
+            getSelectionSynchronizer().removeViewer(getViewer());
+            
+            if(thumbnail != null)
+            {
                 thumbnail.deactivate();
                 thumbnail = null;
             }
             super.dispose();
-//            LogicEditor.this.outlinePage = null;
-//            outlinePage = null;
         }
 
         @Override
@@ -474,67 +478,41 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette
             return pageBook;
         }
 
-        protected void hookOutlineViewer() {
-            getSelectionSynchronizer().addViewer(getViewer());
-        }
-
-        protected void initializeOutlineViewer() {
-            setContents(getModel());
-        }
-
-        protected void initializeOverview() {
+        protected void initOverview()
+        {
             LightweightSystem lws = new LightweightSystem(overview);
             RootEditPart rep = getGraphicalViewer().getRootEditPart();
-            if (rep instanceof ScalableFreeformRootEditPart) {
+            if(rep instanceof ScalableFreeformRootEditPart)
+            {
                 ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
                 thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
                 thumbnail.setBorder(new MarginBorder(3));
-                thumbnail.setSource(root
-                        .getLayer(LayerConstants.PRINTABLE_LAYERS));
+                thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
                 lws.setContents(thumbnail);
-                disposeListener = new DisposeListener() {
-                    @Override
-                    public void widgetDisposed(DisposeEvent e)
-                    {
-                        if (thumbnail != null) {
-                            thumbnail.deactivate();
-                            thumbnail = null;
-                        }
-                    }
-                };
-                getCanvas().addDisposeListener(disposeListener);
             }
         }
 
-        public void setContents(Object contents) {
-            getViewer().setContents(contents);
-        }
-
-        protected void showPage(int id) {
-            if (id == ID_OUTLINE) {
-                showOutlineAction.setChecked(true);
+        protected void showPage(int id)
+        {
+            if(id == ID_OUTLINE)
+            {
+                showOutlineAction .setChecked(true);
                 showOverviewAction.setChecked(false);
                 pageBook.showPage(outline);
-                if (thumbnail != null)
+                if(thumbnail != null)
                     thumbnail.setVisible(false);
-            } else if (id == ID_OVERVIEW) {
-                if (thumbnail == null)
-                    initializeOverview();
-                showOutlineAction.setChecked(false);
+            }
+            else if(id == ID_OVERVIEW)
+            {
+                if(thumbnail == null)
+                    initOverview();
+                showOutlineAction .setChecked(false);
                 showOverviewAction.setChecked(true);
                 pageBook.showPage(overview);
                 thumbnail.setVisible(true);
             }
         }
 
-        protected void unhookOutlineViewer()
-        {
-            getSelectionSynchronizer().removeViewer(getViewer());
-            if(disposeListener != null && 
-               getCanvas()     != null &&
-               !getCanvas().isDisposed())
-                getCanvas().removeDisposeListener(disposeListener);
-        }
     }
 	
 	protected FigureCanvas getCanvas() {
