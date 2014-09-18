@@ -57,8 +57,7 @@ public abstract class Shape extends ModelBase
             new TextPropertyDescriptor (WIDTH_PROP,  "Width"),
             new TextPropertyDescriptor (HEIGHT_PROP, "Height"),
             new TextPropertyDescriptor (NAME_PROP,   "Name"),
-            new ColorPropertyDescriptor(COLOR_PROP,  "Color"),
-            new TextPropertyDescriptor("Test",  "Test"),
+            new ColorPropertyDescriptor(COLOR_PROP,  "Color")
         };
         
         // use a custom cell editor validator for all four array entries
@@ -160,8 +159,6 @@ public abstract class Shape extends ModelBase
             return getName();
         if(COLOR_PROP.equals(id))
             return getColor();
-        if(((String)id).equals("Test"))
-            return "Test";
         return super.getPropertyValue(id);
     }
     
