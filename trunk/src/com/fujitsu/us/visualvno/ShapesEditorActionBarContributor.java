@@ -1,12 +1,17 @@
 package com.fujitsu.us.visualvno;
 
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
-
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
+import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 
 /**
  * Contributes actions to a toolbar. 
@@ -24,6 +29,8 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor
 		addRetargetAction(new DeleteRetargetAction());
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
+		addRetargetAction(new ZoomInRetargetAction());
+        addRetargetAction(new ZoomOutRetargetAction());
 	}
 
 	/**
@@ -34,6 +41,9 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor
 	{
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
+		
+        toolBarManager.add(getAction(GEFActionConstants.ZOOM_IN));
+        toolBarManager.add(getAction(GEFActionConstants.ZOOM_OUT));
 	}
 
 	@Override

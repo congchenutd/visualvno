@@ -12,7 +12,7 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 /**
  * Provides context menu actions for the ShapesEditor.
  */
-class ShapesEditorContextMenuProvider extends ContextMenuProvider
+public class ShapesEditorContextMenuProvider extends ContextMenuProvider
 {
 	private final ActionRegistry actionRegistry;
 
