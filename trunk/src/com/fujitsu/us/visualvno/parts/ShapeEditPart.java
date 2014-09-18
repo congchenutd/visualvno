@@ -10,6 +10,7 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
@@ -17,11 +18,13 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.model.Connection;
@@ -31,6 +34,8 @@ import com.fujitsu.us.visualvno.model.Host;
 import com.fujitsu.us.visualvno.model.Shape;
 import com.fujitsu.us.visualvno.model.commands.ConnectionCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ConnectionReconnectCommand;
+import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
+import com.fujitsu.us.visualvno.policies.ShapeRenameEditPolicy;
 import com.fujitsu.us.visualvno.views.LabeledFigureAdapter;
 
 /**
@@ -70,7 +75,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     protected void createEditPolicies()
     {
         // allow removal of the associated model element
-        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());
+        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeRemovalEditPolicy());
 
         // allow the creation of connections and
         // the reconnection of connections between Shape instances
@@ -114,15 +119,36 @@ class ShapeEditPart extends AbstractGraphicalEditPart
                 return cmd;
             }
         });
+        
+        installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+                          new ShapeRenameEditPolicy());
     }
 
     @Override
     protected IFigure createFigure()
     {
-        IFigure f = createFigureForModel();
-        f.setOpaque(true);
-        f.setBackgroundColor(ColorConstants.green);
-        return f;
+        IFigure figure = createFigureForModel();
+        figure.setOpaque(true);
+        figure.setBackgroundColor(ColorConstants.green);
+        return figure;
+    }
+    
+    @Override
+    public void performRequest(Request req)
+    {
+        if(req.getType() == RequestConstants.REQ_OPEN)
+            performDirectEditing();
+    }
+
+    private void performDirectEditing()
+    {
+        Label label = ((LabeledFigureAdapter)getFigure()).getLabel();
+        ShapeDirectEditManager manager 
+            = new ShapeDirectEditManager(this, 
+                                         TextCellEditor.class, 
+                                         new ShapeCellEditorLocator(label), 
+                                         label);
+        manager.show();
     }
 
     /**
@@ -132,13 +158,10 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     private IFigure createFigureForModel()
     {
         if(getModel() instanceof Switch)
-//            return new Ellipse();
             return new LabeledFigureAdapter("Text", new Ellipse());
         else if(getModel() instanceof Host)
             return new LabeledFigureAdapter("Text", new RectangleFigure());
-//            return new RectangleFigure();
         else
-            // if Shapes gets extended the conditions above must be updated
             throw new IllegalArgumentException();
     }
 
@@ -151,7 +174,6 @@ class ShapeEditPart extends AbstractGraphicalEditPart
             else if(getModel() instanceof Host)
                 anchor = new ChopboxAnchor(getFigure());
             else
-                // if Shapes gets extended the conditions above must be updated
                 throw new IllegalArgumentException("unexpected model");
         }
         return anchor;
@@ -188,19 +210,15 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(PropertyChangeEvent e)
     {
-        String prop = evt.getPropertyName();
-        if(Shape.SIZE_PROP    .equals(prop) ||
-           Shape.LOCATION_PROP.equals(prop) ||
-           Shape.NAME_PROP    .equals(prop) ||
-           Shape.COLOR_PROP   .equals(prop)) {
-            refreshVisuals();
-        }
-        else {
+        String prop = e.getPropertyName();
+        if(Shape.SOURCE_PROP.equals(prop))
             refreshSourceConnections();
+        else if(Shape.TARGET_PROP.equals(prop))
             refreshTargetConnections();
-        }
+        else
+            refreshVisuals();
     }
 
     @Override

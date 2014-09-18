@@ -20,45 +20,65 @@ import com.fujitsu.us.visualvno.model.Host;
 /**
  * Utility class that can create a GEF Palette.
  */
-final class ShapesEditorPaletteFactory
+public class ShapesEditorPaletteFactory
 {
-	/** Create the "Shapes" drawer. */
+    /**
+     * Creates the PaletteRoot and adds all palette elements.
+     */
+    static PaletteRoot createPalette()
+    {
+        PaletteRoot palette = new PaletteRoot();
+        palette.add(createToolsGroup(palette));
+        palette.add(createShapesDrawer());
+        return palette;
+    }
+    
+	/** Create the "Elements" drawer. */
 	private static PaletteContainer createShapesDrawer()
 	{
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Elements");
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
-			    "Switch",
-				"Create a Switch",
-				Switch.class,
-				new SimpleFactory(Switch.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   Switch.imageFileSmall),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   Switch.imageFileBig)));
+		    "Switch",
+			"Create a Switch",
+			Switch.class,
+			new SimpleFactory(Switch.class),
+			ImageDescriptor.createFromFile(ShapesPlugin.class,
+										   Switch.imageFileSmall),
+			ImageDescriptor.createFromFile(ShapesPlugin.class,
+										   Switch.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
-				"Host",
-				"Create a Host", 
-				Host.class, 
-				new SimpleFactory(Host.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   Host.imageFileSmall), 
-				ImageDescriptor.createFromFile(ShapesPlugin.class, 
-											   Host.imageFileBig)));
+			"Host",
+			"Create a Host", 
+			Host.class, 
+			new SimpleFactory(Host.class),
+			ImageDescriptor.createFromFile(ShapesPlugin.class,
+										   Host.imageFileSmall), 
+			ImageDescriptor.createFromFile(ShapesPlugin.class, 
+										   Host.imageFileBig)));
+		
+        componentsDrawer.add(new ConnectionCreationToolEntry(
+            "Link",
+            "Create a Link",
+            new CreationFactory()
+            {
+                @Override
+                public Object getNewObject() {
+                    return null;
+                }
+
+                @Override
+                public Object getObjectType() {
+                    return Connection.SOLID_CONNECTION;
+                }
+            },
+            ImageDescriptor.createFromFile(ShapesPlugin.class,
+                                           Connection.imageFileSmall),
+            ImageDescriptor.createFromFile(ShapesPlugin.class,
+                                           Connection.imageFileBig)));
 
 		return componentsDrawer;
-	}
-
-	/**
-	 * Creates the PaletteRoot and adds all palette elements.
-	 */
-	static PaletteRoot createPalette()
-	{
-		PaletteRoot palette = new PaletteRoot();
-		palette.add(createToolsGroup(palette));
-		palette.add(createShapesDrawer());
-		return palette;
 	}
 
 	/** Create the "Tools" group. */
@@ -74,29 +94,6 @@ final class ShapesEditorPaletteFactory
 		// Add a marquee tool to the group
 		toolbar.add(new MarqueeToolEntry());
 
-		// Add a connection tool
-		toolbar.add(
-			new ConnectionCreationToolEntry(
-				"Link",
-				"Create a Link",
-				new CreationFactory()
-				{
-					@Override
-					public Object getNewObject() {
-						return null;
-					}
-
-					@Override
-					public Object getObjectType() {
-						return Connection.SOLID_CONNECTION;
-					}
-				},
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   Connection.imageFileSmall),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-											   Connection.imageFileBig)
-			)
-		);
 		return toolbar;
 	}
 

@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno.parts;
+package com.fujitsu.us.visualvno.policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
@@ -11,7 +11,7 @@ import com.fujitsu.us.visualvno.model.commands.ShapeDeleteCommand;
 /**
  * This edit policy enables the removal of a Shape from its container.
  */
-class ShapeComponentEditPolicy extends ComponentEditPolicy
+public class ShapeRemovalEditPolicy extends ComponentEditPolicy
 {
     @Override
     protected Command createDeleteCommand(GroupRequest deleteRequest)

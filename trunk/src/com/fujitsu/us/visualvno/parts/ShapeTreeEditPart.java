@@ -9,6 +9,7 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.Shape;
+import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
 
 /**
  * TreeEditPart used for Shape instances.
@@ -34,7 +35,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
     protected void createEditPolicies()
     {
         // allow removal of the associated model element
-        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());
+        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeRemovalEditPolicy());
     }
 
     @Override
