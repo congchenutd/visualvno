@@ -27,6 +27,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
+import com.fujitsu.us.visualvno.figures.LabeledFigureAdapter;
 import com.fujitsu.us.visualvno.model.Connection;
 import com.fujitsu.us.visualvno.model.Switch;
 import com.fujitsu.us.visualvno.model.ModelBase;
@@ -36,7 +37,6 @@ import com.fujitsu.us.visualvno.model.commands.ConnectionCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ConnectionReconnectCommand;
 import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
 import com.fujitsu.us.visualvno.policies.ShapeRenameEditPolicy;
-import com.fujitsu.us.visualvno.views.LabeledFigureAdapter;
 
 /**
  * EditPart used for Shape instances
@@ -134,15 +134,15 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     }
     
     @Override
-    public void performRequest(Request req)
-    {
+    public void performRequest(Request req) {
         if(req.getType() == RequestConstants.REQ_OPEN)
             performDirectEditing();
     }
 
+    // TODO: how to call this automatically after a new figure is created?
     private void performDirectEditing()
     {
-        Label label = ((LabeledFigureAdapter)getFigure()).getLabel();
+        Label label = ((LabeledFigureAdapter) getFigure()).getLabel();
         ShapeDirectEditManager manager 
             = new ShapeDirectEditManager(this, 
                                          TextCellEditor.class, 

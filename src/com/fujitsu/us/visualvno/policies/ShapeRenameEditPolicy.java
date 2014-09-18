@@ -4,9 +4,9 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
 
+import com.fujitsu.us.visualvno.figures.LabeledFigureAdapter;
 import com.fujitsu.us.visualvno.model.Shape;
 import com.fujitsu.us.visualvno.model.commands.ShapeRenameCommand;
-import com.fujitsu.us.visualvno.views.LabeledFigureAdapter;
 
 public class ShapeRenameEditPolicy extends DirectEditPolicy
 {

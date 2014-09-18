@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno;
+package com.fujitsu.us.visualvno.ui;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -72,6 +72,7 @@ import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
+import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.Diagram;
 import com.fujitsu.us.visualvno.parts.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.ShapesTreeEditPartFactory;
@@ -110,7 +111,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		viewer.setKeyHandler     (new GraphicalViewerKeyHandler(viewer));
 
 		// configure the context menu provider
-		ContextMenuProvider menuProvider = new ShapesEditorContextMenuProvider(
+		ContextMenuProvider menuProvider = new VNOEditorContextMenuProvider(
 		                                           viewer, getActionRegistry());
 		viewer.setContextMenu(menuProvider);
 		
@@ -272,7 +273,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 	protected PaletteRoot getPaletteRoot()
 	{
 		if(PALETTE_MODEL == null)
-			PALETTE_MODEL = ShapesEditorPaletteFactory.createPalette();
+			PALETTE_MODEL = VNOEditorPaletteFactory.createPalette();
 		return PALETTE_MODEL;
 	}
 
@@ -396,7 +397,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             
             // context menu
             ContextMenuProvider menuProvider 
-                = new ShapesEditorContextMenuProvider(getViewer(),
+                = new VNOEditorContextMenuProvider(getViewer(),
                                                       getActionRegistry());
             getViewer().setContextMenu(menuProvider);
             getSite().registerContextMenu("com.fujitsu.us.outline.contextmenu",
@@ -416,7 +417,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
                 }
             };
             showOutlineAction.setImageDescriptor(
-                 ImageDescriptor.createFromFile(ShapesPlugin.class, 
+                 ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
                                                 "icons/outline.gif"));
             showOutlineAction.setToolTipText("Show outline");
             tbm.add(showOutlineAction);
@@ -428,7 +429,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
                 }
             };
             showOverviewAction.setImageDescriptor(
-                  ImageDescriptor.createFromFile(ShapesPlugin.class, 
+                  ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
                                                  "icons/overview.gif"));
             showOverviewAction.setToolTipText("Show thumbnail");
             tbm.add(showOverviewAction);

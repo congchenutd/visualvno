@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno;
+package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -17,7 +17,7 @@ import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
  * Contributes actions to a toolbar. 
  * Tied to the editor in the definition of editor-extension (see plugin.xml).
  */
-public class ShapesEditorActionBarContributor extends ActionBarContributor
+public class VNOEditorActionBarContributor extends ActionBarContributor
 {
 
 	/**

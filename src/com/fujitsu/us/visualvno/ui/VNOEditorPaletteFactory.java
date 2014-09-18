@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno;
+package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -13,6 +13,7 @@ import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 
+import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.Connection;
 import com.fujitsu.us.visualvno.model.Switch;
 import com.fujitsu.us.visualvno.model.Host;
@@ -20,7 +21,7 @@ import com.fujitsu.us.visualvno.model.Host;
 /**
  * Utility class that can create a GEF Palette.
  */
-public class ShapesEditorPaletteFactory
+public class VNOEditorPaletteFactory
 {
     /**
      * Creates the PaletteRoot and adds all palette elements.
@@ -43,9 +44,9 @@ public class ShapesEditorPaletteFactory
 			"Create a Switch",
 			Switch.class,
 			new SimpleFactory(Switch.class),
-			ImageDescriptor.createFromFile(ShapesPlugin.class,
+			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
 										   Switch.imageFileSmall),
-			ImageDescriptor.createFromFile(ShapesPlugin.class,
+			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
 										   Switch.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
@@ -53,9 +54,9 @@ public class ShapesEditorPaletteFactory
 			"Create a Host", 
 			Host.class, 
 			new SimpleFactory(Host.class),
-			ImageDescriptor.createFromFile(ShapesPlugin.class,
+			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
 										   Host.imageFileSmall), 
-			ImageDescriptor.createFromFile(ShapesPlugin.class, 
+			ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
 										   Host.imageFileBig)));
 		
         componentsDrawer.add(new ConnectionCreationToolEntry(
@@ -73,9 +74,9 @@ public class ShapesEditorPaletteFactory
                     return Connection.SOLID_CONNECTION;
                 }
             },
-            ImageDescriptor.createFromFile(ShapesPlugin.class,
+            ImageDescriptor.createFromFile(VisualVNOPlugin.class,
                                            Connection.imageFileSmall),
-            ImageDescriptor.createFromFile(ShapesPlugin.class,
+            ImageDescriptor.createFromFile(VisualVNOPlugin.class,
                                            Connection.imageFileBig)));
 
 		return componentsDrawer;
@@ -97,6 +98,6 @@ public class ShapesEditorPaletteFactory
 		return toolbar;
 	}
 
-	private ShapesEditorPaletteFactory() {}
+	private VNOEditorPaletteFactory() {}
 
 }

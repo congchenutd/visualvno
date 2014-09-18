@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno;
+package com.fujitsu.us.visualvno.ui;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,11 +23,11 @@ import com.fujitsu.us.visualvno.model.Diagram;
  * Create a new .vno file.
  * Those files can be used with the Editor (see plugin.xml).
  */
-public class ShapesCreationWizard extends Wizard implements INewWizard
+public class NewVNODiagramWizard extends Wizard implements INewWizard
 {
 
-	private static int	 fileCount = 1;
-	private CreationPage page;
+	private static int fileCount = 1;
+	private NewVNODiagramPage page;
 
 	@Override
 	public void addPages() {
@@ -36,7 +36,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		page = new CreationPage(workbench, selection);
+		page = new NewVNODiagramPage(workbench, selection);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 	/**
 	 * This WizardPage can create an empty .vno file for the Editor.
 	 */
-	private class CreationPage extends WizardNewFileCreationPage
+	private class NewVNODiagramPage extends WizardNewFileCreationPage
 	{
 		private static final String	DEFAULT_EXTENSION = ".vno";
 		private final IWorkbench	workbench;
@@ -58,12 +58,11 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 		 * @param workbench	the current workbench
 		 * @param selection	the current object selection
 		 */
-		CreationPage(IWorkbench workbench, IStructuredSelection selection)
+		NewVNODiagramPage(IWorkbench workbench, IStructuredSelection selection)
 		{
 			super("VNOCreationPage", selection);
 			this.workbench = workbench;
 			setTitle      ("Create a new " + DEFAULT_EXTENSION + " file");
-			setDescription("Create a new " + DEFAULT_EXTENSION + " file");
 		}
 
 		@Override
@@ -92,8 +91,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard
 			IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
 			if(newFile != null && page != null)
 			{
-				try
-				{
+				try	{
 					IDE.openEditor(page, newFile, true);
 				}
 				catch(PartInitException e)
