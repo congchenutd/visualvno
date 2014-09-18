@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno;
+package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -12,7 +12,7 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 /**
  * Provides context menu actions for the ShapesEditor.
  */
-public class ShapesEditorContextMenuProvider extends ContextMenuProvider
+public class VNOEditorContextMenuProvider extends ContextMenuProvider
 {
 	private final ActionRegistry actionRegistry;
 
@@ -20,7 +20,7 @@ public class ShapesEditorContextMenuProvider extends ContextMenuProvider
 	 * @param viewer	the editor's graphical viewer
 	 * @param registry	the editor's action registry
 	 */
-	public ShapesEditorContextMenuProvider(EditPartViewer viewer, 
+	public VNOEditorContextMenuProvider(EditPartViewer viewer, 
 										   ActionRegistry registry)
 	{
 		super(viewer);

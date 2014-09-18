@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno.views;
+package com.fujitsu.us.visualvno.figures;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;

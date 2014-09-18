@@ -16,7 +16,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
-import com.fujitsu.us.visualvno.ShapesPlugin;
+import com.fujitsu.us.visualvno.VisualVNOPlugin;
 
 /**
  * Abstract base of a shape
@@ -285,7 +285,7 @@ public abstract class Shape extends ModelBase
      */
     protected static Image createImage(String fileName)
     {
-        InputStream stream = ShapesPlugin.class.getResourceAsStream(fileName);
+        InputStream stream = VisualVNOPlugin.class.getResourceAsStream(fileName);
         Image image = new Image(null, stream);
         try {
             stream.close();

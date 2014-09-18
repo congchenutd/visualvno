@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Visual VNO
 Bundle-SymbolicName: VisualVNO;singleton:=true
 Bundle-Version: 0.0
-Bundle-Activator: com.fujitsu.us.visualvno.ShapesPlugin
+Bundle-Activator: com.fujitsu.us.visualvno.VisualVNOPlugin
 Bundle-Vendor: FLA
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.gef;bundle-version="[3.5.0,4.0.0)",
