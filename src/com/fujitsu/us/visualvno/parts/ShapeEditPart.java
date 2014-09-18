@@ -41,8 +41,8 @@ import com.fujitsu.us.visualvno.policies.ShapeRenameEditPolicy;
 /**
  * EditPart used for Shape instances
  */
-class ShapeEditPart extends AbstractGraphicalEditPart 
-                    implements PropertyChangeListener, NodeEditPart
+public class ShapeEditPart extends AbstractGraphicalEditPart 
+                           implements PropertyChangeListener, NodeEditPart
 {
 
     private ConnectionAnchor anchor;
@@ -75,11 +75,13 @@ class ShapeEditPart extends AbstractGraphicalEditPart
     protected void createEditPolicies()
     {
         // allow removal of the associated model element
-        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeRemovalEditPolicy());
+        installEditPolicy(EditPolicy.COMPONENT_ROLE, 
+                          new ShapeRemovalEditPolicy());
 
         // allow the creation of connections and
         // the reconnection of connections between Shape instances
-        installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new GraphicalNodeEditPolicy()
+        installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, 
+                          new GraphicalNodeEditPolicy()
         {
             @Override
             protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
@@ -120,6 +122,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart
             }
         });
         
+        // double click to edit the label
         installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
                           new ShapeRenameEditPolicy());
     }
