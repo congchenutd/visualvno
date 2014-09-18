@@ -3,6 +3,7 @@ package com.fujitsu.us.visualvno.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.EditPolicy;
@@ -61,14 +62,17 @@ class ConnectionEditPart extends AbstractConnectionEditPart
                 return new ConnectionDeleteCommand(getCastedModel());
             }
         });
+        
+//        installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, 
+//                          new ConnectionEndpointEditPolicy());
     }
 
     @Override
     protected IFigure createFigure()
     {
         PolylineConnection connection = (PolylineConnection) super.createFigure();
-//        connection.setTargetDecoration(new PolygonDecoration());
         connection.setLineStyle(getCastedModel().getLineStyle());
+        connection.setConnectionRouter(new BendpointConnectionRouter());
         return connection;
     }
 

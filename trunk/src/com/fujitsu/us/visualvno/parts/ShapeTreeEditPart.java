@@ -15,7 +15,8 @@ import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
  * TreeEditPart used for Shape instances.
  * This is used in the Outline View of the ShapesEditor.
  */
-class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeListener
+class ShapeTreeEditPart extends AbstractTreeEditPart 
+                        implements PropertyChangeListener
 {
     ShapeTreeEditPart(Shape model) {
         super(model);
