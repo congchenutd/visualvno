@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.figures.LabeledShapeAdapter;
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.HostModel;
@@ -152,12 +152,12 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     }
     
     @Override
-    protected List<ConnectionModel> getModelSourceConnections() {
+    protected List<LinkModel> getModelSourceConnections() {
         return getCastedModel().getSourceConnections();
     }
 
     @Override
-    protected List<ConnectionModel> getModelTargetConnections() {
+    protected List<LinkModel> getModelTargetConnections() {
         return getCastedModel().getTargetConnections();
     }
 

@@ -5,10 +5,10 @@ import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.commands.ConnectionCreateCommand;
-import com.fujitsu.us.visualvno.model.commands.ConnectionReconnectCommand;
+import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
+import com.fujitsu.us.visualvno.model.commands.LinkReconnectCommand;
 
 /**
  * EditPolicy for creating and reconnecting connections
@@ -19,8 +19,8 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
     {
-        ConnectionCreateCommand command 
-            = (ConnectionCreateCommand) request.getStartCommand();
+        LinkCreateCommand command 
+            = (LinkCreateCommand) request.getStartCommand();
         command.setTarget((ShapeModel) getHost().getModel());
         return command;
     }
@@ -30,7 +30,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     {
         ShapeModel source = (ShapeModel) getHost().getModel();
         int style = ((Integer) request.getNewObjectType()).intValue();
-        ConnectionCreateCommand command = new ConnectionCreateCommand(source, 
+        LinkCreateCommand command = new LinkCreateCommand(source, 
                                                                       style);
         request.setStartCommand(command);
         return command;
@@ -39,11 +39,11 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getReconnectSourceCommand(ReconnectRequest request)
     {
-        ConnectionModel connection 
-            = (ConnectionModel) request.getConnectionEditPart().getModel();
+        LinkModel connection 
+            = (LinkModel) request.getConnectionEditPart().getModel();
         ShapeModel newSource = (ShapeModel) getHost().getModel();
-        ConnectionReconnectCommand command 
-            = new ConnectionReconnectCommand(connection);
+        LinkReconnectCommand command 
+            = new LinkReconnectCommand(connection);
         command.setNewSource(newSource);
         return command;
     }
@@ -51,11 +51,11 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getReconnectTargetCommand(ReconnectRequest request)
     {
-        ConnectionModel connection 
-            = (ConnectionModel) request.getConnectionEditPart().getModel();
+        LinkModel connection 
+            = (LinkModel) request.getConnectionEditPart().getModel();
         ShapeModel newTarget = (ShapeModel) getHost().getModel();
-        ConnectionReconnectCommand command 
-            = new ConnectionReconnectCommand(connection);
+        LinkReconnectCommand command 
+            = new LinkReconnectCommand(connection);
         command.setNewTarget(newTarget);
         return command;
     }

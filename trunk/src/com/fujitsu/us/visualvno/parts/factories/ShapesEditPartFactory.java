@@ -3,10 +3,10 @@ package com.fujitsu.us.visualvno.parts.factories;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.parts.ConnectionEditPart;
+import com.fujitsu.us.visualvno.parts.LinkEditPart;
 import com.fujitsu.us.visualvno.parts.DiagramEditPart;
 import com.fujitsu.us.visualvno.parts.ShapeEditPart;
 
@@ -32,8 +32,8 @@ public class ShapesEditPartFactory implements EditPartFactory
             return new DiagramEditPart();
         if(modelElement instanceof ShapeModel)
             return new ShapeEditPart();
-        if(modelElement instanceof ConnectionModel)
-            return new ConnectionEditPart();
+        if(modelElement instanceof LinkModel)
+            return new LinkEditPart();
         throw new RuntimeException(
                "Can't create part for model element: " + 
                ((modelElement != null) ? modelElement.getClass().getName() 

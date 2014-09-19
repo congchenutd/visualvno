@@ -2,20 +2,20 @@ package com.fujitsu.us.visualvno.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 
 /**
- * A command to create a connection between two shapes.
+ * A command to create a Link between two shapes.
  */
-public class ConnectionCreateCommand extends Command
+public class LinkCreateCommand extends Command
 {
-    private ConnectionModel     _connection;
+    private LinkModel     _connection;
     private final int           _lineStyle;
     private final ShapeModel    _source;
     private ShapeModel          _target;
 
-    public ConnectionCreateCommand(ShapeModel source, int lineStyle)
+    public LinkCreateCommand(ShapeModel source, int lineStyle)
     {
         if(source == null)
             throw new IllegalArgumentException();
@@ -41,7 +41,7 @@ public class ConnectionCreateCommand extends Command
     @Override
     public void execute()
     {
-        _connection = new ConnectionModel(_source, _target);
+        _connection = new LinkModel(_source, _target);
         _connection.setLineStyle(_lineStyle);
     }
 

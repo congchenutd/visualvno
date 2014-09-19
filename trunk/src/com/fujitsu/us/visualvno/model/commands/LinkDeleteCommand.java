@@ -2,16 +2,16 @@ package com.fujitsu.us.visualvno.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 
 /**
- * A command to disconnect (remove) a connection from its endpoints.
+ * A command to disconnect (remove) a Link from its endpoints.
  */
-public class ConnectionDeleteCommand extends Command
+public class LinkDeleteCommand extends Command
 {
-    private final ConnectionModel _connection;
+    private final LinkModel _connection;
 
-    public ConnectionDeleteCommand(ConnectionModel connection)
+    public LinkDeleteCommand(LinkModel connection)
     {
         if(connection == null)
             throw new IllegalArgumentException();
