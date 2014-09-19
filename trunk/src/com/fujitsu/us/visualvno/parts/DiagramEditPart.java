@@ -19,7 +19,7 @@ import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.policies.ShapesXYLayoutEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapesXYLayoutEditPolicy;
 
 /**
  * EditPart for a ShapesDiagram.

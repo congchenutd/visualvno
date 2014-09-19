@@ -20,7 +20,7 @@ import com.fujitsu.us.visualvno.figures.ConnectionWithLabel;
 import com.fujitsu.us.visualvno.model.ConnectionModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.commands.ConnectionDeleteCommand;
-import com.fujitsu.us.visualvno.policies.ConnectionRenameEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ConnectionRenameEditPolicy;
 
 /**
  * Edit part for Connection model elements.

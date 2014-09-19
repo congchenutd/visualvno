@@ -9,7 +9,7 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalEditPolicy;
 
 /**
  * TreeEditPart used for Shape instances.
