@@ -44,8 +44,8 @@ public abstract class ShapeModel extends ModelBase
     private       String    _name     = new String();
     private       RGB       _color    = new RGB(0, 255, 0);
     
-    private final List<ConnectionModel> sourceConnections = new ArrayList<ConnectionModel>();
-    private final List<ConnectionModel> targetConnections = new ArrayList<ConnectionModel>();
+    private final List<LinkModel> sourceConnections = new ArrayList<LinkModel>();
+    private final List<LinkModel> targetConnections = new ArrayList<LinkModel>();
 
     // initialize the property descriptors (for those appear in the property view)
     static
@@ -96,7 +96,7 @@ public abstract class ShapeModel extends ModelBase
            });
     } // static
 
-    void addConnection(ConnectionModel connection)
+    void addConnection(LinkModel connection)
     {
         if(connection == null)
             throw new IllegalArgumentException();
@@ -113,7 +113,7 @@ public abstract class ShapeModel extends ModelBase
         }
     }
     
-    void removeConnection(ConnectionModel connection)
+    void removeConnection(LinkModel connection)
     {
         if(connection == null)
             throw new IllegalArgumentException();
@@ -252,12 +252,12 @@ public abstract class ShapeModel extends ModelBase
         firePropertyChange(COLOR_PROP, null, color);
     }
     
-    public List<ConnectionModel> getSourceConnections() {
-        return new ArrayList<ConnectionModel>(sourceConnections);
+    public List<LinkModel> getSourceConnections() {
+        return new ArrayList<LinkModel>(sourceConnections);
     }
 
-    public List<ConnectionModel> getTargetConnections() {
-        return new ArrayList<ConnectionModel>(targetConnections);
+    public List<LinkModel> getTargetConnections() {
+        return new ArrayList<LinkModel>(targetConnections);
     }
 
     /**
@@ -268,11 +268,11 @@ public abstract class ShapeModel extends ModelBase
         if(this.equals(that))
             return true;
 
-        for(Iterator<ConnectionModel> it = getSourceConnections().iterator(); it.hasNext();)
+        for(Iterator<LinkModel> it = getSourceConnections().iterator(); it.hasNext();)
             if(it.next().getTarget().equals(that))
                 return true;
         
-        for(Iterator<ConnectionModel> it = getTargetConnections().iterator(); it.hasNext();)
+        for(Iterator<LinkModel> it = getTargetConnections().iterator(); it.hasNext();)
             if(it.next().getSource().equals(that))
                 return true;
         

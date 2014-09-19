@@ -14,7 +14,7 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.HostModel;
 
@@ -71,13 +71,13 @@ public class VNOEditorPaletteFactory
 
                 @Override
                 public Object getObjectType() {
-                    return ConnectionModel.SOLID_CONNECTION;
+                    return LinkModel.SOLID_CONNECTION;
                 }
             },
             ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           ConnectionModel.imageFileSmall),
+                                           LinkModel.imageFileSmall),
             ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           ConnectionModel.imageFileBig)));
+                                           LinkModel.imageFileBig)));
 
 		return componentsDrawer;
 	}

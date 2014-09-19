@@ -5,9 +5,9 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.draw2d.Graphics;
 
 /**
- * A connection between two distinct shapes.
+ * A Link between two distinct shapes.
  */
-public class ConnectionModel extends ModelBase
+public class LinkModel extends ModelBase
 {
     public static final String imageFileSmall = "icons/Link.png";
 	public static final String imageFileBig   = "icons/Link.png";
@@ -33,7 +33,7 @@ public class ConnectionModel extends ModelBase
         };
     }
 
-    public ConnectionModel(ShapeModel source, ShapeModel target) {
+    public LinkModel(ShapeModel source, ShapeModel target) {
         reconnect(source, target);
     }
     

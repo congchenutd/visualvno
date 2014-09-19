@@ -12,21 +12,21 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
-import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import com.fujitsu.us.visualvno.figures.ConnectionWithLabel;
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.commands.ConnectionDeleteCommand;
-import com.fujitsu.us.visualvno.parts.policies.ConnectionRenameEditPolicy;
+import com.fujitsu.us.visualvno.model.commands.LinkDeleteCommand;
+import com.fujitsu.us.visualvno.parts.policies.LinkEndpointEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.LinkRenameEditPolicy;
 
 /**
- * Edit part for Connection model elements.
+ * Edit part for LinkModel
  */
-public class ConnectionEditPart extends AbstractConnectionEditPart
-                                implements PropertyChangeListener
+public class LinkEditPart extends AbstractConnectionEditPart
+                          implements PropertyChangeListener
 {
     @Override
     public void activate()
@@ -48,8 +48,8 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
         }
     }
 
-    private ConnectionModel getCastedModel() {
-        return (ConnectionModel) getModel();
+    private LinkModel getCastedModel() {
+        return (LinkModel) getModel();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
     {
         // show a feedback when selected by the user.
         installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, 
-                          new ConnectionEndpointEditPolicy());
+                          new LinkEndpointEditPolicy());
 
         // Allows the removal of the connection
         installEditPolicy(EditPolicy.CONNECTION_ROLE, 
@@ -65,20 +65,20 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
         {
             @Override
             protected Command getDeleteCommand(GroupRequest request) {
-                return new ConnectionDeleteCommand(getCastedModel());
+                return new LinkDeleteCommand(getCastedModel());
             }
         });
         
         // double click to edit the label
         installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-                          new ConnectionRenameEditPolicy());
+                          new LinkRenameEditPolicy());
     }
 
     @Override
     protected IFigure createFigure()
     {
         ConnectionWithLabel connection = new ConnectionWithLabel();
-//        connection.setLineStyle(getCastedModel().getLineStyle());
+        connection.setLineStyle(getCastedModel().getLineStyle());
         connection.setConnectionRouter(new BendpointConnectionRouter());
         return connection;
     }
@@ -108,15 +108,15 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
     public void propertyChange(PropertyChangeEvent event)
     {
         String property = event.getPropertyName();
-        if(ConnectionModel.LINESTYLE_PROP.equals(property) ||
-           ConnectionModel.NAME_PROP     .equals(property))
+        if(LinkModel.LINESTYLE_PROP.equals(property) ||
+           LinkModel.NAME_PROP     .equals(property))
             refreshVisuals();
     }
     
     @Override
     protected void refreshVisuals()
     {
-        ConnectionModel model = getCastedModel();
+        LinkModel model = getCastedModel();
         ConnectionWithLabel connection = (ConnectionWithLabel) getFigure();
         connection.setLineStyle(model.getLineStyle());
         connection.setText     (model.getName());

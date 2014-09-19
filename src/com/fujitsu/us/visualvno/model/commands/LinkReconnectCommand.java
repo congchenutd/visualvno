@@ -2,22 +2,22 @@ package com.fujitsu.us.visualvno.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 
 /**
- * A command to reconnect a connection to a different start point or end point.
+ * A command to reconnect a Link to a different start point or end point.
  */
-public class ConnectionReconnectCommand extends Command
+public class LinkReconnectCommand extends Command
 {
 
-    private final ConnectionModel   _connection;
+    private final LinkModel   _connection;
     private final ShapeModel        _oldSource;
     private final ShapeModel        _oldTarget;
     private       ShapeModel        _newSource;
     private       ShapeModel        _newTarget;
 
-    public ConnectionReconnectCommand(ConnectionModel connection)
+    public LinkReconnectCommand(LinkModel connection)
     {
         if(connection == null)
             throw new IllegalArgumentException();

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 
@@ -16,8 +16,8 @@ public class ShapeDeleteCommand extends Command
 {
     private final ShapeModel        _toBeDeleted;
     private final DiagramModel      _parent;
-    private List<ConnectionModel>   _sourceConnections;
-    private List<ConnectionModel>   _targetConnections;
+    private List<LinkModel>   _sourceConnections;
+    private List<LinkModel>   _targetConnections;
     private boolean                 _wasRemoved;
 
     public ShapeDeleteCommand(DiagramModel parent, ShapeModel toBeDeleted)
@@ -30,13 +30,13 @@ public class ShapeDeleteCommand extends Command
         _toBeDeleted    = toBeDeleted;
     }
 
-    private void addConnections(List<ConnectionModel> connections) {
-        for(Iterator<ConnectionModel> iter = connections.iterator(); iter.hasNext();)
+    private void addConnections(List<LinkModel> connections) {
+        for(Iterator<LinkModel> iter = connections.iterator(); iter.hasNext();)
             iter.next().reconnect();
     }
     
-    private void removeConnections(List<ConnectionModel> connections) {
-        for(Iterator<ConnectionModel> iter = connections.iterator(); iter.hasNext();)
+    private void removeConnections(List<LinkModel> connections) {
+        for(Iterator<LinkModel> iter = connections.iterator(); iter.hasNext();)
             iter.next().disconnect();
     }
 
