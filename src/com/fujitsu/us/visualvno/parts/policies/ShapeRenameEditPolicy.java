@@ -4,7 +4,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
 
-import com.fujitsu.us.visualvno.figures.LabeledFigureAdapter;
+import com.fujitsu.us.visualvno.figures.LabeledShapeAdapter;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.commands.ShapeRenameCommand;
 
@@ -26,6 +26,6 @@ public class ShapeRenameEditPolicy extends DirectEditPolicy
     protected void showCurrentEditValue(DirectEditRequest request)
     {
         String value = (String) request.getCellEditor().getValue();
-        ((LabeledFigureAdapter) getHostFigure()).setText(value);
+        ((LabeledShapeAdapter) getHostFigure()).setText(value);
     }
 }

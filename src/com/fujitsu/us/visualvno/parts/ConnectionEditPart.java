@@ -78,7 +78,7 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
     protected IFigure createFigure()
     {
         ConnectionWithLabel connection = new ConnectionWithLabel();
-        connection.setLineStyle(getCastedModel().getLineStyle());
+//        connection.setLineStyle(getCastedModel().getLineStyle());
         connection.setConnectionRouter(new BendpointConnectionRouter());
         return connection;
     }
