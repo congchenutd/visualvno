@@ -7,34 +7,38 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 /**
  * An elliptical shape.
  */
-public class Switch extends Shape
+public class SwitchModel extends ShapeModel
 {
-    public  static final String imageFileSmall = "icons/ellipse16.gif";
-    public  static final String imageFileBig   = "icons/ellipse24.gif";
-    private static final Image ICON = createImage(imageFileSmall);
+    public  static final String imageFileSmall  = "icons/ellipse16.gif";
+    public  static final String imageFileBig    = "icons/ellipse24.gif";
+    private static final Image  ICON            = createImage(imageFileSmall);
 
-	protected static IPropertyDescriptor[] descriptors;
+	protected static IPropertyDescriptor[] _descriptors;
 	
 	public static final String DPID_PROP = "Switch.DPID";
 	
 	static
 	{
-	    Switch.descriptors = new IPropertyDescriptor[Shape.descriptors.length + 1];
+	    // copy ShapeModel's descriptors, then add its own
+	    _descriptors = new IPropertyDescriptor[ShapeModel.descriptors.length + 1];
 	    int i;
-	    for(i = 0; i < Shape.descriptors.length; ++i)
-	        Switch.descriptors[i] = Shape.descriptors[i];
-	    Switch.descriptors[i] = new TextPropertyDescriptor(DPID_PROP, "DPID");
+	    for(i = 0; i < ShapeModel.descriptors.length; ++i)
+	        _descriptors[i] = ShapeModel.descriptors[i];
+	    _descriptors[i] = new TextPropertyDescriptor(DPID_PROP, "DPID");
 	}
 		
-	private String dpid = new String();
+	private String _dpid = new String();
 		
 	public String getDPID() {
-		return dpid;
+		return _dpid;
 	}
 	
 	public void setDPID(String dpid)
 	{
-		this.dpid = dpid;
+	    if(dpid == null)
+	        throw new IllegalArgumentException();
+	    
+		_dpid = dpid;
 		firePropertyChange(DPID_PROP, null, dpid);
 	}
 
@@ -45,7 +49,7 @@ public class Switch extends Shape
 	
 	@Override
     public IPropertyDescriptor[] getPropertyDescriptors() {
-        return Switch.descriptors;
+        return _descriptors;
     }
 	
 	@Override

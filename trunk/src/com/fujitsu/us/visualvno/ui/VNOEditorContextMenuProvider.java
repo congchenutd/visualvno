@@ -10,7 +10,7 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
- * Provides context menu actions for the ShapesEditor.
+ * Provides context menu actions for VNOEditor.
  */
 public class VNOEditorContextMenuProvider extends ContextMenuProvider
 {

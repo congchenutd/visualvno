@@ -5,23 +5,28 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.Label;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
+import org.eclipse.jface.viewers.TextCellEditor;
 
-import com.fujitsu.us.visualvno.model.Connection;
+import com.fujitsu.us.visualvno.figures.ConnectionWithLabel;
+import com.fujitsu.us.visualvno.model.ConnectionModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.commands.ConnectionDeleteCommand;
+import com.fujitsu.us.visualvno.policies.ConnectionRenameEditPolicy;
 
 /**
  * Edit part for Connection model elements.
  */
-class ConnectionEditPart extends AbstractConnectionEditPart
-                         implements PropertyChangeListener
+public class ConnectionEditPart extends AbstractConnectionEditPart
+                                implements PropertyChangeListener
 {
     @Override
     public void activate()
@@ -43,19 +48,20 @@ class ConnectionEditPart extends AbstractConnectionEditPart
         }
     }
 
-    private Connection getCastedModel() {
-        return (Connection) getModel();
+    private ConnectionModel getCastedModel() {
+        return (ConnectionModel) getModel();
     }
 
     @Override
     protected void createEditPolicies()
     {
-        // Makes the connection show a feedback, when selected by the user.
+        // show a feedback when selected by the user.
         installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, 
                           new ConnectionEndpointEditPolicy());
 
-        // Allows the removal of the connection model element
-        installEditPolicy(EditPolicy.CONNECTION_ROLE, new ConnectionEditPolicy()
+        // Allows the removal of the connection
+        installEditPolicy(EditPolicy.CONNECTION_ROLE, 
+                          new ConnectionEditPolicy()
         {
             @Override
             protected Command getDeleteCommand(GroupRequest request) {
@@ -63,19 +69,38 @@ class ConnectionEditPart extends AbstractConnectionEditPart
             }
         });
         
-//        installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, 
-//                          new ConnectionEndpointEditPolicy());
+        // double click to edit the label
+        installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+                          new ConnectionRenameEditPolicy());
     }
 
     @Override
     protected IFigure createFigure()
     {
-        PolylineConnection connection = (PolylineConnection) super.createFigure();
+        ConnectionWithLabel connection = new ConnectionWithLabel();
         connection.setLineStyle(getCastedModel().getLineStyle());
         connection.setConnectionRouter(new BendpointConnectionRouter());
         return connection;
     }
 
+    @Override
+    public void performRequest(Request req) {
+        if(req.getType() == RequestConstants.REQ_OPEN)
+            performDirectEditing();
+    }
+
+    // TODO: how to call this automatically after a new connection is created?
+    private void performDirectEditing()
+    {
+        Label label = ((ConnectionWithLabel) getFigure()).getLabel();
+        LabelDirectEditManager manager 
+            = new LabelDirectEditManager(this, 
+                                         TextCellEditor.class, 
+                                         new LabelCellEditorLocator(label), 
+                                         label);
+        manager.show();
+    }
+    
     /**
      * Reacts to property change
      */
@@ -83,8 +108,18 @@ class ConnectionEditPart extends AbstractConnectionEditPart
     public void propertyChange(PropertyChangeEvent event)
     {
         String property = event.getPropertyName();
-        if(Connection.LINESTYLE_PROP.equals(property))
-            ((PolylineConnection) getFigure()).setLineStyle(getCastedModel().getLineStyle());
+        if(ConnectionModel.LINESTYLE_PROP.equals(property) ||
+           ConnectionModel.NAME_PROP     .equals(property))
+            refreshVisuals();
+    }
+    
+    @Override
+    protected void refreshVisuals()
+    {
+        ConnectionModel model = getCastedModel();
+        ConnectionWithLabel connection = (ConnectionWithLabel) getFigure();
+        connection.setLineStyle(model.getLineStyle());
+        connection.setText     (model.getName());
     }
 
 }

@@ -8,12 +8,16 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 
-public class ShapeCellEditorLocator implements CellEditorLocator
+/**
+ * CellEditorLocator for label renaming 
+ * @author Cong Chen <Cong.Chen@us.fujitsu.com>
+ */
+public class LabelCellEditorLocator implements CellEditorLocator
 {
-    private final Label nameLabel;
+    private final Label _label;
     
-    public ShapeCellEditorLocator(Label label) {
-        this.nameLabel = label;
+    public LabelCellEditorLocator(Label label) {
+        _label = label;
     }
 
     @Override
@@ -21,8 +25,8 @@ public class ShapeCellEditorLocator implements CellEditorLocator
     {
         Text text = (Text) celleditor.getControl();
         Point pref = text.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        Rectangle rect = nameLabel.getTextBounds().getCopy();
-        nameLabel.translateToAbsolute(rect);
+        Rectangle rect = _label.getTextBounds().getCopy();
+        _label.translateToAbsolute(rect);
         text.setBounds(rect.x - 1, rect.y - 1, pref.x + 1, pref.y + 1);  
     }
 

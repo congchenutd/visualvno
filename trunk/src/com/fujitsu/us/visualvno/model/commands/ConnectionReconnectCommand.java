@@ -2,8 +2,8 @@ package com.fujitsu.us.visualvno.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.Connection;
-import com.fujitsu.us.visualvno.model.Shape;
+import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.ShapeModel;
 
 /**
  * A command to reconnect a connection to a different start point or end point.
@@ -11,90 +11,79 @@ import com.fujitsu.us.visualvno.model.Shape;
 public class ConnectionReconnectCommand extends Command
 {
 
-    /** The connection instance to reconnect. */
-    private final Connection  connection;
-    
-    private         Shape newSource;
-    private         Shape newTarget;
-    private final   Shape oldSource;
-    private final   Shape oldTarget;
+    private final ConnectionModel   _connection;
+    private final ShapeModel        _oldSource;
+    private final ShapeModel        _oldTarget;
+    private       ShapeModel        _newSource;
+    private       ShapeModel        _newTarget;
 
-    public ConnectionReconnectCommand(Connection connection)
+    public ConnectionReconnectCommand(ConnectionModel connection)
     {
         if(connection == null)
             throw new IllegalArgumentException();
         
-        this.connection = connection;
-        this.oldSource  = connection.getSource();
-        this.oldTarget  = connection.getTarget();
+        _connection = connection;
+        _oldSource  = connection.getSource();
+        _oldTarget  = connection.getTarget();
     }
 
     @Override
     public boolean canExecute()
     {
-        if(newSource != null)
-            return !newSource.connectsTo(oldTarget);
-        else if(newTarget != null)
-            return !newTarget.connectsTo(oldSource);
+        // check for existing connection
+        if(_newSource != null)
+            return !_newSource.connectsTo(_oldTarget);
+        else if(_newTarget != null)
+            return !_newTarget.connectsTo(_oldSource);
         return false;
     }
 
     /**
-     * Reconnect the connection to newSource (if setNewSource(...) was invoked before)
-     * or newTarget (if setNewTarget(...) was invoked before).
+     * Reconnect the connection to newSource 
+     * Must call setNewSource() or setNewTarget() before
      */
     @Override
     public void execute()
     {
-        if(newSource != null)
-            connection.reconnect(newSource, oldTarget);
-        else if(newTarget != null)
-            connection.reconnect(oldSource, newTarget);
+        if(_newSource != null)
+            _connection.reconnect(_newSource, _oldTarget);
+        else if(_newTarget != null)
+            _connection.reconnect(_oldSource, _newTarget);
         else
-            throw new IllegalStateException("Should not happen");
+            throw new IllegalStateException("Must call setNewSource() or setNewTarget() before");
     }
 
     /**
-     * Set a new source endpoint for this connection. When execute() is invoked,
-     * the source endpoint of the connection will be attached to the supplied
-     * Shape instance.
-     * 
-     * Note: Calling this method, deactivates reconnection of the target
-     * endpoint. A single instance of this command can only reconnect either the
-     * source or the target endpoint.
+     * Note: _newTarget will be set to null, 
+     * because _newSource and _newTarget are exclusive
      */
-    public void setNewSource(Shape connectionSource)
+    public void setNewSource(ShapeModel newSource)
     {
-        if(connectionSource == null)
+        if(newSource == null)
             throw new IllegalArgumentException();
 
         setLabel("Move connection startpoint");
-        newSource = connectionSource;
-        newTarget = null;
+        _newSource = newSource;
+        _newTarget = null;
     }
 
     /**
-     * Set a new target endpoint for this connection When execute() is invoked,
-     * the target endpoint of the connection will be attached to the supplied
-     * Shape instance.
-     *
-     * Note: Calling this method, deactivates reconnection of the source
-     * endpoint. A single instance of this command can only reconnect either the
-     * source or the target endpoint.
+     * Note: _newSource will be set to null, 
+     * because _newSource and _newTarget are exclusive
      */
-    public void setNewTarget(Shape connectionTarget)
+    public void setNewTarget(ShapeModel newTarget)
     {
-        if(connectionTarget == null)
+        if(newTarget == null)
             throw new IllegalArgumentException();
 
         setLabel("Move connection endpoint");
-        newSource = null;
-        newTarget = connectionTarget;
+        _newSource = null;
+        _newTarget = newTarget;
     }
 
     @Override
     public void undo() {
-        connection.reconnect(oldSource, oldTarget);
+        _connection.reconnect(_oldSource, _oldTarget);
     }
 
 }

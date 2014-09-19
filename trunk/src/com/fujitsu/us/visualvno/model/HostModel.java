@@ -7,47 +7,54 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 /**
  * A rectangular shape.
  */
-public class Host extends Shape
+public class HostModel extends ShapeModel
 {
-    public  static final String imageFileSmall = "icons/rectangle16.gif";
-    public  static final String imageFileBig   = "icons/rectangle24.gif";
-    private static final Image ICON = createImage(imageFileSmall);
+    public  static final String imageFileSmall  = "icons/rectangle16.gif";
+    public  static final String imageFileBig    = "icons/rectangle24.gif";
+    private static final Image  ICON            = createImage(imageFileSmall);
 
-    protected static IPropertyDescriptor[] descriptors;
+    protected static IPropertyDescriptor[] _descriptors;
     
     public static final String IP_PROP  = "Host.IP";
     public static final String MAC_PROP = "Host.MAC";
     
     static
     {
-        Host.descriptors = new IPropertyDescriptor[Shape.descriptors.length + 2];
+        // copy ShapeModel's descriptors, then add its own
+        _descriptors = new IPropertyDescriptor[ShapeModel.descriptors.length + 2];
         int i;
-        for(i = 0; i < Shape.descriptors.length; ++i)
-            Host.descriptors[i] = Shape.descriptors[i];
-        Host.descriptors[i]   = new TextPropertyDescriptor(IP_PROP,  "IP");
-        Host.descriptors[i+1] = new TextPropertyDescriptor(MAC_PROP, "MAC");
+        for(i = 0; i < ShapeModel.descriptors.length; ++i)
+            _descriptors[i] = ShapeModel.descriptors[i];
+        _descriptors[i]   = new TextPropertyDescriptor(IP_PROP,  "IP");
+        _descriptors[i+1] = new TextPropertyDescriptor(MAC_PROP, "MAC");
     }
     
-    private String ip  = new String();
-    private String mac = new String();
+    private String _ip  = new String();
+    private String _mac = new String();
     
     public String getIP() {
-        return ip;
+        return _ip;
     }
     
     public void setIP(String ip)
     {
-        this.ip = ip;
+        if(ip == null)
+            throw new IllegalArgumentException();
+        
+        _ip = ip;
         firePropertyChange(IP_PROP, null, ip);
     }
     
     public String getMAC() {
-        return mac;
+        return _mac;
     }
     
     public void setMAC(String mac)
     {
-        this.mac = mac;
+        if(mac == null)
+            throw new IllegalArgumentException();
+        
+        _mac = mac;
         firePropertyChange(MAC_PROP, null, mac);
     }
     
@@ -58,7 +65,7 @@ public class Host extends Shape
     
     @Override
     public IPropertyDescriptor[] getPropertyDescriptors() {
-        return Host.descriptors;
+        return _descriptors;
     }
     
     @Override

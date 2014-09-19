@@ -2,62 +2,56 @@ package com.fujitsu.us.visualvno.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.Connection;
-import com.fujitsu.us.visualvno.model.Shape;
+import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.ShapeModel;
 
 /**
  * A command to create a connection between two shapes.
  */
 public class ConnectionCreateCommand extends Command
 {
-    /** The connection instance. */
-    private Connection  connection;
-    
-    /** The desired line style for the connection (dashed or solid). */
-    private final int   lineStyle;
+    private ConnectionModel     _connection;
+    private final int           _lineStyle;
+    private final ShapeModel    _source;
+    private ShapeModel          _target;
 
-    /** Start endpoint for the connection. */
-    private final Shape source;
-    
-    /** Target endpoint for the connection. */
-    private Shape       target;
-
-    public ConnectionCreateCommand(Shape source, int lineStyle)
+    public ConnectionCreateCommand(ShapeModel source, int lineStyle)
     {
         if(source == null)
             throw new IllegalArgumentException();
 
         setLabel("Connection creation");
-        this.source    = source;
-        this.lineStyle = lineStyle;
+        _source    = source;
+        _lineStyle = lineStyle;
+    }
+    
+    public void setTarget(ShapeModel target)
+    {
+        if(target == null)
+            throw new IllegalArgumentException();
+        
+        _target = target;
     }
 
     @Override
     public boolean canExecute() {
-        return !source.connectsTo(target);
+        return !_source.connectsTo(_target);
     }
 
     @Override
     public void execute()
     {
-        connection = new Connection(source, target);
-        connection.setLineStyle(lineStyle);
+        _connection = new ConnectionModel(_source, _target);
+        _connection.setLineStyle(_lineStyle);
     }
 
     @Override
     public void redo() {
-        connection.reconnect();
-    }
-
-    public void setTarget(Shape target)
-    {
-        if(target == null)
-            throw new IllegalArgumentException();
-        this.target = target;
+        _connection.reconnect();
     }
 
     @Override
     public void undo() {
-        connection.disconnect();
+        _connection.disconnect();
     }
 }

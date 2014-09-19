@@ -12,31 +12,31 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class LabeledFigureAdapter extends Figure
 {
-    private final Label  label;
-    private final Figure figure;
+    private final Label  _label;
+    private final Figure _figure;
 
-    public LabeledFigureAdapter(String text, Figure figure)
+    public LabeledFigureAdapter(Figure figure)
     {
         setLayoutManager(new XYLayout());
-        this.figure = figure;
-        label = new Label(text);
-        add(figure);
-        add(label);
+        _figure = figure;
+        _label = new Label("Shape");
+        add(_figure);
+        add(_label);
     }
 
     @Override
     protected void paintFigure(Graphics graphics)
     {
         Rectangle rect = getBounds().getCopy();
-        setConstraint(figure, new Rectangle(0, 0, rect.width, rect.height));
-        setConstraint(label,  new Rectangle(0, 0, rect.width, rect.height));
+        setConstraint(_figure, new Rectangle(0, 0, rect.width, rect.height));
+        setConstraint(_label,  new Rectangle(0, 0, rect.width, rect.height));
     }
 
     public Label getLabel() {
-        return label;
+        return _label;
     }
     
     public void setText(String text) {
-        label.setText(text);
+        _label.setText(text);
     }
 }

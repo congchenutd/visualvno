@@ -11,18 +11,18 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.Diagram;
+import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.DiagramModel;
 
 /**
  * TreeEditPart for a ShapesDiagram instance. 
  * Used in the Outline View of the ShapesEditor.
  */
-class DiagramTreeEditPart extends AbstractTreeEditPart 
-                          implements PropertyChangeListener
+public class DiagramTreeEditPart extends AbstractTreeEditPart 
+                                 implements PropertyChangeListener
 {
 
-	DiagramTreeEditPart(Diagram model) {
+	public DiagramTreeEditPart(DiagramModel model) {
 		super(model);
 	}
 
@@ -46,17 +46,17 @@ class DiagramTreeEditPart extends AbstractTreeEditPart
         }
     }
     
-    private Diagram getCastedModel() {
-        return (Diagram) getModel();
+    private DiagramModel getCastedModel() {
+        return (DiagramModel) getModel();
     }
 
     @Override
     protected void createEditPolicies()
     {
         // If this editpart is the root of the viewer, disallow removal
-        if(getParent() instanceof RootEditPart) {
-            installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
-        }
+        if(getParent() instanceof RootEditPart)
+            installEditPolicy(EditPolicy.COMPONENT_ROLE, 
+                              new RootComponentEditPolicy());
     }
 
     /**
@@ -67,18 +67,18 @@ class DiagramTreeEditPart extends AbstractTreeEditPart
     }
 
     @Override
-    protected List<Shape> getModelChildren() {
+    protected List<ShapeModel> getModelChildren() {
         return getCastedModel().getChildren();
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(PropertyChangeEvent event)
     {
-        String prop = evt.getPropertyName();
-        if(Diagram.CHILD_ADDED_PROP.equals(prop))
-            addChild(createChild(evt.getNewValue()), -1);
-        else if(Diagram.CHILD_REMOVED_PROP.equals(prop))
-            removeChild(getEditPartForChild(evt.getNewValue()));
+        String property = event.getPropertyName();
+        if(DiagramModel.CHILD_ADDED_PROP.equals(property))
+            addChild(createChild(event.getNewValue()), -1);
+        else if(DiagramModel.CHILD_REMOVED_PROP.equals(property))
+            removeChild(getEditPartForChild(event.getNewValue()));
         else
             refreshVisuals();
     }

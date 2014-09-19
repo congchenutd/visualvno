@@ -14,19 +14,19 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.model.Connection;
-import com.fujitsu.us.visualvno.model.Switch;
-import com.fujitsu.us.visualvno.model.Host;
+import com.fujitsu.us.visualvno.model.ConnectionModel;
+import com.fujitsu.us.visualvno.model.SwitchModel;
+import com.fujitsu.us.visualvno.model.HostModel;
 
 /**
- * Utility class that can create a GEF Palette.
+ * Utility class that creates a GEF Palette.
  */
 public class VNOEditorPaletteFactory
 {
     /**
-     * Creates the PaletteRoot and adds all palette elements.
+     * Creates a PaletteRoot and adds all palette elements.
      */
-    static PaletteRoot createPalette()
+    public static PaletteRoot createPalette()
     {
         PaletteRoot palette = new PaletteRoot();
         palette.add(createToolsGroup(palette));
@@ -42,22 +42,22 @@ public class VNOEditorPaletteFactory
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
 		    "Switch",
 			"Create a Switch",
-			Switch.class,
-			new SimpleFactory(Switch.class),
+			SwitchModel.class,
+			new SimpleFactory(SwitchModel.class),
 			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   Switch.imageFileSmall),
+										   SwitchModel.imageFileSmall),
 			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   Switch.imageFileBig)));
+										   SwitchModel.imageFileBig)));
 
 		componentsDrawer.add(new CombinedTemplateCreationEntry(
 			"Host",
 			"Create a Host", 
-			Host.class, 
-			new SimpleFactory(Host.class),
+			HostModel.class, 
+			new SimpleFactory(HostModel.class),
 			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   Host.imageFileSmall), 
+										   HostModel.imageFileSmall), 
 			ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
-										   Host.imageFileBig)));
+										   HostModel.imageFileBig)));
 		
         componentsDrawer.add(new ConnectionCreationToolEntry(
             "Link",
@@ -71,13 +71,13 @@ public class VNOEditorPaletteFactory
 
                 @Override
                 public Object getObjectType() {
-                    return Connection.SOLID_CONNECTION;
+                    return ConnectionModel.SOLID_CONNECTION;
                 }
             },
             ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           Connection.imageFileSmall),
+                                           ConnectionModel.imageFileSmall),
             ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           Connection.imageFileBig)));
+                                           ConnectionModel.imageFileBig)));
 
 		return componentsDrawer;
 	}
