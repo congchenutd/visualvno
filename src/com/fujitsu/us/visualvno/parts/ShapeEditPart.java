@@ -29,9 +29,9 @@ import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.HostModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.policies.ShapeConnectionEditPolicy;
-import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
-import com.fujitsu.us.visualvno.policies.ShapeRenameEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRenameEditPolicy;
 
 /**
  * EditPart for all Shape instances

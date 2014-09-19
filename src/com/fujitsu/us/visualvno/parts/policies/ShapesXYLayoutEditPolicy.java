@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno.policies;
+package com.fujitsu.us.visualvno.parts.policies;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;

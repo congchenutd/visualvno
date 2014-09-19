@@ -1,4 +1,4 @@
-package com.fujitsu.us.visualvno.policies;
+package com.fujitsu.us.visualvno.parts.policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
