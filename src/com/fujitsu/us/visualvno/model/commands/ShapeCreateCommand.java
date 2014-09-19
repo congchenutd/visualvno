@@ -4,57 +4,54 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
-import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.Diagram;
+import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.DiagramModel;
 
 /**
  * A command to add a Shape to a ShapeDiagram.
  */
 public class ShapeCreateCommand extends Command
 {
+    private final ShapeModel    _newShape;
+    private final DiagramModel  _parent;
+    private final Rectangle     _bounds;
 
-    /** The new shape. */
-    private final Shape         newShape;
-    
-    /** ShapeDiagram to add to. */
-    private final Diagram parent;
-    
-    /** The bounds of the new Shape. */
-    private final Rectangle     bounds;
-
-    public ShapeCreateCommand(Shape newShape, Diagram parent, Rectangle bounds)
+    public ShapeCreateCommand(ShapeModel newShape, 
+                              DiagramModel parent, 
+                              Rectangle bounds)
     {
-        this.newShape = newShape;
-        this.parent   = parent;
-        this.bounds   = bounds;
+        _newShape = newShape;
+        _parent   = parent;
+        _bounds   = bounds;
         setLabel("Shape creation");
     }
 
     @Override
     public boolean canExecute() {
-        return newShape != null && 
-               parent   != null && 
-               bounds   != null;
+        return _newShape != null && 
+               _parent   != null && 
+               _bounds   != null;
     }
 
     @Override
     public void execute()
     {
-        newShape.setLocation(bounds.getLocation());
-        Dimension size = bounds.getSize();
+        _newShape.setLocation(_bounds.getLocation());
+        Dimension size = _bounds.getSize();
         if(size.width > 0 && size.height > 0)
-            newShape.setSize(size);
+            _newShape.setSize(size);
+        
         redo();
     }
-
+    
     @Override
     public void redo() {
-        parent.addChild(newShape);
+        _parent.addChild(_newShape);
     }
 
     @Override
     public void undo() {
-        parent.removeChild(newShape);
+        _parent.removeChild(_newShape);
     }
 
 }

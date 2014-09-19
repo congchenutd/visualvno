@@ -10,32 +10,32 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 /**
- * Abstract base for all the model elements
+ * Abstract base for all the model elements (shapes and connection)
  */
 public abstract class ModelBase implements IPropertySource, Serializable
 {
     /** An empty property descriptor. */
-    private static final IPropertyDescriptor[] EMPTY_ARRAY = new IPropertyDescriptor[0];
+    private static final IPropertyDescriptor[] EMPTY_DESCRIPTOR = new IPropertyDescriptor[0];
 
     /** A delegate to handle events */
-    private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
+    private transient PropertyChangeSupport _pcsDelegate = new PropertyChangeSupport(this);
 
     public synchronized void addPropertyChangeListener(
-                                        PropertyChangeListener listener) {
+                                    PropertyChangeListener listener) {
         if(listener != null)
-            pcsDelegate.addPropertyChangeListener(listener);
+            _pcsDelegate.addPropertyChangeListener(listener);
     }
 
     public synchronized void removePropertyChangeListener(
-                                        PropertyChangeListener listener) {
+                                    PropertyChangeListener listener) {
         if(listener != null)
-            pcsDelegate.removePropertyChangeListener(listener);
+            _pcsDelegate.removePropertyChangeListener(listener);
     }
     
     protected void firePropertyChange(String property, Object oldValue, 
                                                        Object newValue) {
-        if(pcsDelegate.hasListeners(property))
-            pcsDelegate.firePropertyChange(property, oldValue, newValue);
+        if(_pcsDelegate.hasListeners(property))
+            _pcsDelegate.firePropertyChange(property, oldValue, newValue);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class ModelBase implements IPropertySource, Serializable
      */
     @Override
     public IPropertyDescriptor[] getPropertyDescriptors() {
-        return EMPTY_ARRAY;
+        return EMPTY_DESCRIPTOR;
     }
 
     /**
@@ -80,7 +80,7 @@ public abstract class ModelBase implements IPropertySource, Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {
         in.defaultReadObject();
-        pcsDelegate = new PropertyChangeSupport(this);
+        _pcsDelegate = new PropertyChangeSupport(this);
     }
 
     @Override

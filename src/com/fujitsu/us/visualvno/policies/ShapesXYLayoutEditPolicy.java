@@ -7,17 +7,16 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
-import com.fujitsu.us.visualvno.model.Diagram;
-import com.fujitsu.us.visualvno.model.Host;
-import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.Switch;
+import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.model.HostModel;
+import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.commands.ShapeCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.ShapeSetConstraintCommand;
 import com.fujitsu.us.visualvno.parts.ShapeEditPart;
 
 /**
- * EditPolicy for the Figure used by this edit part. Children of
- * XYLayoutEditPolicy can be used in Figures with XYLayout.
+ * EditPolicy for creating, moving, and resizing shapes in a diagram
  */
 public class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy
 {
@@ -30,7 +29,7 @@ public class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy
         // return a command that can move and/or resize a Shape
         if(child      instanceof ShapeEditPart && 
            constraint instanceof Rectangle)
-            return new ShapeSetConstraintCommand((Shape) child.getModel(), 
+            return new ShapeSetConstraintCommand((ShapeModel) child.getModel(), 
                                                  request,
                                                  (Rectangle) constraint);
         return super.createChangeConstraintCommand(request, child, constraint);
@@ -45,14 +44,11 @@ public class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy
     protected Command getCreateCommand(CreateRequest request)
     {
         Object childClass = request.getNewObjectType();
-        if(childClass == Switch.class || 
-           childClass == Host.class)
-        {
-            // return a command that can add a Shape to a ShapesDiagram
-            return new ShapeCreateCommand((Shape) request.getNewObject(),
-                                          (Diagram) getHost().getModel(),
-                                          (Rectangle) getConstraintFor(request));
-        }
+        if(childClass == SwitchModel.class || 
+           childClass == HostModel.class)
+            return new ShapeCreateCommand((ShapeModel)   request.getNewObject(),
+                                          (DiagramModel) getHost().getModel(),
+                                          (Rectangle)    getConstraintFor(request));
         return null;
     }
 

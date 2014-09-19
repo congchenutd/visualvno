@@ -7,9 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.EventObject;
-import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
@@ -56,13 +54,10 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.ToggleGridAction;
-import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -73,20 +68,19 @@ import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.model.Diagram;
-import com.fujitsu.us.visualvno.parts.ShapesEditPartFactory;
-import com.fujitsu.us.visualvno.parts.ShapesTreeEditPartFactory;
+import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.parts.factories.ShapesEditPartFactory;
+import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
 
 /**
- * A graphical editor with flyout palette that can edit .vno files. The
- * binding between the .shapes file extension and this editor is done in
- * plugin.xml
+ * A graphical editor with flyout palette that can edit .vno files.
+ * The binding between ".vno" and the editor is done in plugin.xml
  */
 public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 {
 
-	/** This is the root of the editor's model. */
-	private Diagram diagram;
+	/** Root of the editor's model. */
+	private DiagramModel _diagram;
 
 	/** Palette component, holding the tools and shapes. */
 	private static PaletteRoot PALETTE_MODEL;
@@ -140,13 +134,6 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		super.commandStackChanged(event);
 	}
 
-	private void createOutputStream(OutputStream os) throws IOException
-	{
-		ObjectOutputStream oos = new ObjectOutputStream(os);
-		oos.writeObject(getModel());
-		oos.close();
-	}
-
 	@Override
 	protected PaletteViewerProvider createPaletteViewerProvider()
 	{
@@ -177,7 +164,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		{
 			@Override
 			protected CreationFactory getFactory(Object template) {
-				return new SimpleFactory((Class) template);
+				return new SimpleFactory((Class<?>) template);
 			}
 		};
 	}
@@ -221,33 +208,31 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 				ProgressMonitorDialog dlg = new ProgressMonitorDialog(shell);
 				dlg.run(false, false, 
 				        new WorkspaceModifyOperation()
+				{
+					@Override
+					public void execute(final IProgressMonitor monitor)
+					{
+						try
 						{
-							@Override
-							public void execute(final IProgressMonitor monitor)
-							{
-								try
-								{
-									ByteArrayOutputStream out = new ByteArrayOutputStream();
-									createOutputStream(out);
-									file.create(new ByteArrayInputStream(out.toByteArray()),
-																		 true, monitor);
-								}
-								catch(CoreException e) {
-									e.printStackTrace();
-								}
-								catch(IOException e) {
-									e.printStackTrace();
-								}
-							}
+							ByteArrayOutputStream out = new ByteArrayOutputStream();
+							createOutputStream(out);
+							file.create(new ByteArrayInputStream(out.toByteArray()),
+																 true, monitor);
 						}
-				);
+						catch(CoreException e) {
+							e.printStackTrace();
+						}
+						catch(IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 				
 				// set input to the new file
 				setInput(new FileEditorInput(file));
 				getCommandStack().markSaveLocation();
 			}
-			catch(InterruptedException e)
-			{
+			catch(InterruptedException e) {
 				// should not happen, since the monitor dialog is not cancelable
 				e.printStackTrace();
 			}
@@ -256,19 +241,31 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 			}
 		}
 	}
+	
+	private void createOutputStream(OutputStream os) throws IOException
+    {
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(getModel());
+        oos.close();
+    }
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public Object getAdapter(Class type)
 	{
+	    // adapt ot an OutlinePage
 		if(type == IContentOutlinePage.class)
 			return new OutlinePage(new TreeViewer());
 		return super.getAdapter(type);
 	}
 
-	Diagram getModel() {
-		return diagram;
+	public DiagramModel getModel() {
+		return _diagram;
 	}
 
+	/**
+	 * Create the palette
+	 */
 	@Override
 	protected PaletteRoot getPaletteRoot()
 	{
@@ -279,9 +276,9 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 
 	private void handleLoadException(Exception e)
 	{
-		System.err.println("** Load failed. Using default model. **");
+		System.err.println("Load failed. Using default model.");
 		e.printStackTrace();
-		diagram = new Diagram();
+		_diagram = new DiagramModel();
 	}
 
 	@Override
@@ -308,7 +305,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		{
 			IFile file = ((IFileEditorInput) input).getFile();
 			ObjectInputStream in = new ObjectInputStream(file.getContents());
-			diagram = (Diagram) in.readObject();
+			_diagram = (DiagramModel) in.readObject();
 			in.close();
 			setPartName(file.getName());
 		}
@@ -323,15 +320,18 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	
+	/**
+	 * Outline page with an outline view and an overview (thumbnail)
+	 * @author Cong Chen <Cong.Chen@us.fujitsu.com>
+	 */
 	class OutlinePage extends ContentOutlinePage
 	{
-        private PageBook    pageBook;
-        private IAction     showOutlineAction;
-        private IAction     showOverviewAction;
-        private Control     outline;
-        private Canvas      overview;
-        private Thumbnail   thumbnail;
+        private PageBook    _pageBook;
+        private IAction     _showOutlineAction;
+        private IAction     _showOverviewAction;
+        private Control     _outline;
+        private Canvas      _overview;
+        private Thumbnail   _thumbnail;
         
         static final int ID_OUTLINE     = 0;
         static final int ID_OVERVIEW    = 1;
@@ -344,28 +344,34 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         public void init(IPageSite pageSite)
         {
             super.init(pageSite);
+            
+            // hook actions to the outline view 
             ActionRegistry registry = getActionRegistry();
             IActionBars bars = pageSite.getActionBars();
+            
             String id = ActionFactory.UNDO.getId();
             bars.setGlobalActionHandler(id, registry.getAction(id));
+            
             id = ActionFactory.REDO.getId();
             bars.setGlobalActionHandler(id, registry.getAction(id));
+            
             id = ActionFactory.DELETE.getId();
             bars.setGlobalActionHandler(id, registry.getAction(id));
+            
             bars.updateActionBars(); 
         }
 
         @Override
         public void createControl(Composite parent)
         {
-            pageBook = new PageBook(parent, SWT.NONE);
+            _pageBook = new PageBook(parent, SWT.NONE);
 
             // thumbnail
-            overview = new Canvas(pageBook, SWT.NONE);
+            _overview = new Canvas(_pageBook, SWT.NONE);
             initThumbnail();
             
             // outline
-            outline  = getViewer().createControl(pageBook);
+            _outline  = getViewer().createControl(_pageBook);
             initOutline();
             getSelectionSynchronizer().addViewer(getViewer());
             getViewer().setContents(getModel());
@@ -377,17 +383,17 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             // unhook OutlineViewer
             getSelectionSynchronizer().removeViewer(getViewer());
             
-            if(thumbnail != null)
+            if(_thumbnail != null)
             {
-                thumbnail.deactivate();
-                thumbnail = null;
+                _thumbnail.deactivate();
+                _thumbnail = null;
             }
             super.dispose();
         }
 
         @Override
         public Control getControl() {
-            return pageBook;
+            return _pageBook;
         }
 
         private void initOutline()
@@ -410,29 +416,29 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             
             // 2 actions: "Show outline" and "Show thumbnail"
             IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
-            showOutlineAction = new Action() {
+            _showOutlineAction = new Action() {
                 @Override
                 public void run() {
                     showPage(ID_OUTLINE);
                 }
             };
-            showOutlineAction.setImageDescriptor(
+            _showOutlineAction.setImageDescriptor(
                  ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
                                                 "icons/outline.gif"));
-            showOutlineAction.setToolTipText("Show outline");
-            tbm.add(showOutlineAction);
+            _showOutlineAction.setToolTipText("Show outline");
+            tbm.add(_showOutlineAction);
             
-            showOverviewAction = new Action() {
+            _showOverviewAction = new Action() {
                 @Override
                 public void run() {
                     showPage(ID_OVERVIEW);
                 }
             };
-            showOverviewAction.setImageDescriptor(
+            _showOverviewAction.setImageDescriptor(
                   ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
                                                  "icons/overview.gif"));
-            showOverviewAction.setToolTipText("Show thumbnail");
-            tbm.add(showOverviewAction);
+            _showOverviewAction.setToolTipText("Show thumbnail");
+            tbm.add(_showOverviewAction);
             
             // default page
             showPage(ID_OUTLINE);
@@ -440,15 +446,15 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 
         private void initThumbnail()
         {
-            LightweightSystem lws = new LightweightSystem(overview);
+            LightweightSystem lws = new LightweightSystem(_overview);
             RootEditPart rep = getGraphicalViewer().getRootEditPart();
             if(rep instanceof ScalableFreeformRootEditPart)
             {
                 ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
-                thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
-                thumbnail.setBorder(new MarginBorder(3));
-                thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
-                lws.setContents(thumbnail);
+                _thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
+                _thumbnail.setBorder(new MarginBorder(3));
+                _thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
+                lws.setContents(_thumbnail);
             }
         }
         
@@ -456,17 +462,17 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         {
             if(id == ID_OUTLINE)
             {
-                showOutlineAction .setChecked(true);
-                showOverviewAction.setChecked(false);
-                pageBook.showPage(outline);
-                thumbnail.setVisible(false);
+                _showOutlineAction .setChecked(true);
+                _showOverviewAction.setChecked(false);
+                _pageBook.showPage(_outline);
+                _thumbnail.setVisible(false);
             }
             else if(id == ID_OVERVIEW)
             {
-                showOutlineAction .setChecked(false);
-                showOverviewAction.setChecked(true);
-                pageBook.showPage(overview);
-                thumbnail.setVisible(true);
+                _showOutlineAction .setChecked(false);
+                _showOverviewAction.setChecked(true);
+                _pageBook.showPage(_overview);
+                _thumbnail.setVisible(true);
             }
         }
 

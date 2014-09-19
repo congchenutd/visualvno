@@ -1,21 +1,18 @@
 package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
-import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 
 /**
- * Contributes actions to a toolbar. 
- * Tied to the editor in the definition of editor-extension (see plugin.xml).
+ * Contributes actions to a toolbars 
+ * Tied to the editor in plugin.xml
  */
 public class VNOEditorActionBarContributor extends ActionBarContributor
 {

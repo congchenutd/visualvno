@@ -17,15 +17,15 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.Shape;
-import com.fujitsu.us.visualvno.model.Diagram;
+import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.policies.ShapesXYLayoutEditPolicy;
 
 /**
  * EditPart for a ShapesDiagram.
  */
-class DiagramEditPart extends AbstractGraphicalEditPart
-                      implements PropertyChangeListener
+public class DiagramEditPart extends AbstractGraphicalEditPart
+                             implements PropertyChangeListener
 {
 
     @Override
@@ -48,8 +48,8 @@ class DiagramEditPart extends AbstractGraphicalEditPart
         }
     }
     
-    private Diagram getCastedModel() {
-        return (Diagram) getModel();
+    private DiagramModel getCastedModel() {
+        return (DiagramModel) getModel();
     }
 
     @Override
@@ -59,7 +59,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart
         installEditPolicy(EditPolicy.COMPONENT_ROLE, 
                           new RootComponentEditPolicy());
         
-        // handles constraint changes (e.g. moving and/or resizing) of model
+        // handles constraint changes (e.g. moving and resizing) of model
         // elements and creation of new model elements
         installEditPolicy(EditPolicy.LAYOUT_ROLE, 
                           new ShapesXYLayoutEditPolicy());
@@ -80,19 +80,16 @@ class DiagramEditPart extends AbstractGraphicalEditPart
     }
 
     @Override
-    protected List<Shape> getModelChildren() {
+    protected List<ShapeModel> getModelChildren() {
         return getCastedModel().getChildren(); // return a list of shapes
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(PropertyChangeEvent event)
     {
-        String prop = evt.getPropertyName();
-        // these properties are fired when Shapes are added into or removed from
-        // the ShapeDiagram instance and must cause a call of refreshChildren()
-        // to update the diagram's contents.
-        if(Diagram.CHILD_ADDED_PROP  .equals(prop) ||
-           Diagram.CHILD_REMOVED_PROP.equals(prop))
+        String property = event.getPropertyName();
+        if(DiagramModel.CHILD_ADDED_PROP  .equals(property) ||
+           DiagramModel.CHILD_REMOVED_PROP.equals(property))
             refreshChildren();
     }
 

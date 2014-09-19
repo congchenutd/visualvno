@@ -8,17 +8,17 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
-import com.fujitsu.us.visualvno.model.Shape;
+import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.policies.ShapeRemovalEditPolicy;
 
 /**
  * TreeEditPart used for Shape instances.
  * This is used in the Outline View of the ShapesEditor.
  */
-class ShapeTreeEditPart extends AbstractTreeEditPart 
-                        implements PropertyChangeListener
+public class ShapeTreeEditPart extends AbstractTreeEditPart 
+                               implements PropertyChangeListener
 {
-    ShapeTreeEditPart(Shape model) {
+    public ShapeTreeEditPart(ShapeModel model) {
         super(model);
     }
 
@@ -36,7 +36,8 @@ class ShapeTreeEditPart extends AbstractTreeEditPart
     protected void createEditPolicies()
     {
         // allow removal of the associated model element
-        installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeRemovalEditPolicy());
+        installEditPolicy(EditPolicy.COMPONENT_ROLE, 
+                          new ShapeRemovalEditPolicy());
     }
 
     @Override
@@ -49,8 +50,8 @@ class ShapeTreeEditPart extends AbstractTreeEditPart
         }
     }
 
-    private Shape getCastedModel() {
-        return (Shape) getModel();
+    private ShapeModel getCastedModel() {
+        return (ShapeModel) getModel();
     }
 
     @Override
