@@ -23,7 +23,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
-import com.fujitsu.us.visualvno.figures.LabeledFigureAdapter;
+import com.fujitsu.us.visualvno.figures.LabeledShapeAdapter;
 import com.fujitsu.us.visualvno.model.ConnectionModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
@@ -100,7 +100,7 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     // TODO: how to call this automatically after a new figure is created?
     private void performDirectEditing()
     {
-        Label label = ((LabeledFigureAdapter) getFigure()).getLabel();
+        Label label = ((LabeledShapeAdapter) getFigure()).getLabel();
         LabelDirectEditManager manager 
             = new LabelDirectEditManager(this, 
                                          TextCellEditor.class, 
@@ -116,9 +116,9 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     private IFigure createFigureForModel()
     {
         if(getModel() instanceof SwitchModel)
-            return new LabeledFigureAdapter(new Ellipse());
+            return new LabeledShapeAdapter(new Ellipse());
         else if(getModel() instanceof HostModel)
-            return new LabeledFigureAdapter(new RectangleFigure());
+            return new LabeledShapeAdapter(new RectangleFigure());
         else
             throw new IllegalArgumentException();
     }
@@ -146,7 +146,7 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
                                                               bounds);
         
         // update label
-        LabeledFigureAdapter figure = (LabeledFigureAdapter) getFigure();
+        LabeledShapeAdapter figure = (LabeledShapeAdapter) getFigure();
         figure.setText(getCastedModel().getName());
         figure.setBackgroundColor(new Color(null, getCastedModel().getColor()));
     }

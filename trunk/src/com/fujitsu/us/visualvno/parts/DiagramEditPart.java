@@ -15,6 +15,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
+import org.eclipse.swt.SWT;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
@@ -74,6 +75,7 @@ public class DiagramEditPart extends AbstractGraphicalEditPart
 
         // Create the static router for the connection layer
         ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+        connLayer.setAntialias(SWT.ON);
         connLayer.setConnectionRouter(new ShortestPathConnectionRouter(figure));
 
         return figure;
