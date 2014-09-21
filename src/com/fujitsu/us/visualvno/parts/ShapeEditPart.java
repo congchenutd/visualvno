@@ -93,7 +93,8 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     
     @Override
     public void performRequest(Request req) {
-        if(req.getType() == RequestConstants.REQ_OPEN)
+        if(req.getType() == RequestConstants.REQ_OPEN ||
+           req.getType() == RequestConstants.REQ_DIRECT_EDIT)
             performDirectEditing();
     }
 

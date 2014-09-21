@@ -85,7 +85,8 @@ public class LinkEditPart extends AbstractConnectionEditPart
 
     @Override
     public void performRequest(Request req) {
-        if(req.getType() == RequestConstants.REQ_OPEN)
+        if(req.getType() == RequestConstants.REQ_OPEN ||
+           req.getType() == RequestConstants.REQ_DIRECT_EDIT)
             performDirectEditing();
     }
 

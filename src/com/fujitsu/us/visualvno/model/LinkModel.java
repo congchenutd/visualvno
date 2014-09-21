@@ -9,6 +9,7 @@ import org.eclipse.draw2d.Graphics;
  */
 public class LinkModel extends ModelBase
 {
+	private static final long serialVersionUID = 1L;
     public static final String imageFileSmall = "icons/Link.png";
 	public static final String imageFileBig   = "icons/Link.png";
     public static final Integer SOLID_CONNECTION  = new Integer(Graphics.LINE_SOLID);
@@ -33,6 +34,8 @@ public class LinkModel extends ModelBase
         };
     }
 
+    public LinkModel() {}
+    
     public LinkModel(ShapeModel source, ShapeModel target) {
         reconnect(source, target);
     }
@@ -137,5 +140,10 @@ public class LinkModel extends ModelBase
             _target.removeConnection(this);
             _isConnected = false;
         }
+    }
+    
+    @Override
+    public String toString() {
+        return getName();
     }
 }

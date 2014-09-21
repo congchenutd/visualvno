@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class DiagramModel extends ModelBase
 {
+	private static final long serialVersionUID = 1L;
 	public static final String CHILD_ADDED_PROP   = "ShapesDiagram.ChildAdded";
 	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";
 	

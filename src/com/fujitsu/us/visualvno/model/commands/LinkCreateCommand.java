@@ -10,9 +10,9 @@ import com.fujitsu.us.visualvno.model.ShapeModel;
  */
 public class LinkCreateCommand extends Command
 {
-    private LinkModel     _connection;
+    private LinkModel     		_connection;
     private final int           _lineStyle;
-    private final ShapeModel    _source;
+    private final ShapeModel	_source;
     private ShapeModel          _target;
 
     public LinkCreateCommand(ShapeModel source, int lineStyle)
@@ -53,5 +53,9 @@ public class LinkCreateCommand extends Command
     @Override
     public void undo() {
         _connection.disconnect();
+    }
+    
+    public LinkModel getLink() {
+    	return _connection;
     }
 }
