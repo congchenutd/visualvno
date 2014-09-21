@@ -14,6 +14,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
  */
 public abstract class ModelBase implements IPropertySource, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
     /** An empty property descriptor. */
     private static final IPropertyDescriptor[] EMPTY_DESCRIPTOR = new IPropertyDescriptor[0];
 

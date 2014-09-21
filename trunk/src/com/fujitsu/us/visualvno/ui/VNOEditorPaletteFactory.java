@@ -1,8 +1,8 @@
 package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
+import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -19,7 +19,7 @@ import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.HostModel;
 
 /**
- * Utility class that creates a GEF Palette.
+ * Utility class that creates a GEF Palette
  */
 public class VNOEditorPaletteFactory
 {
@@ -39,45 +39,49 @@ public class VNOEditorPaletteFactory
 	{
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Elements");
 
-		componentsDrawer.add(new CombinedTemplateCreationEntry(
-		    "Switch",
-			"Create a Switch",
-			SwitchModel.class,
-			new SimpleFactory(SwitchModel.class),
-			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   SwitchModel.imageFileSmall),
-			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   SwitchModel.imageFileBig)));
-
-		componentsDrawer.add(new CombinedTemplateCreationEntry(
-			"Host",
-			"Create a Host", 
-			HostModel.class, 
-			new SimpleFactory(HostModel.class),
-			ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-										   HostModel.imageFileSmall), 
-			ImageDescriptor.createFromFile(VisualVNOPlugin.class, 
-										   HostModel.imageFileBig)));
+		CreationToolEntry switchEntry = new CreationToolEntry(
+				"Switch",
+				"Create a Switch",
+				new SimpleFactory(SwitchModel.class), 
+				ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+											   SwitchModel.imageFileSmall),
+			    ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+						   					   SwitchModel.imageFileBig));
+		switchEntry.setToolClass(ShapeCreationTool.class);
+		componentsDrawer.add(switchEntry);
 		
-        componentsDrawer.add(new ConnectionCreationToolEntry(
-            "Link",
-            "Create a Link",
-            new CreationFactory()
-            {
-                @Override
-                public Object getNewObject() {
-                    return null;
-                }
+		CreationToolEntry hostEntry = new CreationToolEntry(
+				"Host",
+				"Create a Host",
+				new SimpleFactory(HostModel.class), 
+				ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+						HostModel.imageFileSmall),
+			    ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+			    		HostModel.imageFileBig));
+		hostEntry.setToolClass(ShapeCreationTool.class);
+		componentsDrawer.add(hostEntry);
+		
+		CreationToolEntry linkEntry = new ConnectionCreationToolEntry(
+				"Link",
+				"Create a Link",
+				new CreationFactory()
+	            {
+	                @Override
+	                public Object getNewObject() {
+	                    return new LinkModel();
+	                }
 
-                @Override
-                public Object getObjectType() {
-                    return LinkModel.SOLID_CONNECTION;
-                }
-            },
-            ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           LinkModel.imageFileSmall),
-            ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                           LinkModel.imageFileBig)));
+	                @Override
+	                public Object getObjectType() {
+	                    return LinkModel.SOLID_CONNECTION;
+	                }
+	            }, 
+				ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+						LinkModel.imageFileSmall),
+			    ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+			    		LinkModel.imageFileBig));
+		linkEntry.setToolClass(LinkCreationTool.class);
+		componentsDrawer.add(linkEntry);
 
 		return componentsDrawer;
 	}

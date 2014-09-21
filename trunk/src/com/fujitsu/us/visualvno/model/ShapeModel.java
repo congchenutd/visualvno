@@ -24,6 +24,8 @@ import com.fujitsu.us.visualvno.VisualVNOPlugin;
  */
 public abstract class ShapeModel extends ModelBase
 {
+	private static final long serialVersionUID = 1L;
+	
     protected static IPropertyDescriptor[] descriptors;
 
     // property IDs

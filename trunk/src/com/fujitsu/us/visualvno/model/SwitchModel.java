@@ -9,6 +9,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  */
 public class SwitchModel extends ShapeModel
 {
+	private static final long serialVersionUID = 1L;
     public  static final String imageFileSmall  = "icons/ellipse16.gif";
     public  static final String imageFileBig    = "icons/ellipse24.gif";
     private static final Image  ICON            = createImage(imageFileSmall);
