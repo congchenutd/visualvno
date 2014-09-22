@@ -9,6 +9,7 @@ import org.eclipse.gef.requests.CreateRequest;
 
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.HostModel;
+import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.commands.ShapeCreateCommand;
@@ -18,7 +19,7 @@ import com.fujitsu.us.visualvno.parts.ShapeEditPart;
 /**
  * EditPolicy for creating, moving, and resizing shapes in a diagram
  */
-public class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy
+public class DiagramLayoutEditPolicy extends XYLayoutEditPolicy
 {
 
     @Override
@@ -45,7 +46,8 @@ public class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy
     {
         Object childClass = request.getNewObjectType();
         if(childClass == SwitchModel.class || 
-           childClass == HostModel.class)
+           childClass == HostModel.class   ||
+           childClass == PortModel.class)
             return new ShapeCreateCommand((ShapeModel)   request.getNewObject(),
                                           (DiagramModel) getHost().getModel(),
                                           (Rectangle)    getConstraintFor(request));

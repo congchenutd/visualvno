@@ -24,7 +24,9 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.figures.LabeledShapeAdapter;
+import com.fujitsu.us.visualvno.figures.SwitchFigure;
 import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.HostModel;
@@ -91,6 +93,21 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
         return figure;
     }
     
+    /**
+     * A Figure factory.
+     */
+    private IFigure createFigureForModel()
+    {
+        if(getModel() instanceof SwitchModel)
+            return new SwitchFigure();
+        else if(getModel() instanceof HostModel)
+            return new LabeledShapeAdapter(new RectangleFigure());
+        else if(getModel() instanceof PortModel)
+            return new LabeledShapeAdapter(new RectangleFigure());
+        else
+            throw new IllegalArgumentException();
+    }
+    
     @Override
     public void performRequest(Request req) {
         if(req.getType() == RequestConstants.REQ_OPEN ||
@@ -98,7 +115,6 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
             performDirectEditing();
     }
 
-    // TODO: how to call this automatically after a new figure is created?
     private void performDirectEditing()
     {
         Label label = ((LabeledShapeAdapter) getFigure()).getLabel();
@@ -108,20 +124,6 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
                                          new LabelCellEditorLocator(label), 
                                          label);
         manager.show();
-    }
-
-    /**
-     * A Figure factory.
-     * This allows this EditPart to be used for both subclasses of Shape.
-     */
-    private IFigure createFigureForModel()
-    {
-        if(getModel() instanceof SwitchModel)
-            return new LabeledShapeAdapter(new Ellipse());
-        else if(getModel() instanceof HostModel)
-            return new LabeledShapeAdapter(new RectangleFigure());
-        else
-            throw new IllegalArgumentException();
     }
 
     @Override
@@ -146,10 +148,14 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
                                                               getFigure(), 
                                                               bounds);
         
+        getFigure().setBackgroundColor(new Color(null, getCastedModel().getColor()));
+
         // update label
-        LabeledShapeAdapter figure = (LabeledShapeAdapter) getFigure();
-        figure.setText(getCastedModel().getName());
-        figure.setBackgroundColor(new Color(null, getCastedModel().getColor()));
+        IFigure figure = getFigure();
+        if(figure instanceof LabeledShapeAdapter)
+            ((LabeledShapeAdapter) getFigure()).setText(getCastedModel().getName());
+        else if(figure instanceof SwitchFigure)
+            ((SwitchFigure) getFigure()).setText(getCastedModel().getName());
     }
     
     @Override

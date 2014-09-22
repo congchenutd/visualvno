@@ -68,6 +68,7 @@ import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
+import com.fujitsu.us.visualvno.actions.AddPortAction;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.parts.factories.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
@@ -127,6 +128,15 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             MouseWheelZoomHandler.SINGLETON);
 	}
 
+	@Override
+    protected void createActions()
+	{
+        AddPortAction action = new AddPortAction(this);
+        getActionRegistry().registerAction(action);
+        getSelectionActions().add(action.getId());
+        super.createActions();
+    }
+	
 	@Override
 	public void commandStackChanged(EventObject event)
 	{

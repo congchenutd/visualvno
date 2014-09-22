@@ -15,6 +15,7 @@ import org.eclipse.gef.requests.SimpleFactory;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.HostModel;
 
@@ -49,6 +50,17 @@ public class VNOEditorPaletteFactory
 						   					   SwitchModel.imageFileBig));
 		switchEntry.setToolClass(ShapeCreationTool.class);
 		componentsDrawer.add(switchEntry);
+		
+		CreationToolEntry portEntry = new CreationToolEntry(
+                "Port",
+                "Create a Port",
+                new SimpleFactory(PortModel.class), 
+                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                        HostModel.imageFileSmall),
+                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                        HostModel.imageFileBig));
+        portEntry.setToolClass(ShapeCreationTool.class);
+        componentsDrawer.add(portEntry);
 		
 		CreationToolEntry hostEntry = new CreationToolEntry(
 				"Host",
