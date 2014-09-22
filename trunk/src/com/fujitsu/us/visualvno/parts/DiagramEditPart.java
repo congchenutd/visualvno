@@ -20,7 +20,7 @@ import org.eclipse.swt.SWT;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.parts.policies.ShapesXYLayoutEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutEditPolicy;
 
 /**
  * EditPart for a ShapesDiagram.
@@ -63,7 +63,7 @@ public class DiagramEditPart extends AbstractGraphicalEditPart
         // handles constraint changes (e.g. moving and resizing) of model
         // elements and creation of new model elements
         installEditPolicy(EditPolicy.LAYOUT_ROLE, 
-                          new ShapesXYLayoutEditPolicy());
+                          new DiagramLayoutEditPolicy());
     }
 
     @Override

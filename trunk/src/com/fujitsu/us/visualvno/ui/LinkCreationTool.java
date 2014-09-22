@@ -1,7 +1,6 @@
 package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.tools.ConnectionCreationTool;
 import org.eclipse.swt.widgets.Display;
@@ -11,7 +10,7 @@ import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
 
 /**
  * Run direct edit after creation 
- * @author Cong
+ * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
 public class LinkCreationTool extends ConnectionCreationTool
 {
@@ -31,8 +30,7 @@ public class LinkCreationTool extends ConnectionCreationTool
 				public void run()
 				{
 					EditPart part = (EditPart) obj;
-					Request request = new DirectEditRequest();
-					part.performRequest(request);
+					part.performRequest(new DirectEditRequest());
 				}
 			});
 		}

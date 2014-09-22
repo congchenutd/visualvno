@@ -2,12 +2,13 @@ package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+
+import com.fujitsu.us.visualvno.actions.AddPortAction;
 
 /**
  * Provides context menu actions for VNOEditor.
@@ -21,7 +22,7 @@ public class VNOEditorContextMenuProvider extends ContextMenuProvider
 	 * @param registry	the editor's action registry
 	 */
 	public VNOEditorContextMenuProvider(EditPartViewer viewer, 
-										   ActionRegistry registry)
+										ActionRegistry registry)
 	{
 		super(viewer);
 		actionRegistry = registry;
@@ -35,9 +36,6 @@ public class VNOEditorContextMenuProvider extends ContextMenuProvider
 	{
 		// Add standard action groups to the menu
 		GEFActionConstants.addStandardActionGroups(menu);
-		
-		menu.add(new Separator(GEFActionConstants.GROUP_UNDO));
-		menu.add(new Separator(GEFActionConstants.GROUP_EDIT));
 
 		// Add actions to the menu
 		menu.appendToGroup(GEFActionConstants.GROUP_UNDO,          // target group id
@@ -46,6 +44,8 @@ public class VNOEditorContextMenuProvider extends ContextMenuProvider
 		                   getAction(ActionFactory.REDO.getId()));
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, 
 		                   getAction(ActionFactory.DELETE.getId()));
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT,
+		                   getAction(AddPortAction.ID));
 	}
 
 	private IAction getAction(String actionId) {

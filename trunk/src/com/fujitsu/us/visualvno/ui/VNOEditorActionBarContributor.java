@@ -10,6 +10,8 @@ import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 
+import com.fujitsu.us.visualvno.actions.AddPortAction;
+
 /**
  * Contributes actions to a toolbars 
  * Tied to the editor in plugin.xml
@@ -23,7 +25,7 @@ public class VNOEditorActionBarContributor extends ActionBarContributor
 	@Override
 	protected void buildActions()
 	{
-		addRetargetAction(new DeleteRetargetAction());
+	    addRetargetAction(new DeleteRetargetAction());
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
 		addRetargetAction(new ZoomInRetargetAction());
