@@ -16,8 +16,8 @@ public class PortModel extends ShapeModel
     public static final String NUMBER_PROP = "Port.Number";
     public static final String MAC_PROP    = "Port.MAC";
     
-    private int    _number  = 1;
-    private String _mac     = new String();
+    private int     _number = 1;
+    private String  _mac    = new String();
     
     static
     {

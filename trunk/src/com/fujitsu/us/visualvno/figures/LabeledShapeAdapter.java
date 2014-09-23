@@ -38,6 +38,10 @@ public class LabeledShapeAdapter extends Shape
         _label.setText(text);
     }
 
+    public Shape getShape() {
+        return _shape;
+    }
+    
     @Override
     protected void fillShape(Graphics graphics)
     {
