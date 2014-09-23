@@ -98,9 +98,7 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
      */
     private IFigure createFigureForModel()
     {
-        if(getModel() instanceof SwitchModel)
-            return new LabeledShapeAdapter(new SwitchFigure());
-        else if(getModel() instanceof HostModel)
+        if(getModel() instanceof HostModel)
             return new LabeledShapeAdapter(new RectangleFigure());
         else if(getModel() instanceof PortModel)
             return new LabeledShapeAdapter(new RectangleFigure());
@@ -154,8 +152,6 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
         IFigure figure = getFigure();
         if(figure instanceof LabeledShapeAdapter)
             ((LabeledShapeAdapter) getFigure()).setText(getCastedModel().getName());
-//        else if(figure instanceof SwitchFigure)
-//            ((SwitchFigure) getFigure()).setText(getCastedModel().getName());
     }
     
     @Override
