@@ -30,6 +30,10 @@ public class LabeledShapeAdapter extends Shape
         return _label;
     }
     
+    public String getText() {
+        return _label.getText();
+    }
+    
     public void setText(String text) {
         _label.setText(text);
     }
