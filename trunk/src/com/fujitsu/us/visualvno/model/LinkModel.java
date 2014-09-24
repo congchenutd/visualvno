@@ -20,11 +20,11 @@ public class LinkModel extends ModelBase
     
     private static final IPropertyDescriptor[] _descriptors;
 
-    private String      _name = new String();
-    private int         _lineStyle = Graphics.LINE_SOLID;
-    private ShapeModel  _source;
-    private ShapeModel  _target;
-    private boolean     _isConnected;
+    private String  _name       = new String();
+    private int     _lineStyle  = Graphics.LINE_SOLID;
+    private Port    _sourcePort;
+    private Port    _targetPort;
+    private boolean _isConnected;
 
     static
     {
@@ -36,22 +36,30 @@ public class LinkModel extends ModelBase
 
     public LinkModel() {}
     
-    public LinkModel(ShapeModel source, ShapeModel target) {
+    public LinkModel(Port source, Port target) {
         reconnect(source, target);
     }
     
-    public ShapeModel getSource() {
-        return _source;
+    public Port getSourcePort() {
+        return _sourcePort;
+    }
+    
+    public Port getTargetPort() {
+        return _targetPort;
+    }
+    
+    public ShapeModel getSourceShape() {
+        return getSourcePort().getShape();
     }
 
-    public ShapeModel getTarget() {
-        return _target;
+    public ShapeModel getTargetShape() {
+        return getTargetPort().getShape();
     }
     
     public ShapeModel getTheOtherEnd(ShapeModel end) {
-        return end.equals(_source) ? getTarget() 
-                                   : end.equals(_target) ? getSource() 
-                                                         : null;
+        return end.equals(_sourcePort) ? getTargetShape() 
+                                       : end.equals(_targetPort) ? getSourceShape() 
+                                                                 : null;
     }
     
     public int getLineStyle() {
@@ -113,22 +121,22 @@ public class LinkModel extends ModelBase
     {
         if(!_isConnected)
         {
-            _source.addConnection(this);
-            _target.addConnection(this);
+            _sourcePort.setLink(this);
+            _targetPort.setLink(this);
             _isConnected = true;
         }
     }
 
-    public void reconnect(ShapeModel newSource, ShapeModel newTarget)
+    public void reconnect(Port sourcePort, Port targetPort)
     {
-        if(newSource == null || 
-           newTarget == null || 
-           newSource.equals(newTarget))
+        if(sourcePort == null || 
+           targetPort == null || 
+           sourcePort.equals(targetPort))
             throw new IllegalArgumentException();
 
         disconnect();
-        _source = newSource;
-        _target = newTarget;
+        _sourcePort = sourcePort;
+        _targetPort = targetPort;
         reconnect();
     }
     
@@ -136,8 +144,8 @@ public class LinkModel extends ModelBase
     {
         if(_isConnected)
         {
-            _source.removeConnection(this);
-            _target.removeConnection(this);
+            _sourcePort.removeLink(this);
+            _targetPort.removeLink(this);
             _isConnected = false;
         }
     }

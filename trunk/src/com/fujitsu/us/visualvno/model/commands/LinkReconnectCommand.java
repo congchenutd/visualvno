@@ -3,7 +3,7 @@ package com.fujitsu.us.visualvno.model.commands;
 import org.eclipse.gef.commands.Command;
 
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.Port;
 
 /**
  * A command to reconnect a Link to a different start point or end point.
@@ -11,20 +11,21 @@ import com.fujitsu.us.visualvno.model.ShapeModel;
 public class LinkReconnectCommand extends Command
 {
 
-    private final LinkModel   _connection;
-    private final ShapeModel        _oldSource;
-    private final ShapeModel        _oldTarget;
-    private       ShapeModel        _newSource;
-    private       ShapeModel        _newTarget;
+    private final LinkModel _link;
+    private final Port      _oldSource;
+    private final Port      _oldTarget;
+    private       Port      _newSource;
+    private       Port      _newTarget;
 
-    public LinkReconnectCommand(LinkModel connection)
+    public LinkReconnectCommand(LinkModel link)
     {
-        if(connection == null)
+        if(link == null)
             throw new IllegalArgumentException();
         
-        _connection = connection;
-        _oldSource  = connection.getSource();
-        _oldTarget  = connection.getTarget();
+        setLabel("Link reconnection");
+        _link = link;
+        _oldSource  = link.getSourcePort();
+        _oldTarget  = link.getTargetPort();
     }
 
     @Override
@@ -46,9 +47,9 @@ public class LinkReconnectCommand extends Command
     public void execute()
     {
         if(_newSource != null)
-            _connection.reconnect(_newSource, _oldTarget);
+            _link.reconnect(_newSource, _oldTarget);
         else if(_newTarget != null)
-            _connection.reconnect(_oldSource, _newTarget);
+            _link.reconnect(_oldSource, _newTarget);
         else
             throw new IllegalStateException("Must call setNewSource() or setNewTarget() before");
     }
@@ -57,12 +58,12 @@ public class LinkReconnectCommand extends Command
      * Note: _newTarget will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewSource(ShapeModel newSource)
+    public void setNewSource(Port newSource)
     {
         if(newSource == null)
             throw new IllegalArgumentException();
 
-        setLabel("Move connection startpoint");
+        setLabel("Move link startpoint");
         _newSource = newSource;
         _newTarget = null;
     }
@@ -71,19 +72,19 @@ public class LinkReconnectCommand extends Command
      * Note: _newSource will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewTarget(ShapeModel newTarget)
+    public void setNewTarget(Port newTarget)
     {
         if(newTarget == null)
             throw new IllegalArgumentException();
 
-        setLabel("Move connection endpoint");
+        setLabel("Move link endpoint");
         _newSource = null;
         _newTarget = newTarget;
     }
 
     @Override
     public void undo() {
-        _connection.reconnect(_oldSource, _oldTarget);
+        _link.reconnect(_oldSource, _oldTarget);
     }
 
 }

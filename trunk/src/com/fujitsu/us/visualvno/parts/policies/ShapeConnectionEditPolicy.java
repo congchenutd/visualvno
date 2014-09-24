@@ -5,10 +5,12 @@ import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
+import com.fujitsu.us.visualvno.figures.PortAnchor;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.LinkReconnectCommand;
+import com.fujitsu.us.visualvno.parts.ShapeEditPart;
 
 /**
  * EditPolicy for creating and reconnecting connections
@@ -19,19 +21,21 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
     {
-        LinkCreateCommand command 
-            = (LinkCreateCommand) request.getStartCommand();
-        command.setTarget((ShapeModel) getHost().getModel());
+        LinkCreateCommand command = (LinkCreateCommand) request.getStartCommand();
+        PortAnchor anchor = (PortAnchor) getEditPart().getTargetConnectionAnchor(request);
+        ShapeModel shape = (ShapeModel) getHost().getModel();
+        command.setTarget(shape.getPort(anchor.getPortNumber()));
         return command;
     }
 
     @Override
     protected Command getConnectionCreateCommand(CreateConnectionRequest request)
     {
-        ShapeModel source = (ShapeModel) getHost().getModel();
+        PortAnchor anchor = (PortAnchor) getEditPart().getSourceConnectionAnchor(request);
+        ShapeModel shape = (ShapeModel) getHost().getModel();
         int style = ((Integer) request.getNewObjectType()).intValue();
-        LinkCreateCommand command = new LinkCreateCommand(source, 
-                                                                      style);
+        LinkCreateCommand command = new LinkCreateCommand(shape.getPort(anchor.getPortNumber()), 
+                                                          style);
         request.setStartCommand(command);
         return command;
     }
@@ -41,10 +45,10 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     {
         LinkModel connection 
             = (LinkModel) request.getConnectionEditPart().getModel();
-        ShapeModel newSource = (ShapeModel) getHost().getModel();
-        LinkReconnectCommand command 
-            = new LinkReconnectCommand(connection);
-        command.setNewSource(newSource);
+        PortAnchor anchor = (PortAnchor) getEditPart().getSourceConnectionAnchor(request);
+        ShapeModel shape = (ShapeModel) getHost().getModel();
+        LinkReconnectCommand command = new LinkReconnectCommand(connection);
+        command.setNewSource(shape.getPort(anchor.getPortNumber()));
         return command;
     }
 
@@ -53,10 +57,14 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     {
         LinkModel connection 
             = (LinkModel) request.getConnectionEditPart().getModel();
-        ShapeModel newTarget = (ShapeModel) getHost().getModel();
-        LinkReconnectCommand command 
-            = new LinkReconnectCommand(connection);
-        command.setNewTarget(newTarget);
+        PortAnchor anchor = (PortAnchor) getEditPart().getTargetConnectionAnchor(request);
+        ShapeModel shape = (ShapeModel) getHost().getModel();
+        LinkReconnectCommand command = new LinkReconnectCommand(connection);
+        command.setNewTarget(shape.getPort(anchor.getPortNumber()));
         return command;
+    }
+    
+    private ShapeEditPart getEditPart() {
+        return (ShapeEditPart) getHost();
     }
 }

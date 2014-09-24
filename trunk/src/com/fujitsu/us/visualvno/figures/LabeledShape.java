@@ -11,17 +11,17 @@ import org.eclipse.swt.SWT;
  * An adapter to add a label to a Shape
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
-public class LabeledShapeAdapter extends Shape
+public class LabeledShape extends Shape
 {
     private final Label _label;
     private final Shape _shape;
 
-    public LabeledShapeAdapter(Shape shape)
+    public LabeledShape(Shape shape)
     {
         setLayoutManager(new XYLayout());
         _shape = shape;
         _shape.setAntialias(SWT.ON);
-        _label = new Label("Shape");
+        _label = new Label();
         add(_shape);
         add(_label);
     }

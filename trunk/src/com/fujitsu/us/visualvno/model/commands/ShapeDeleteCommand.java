@@ -14,11 +14,11 @@ import com.fujitsu.us.visualvno.model.DiagramModel;
  */
 public class ShapeDeleteCommand extends Command
 {
-    private final ShapeModel        _toBeDeleted;
-    private final DiagramModel      _parent;
-    private List<LinkModel>   _sourceConnections;
-    private List<LinkModel>   _targetConnections;
-    private boolean                 _wasRemoved;
+    private final ShapeModel    _shape;
+    private final DiagramModel  _diagram;
+    private List<LinkModel>     _sourceLinks;
+    private List<LinkModel>     _targetLinks;
+    private boolean             _wasRemoved;
 
     public ShapeDeleteCommand(DiagramModel parent, ShapeModel toBeDeleted)
     {
@@ -26,8 +26,8 @@ public class ShapeDeleteCommand extends Command
             throw new IllegalArgumentException();
 
         setLabel("Shape deletion");
-        _parent         = parent;
-        _toBeDeleted    = toBeDeleted;
+        _diagram  = parent;
+        _shape    = toBeDeleted;
     }
 
     private void addConnections(List<LinkModel> connections) {
@@ -49,8 +49,8 @@ public class ShapeDeleteCommand extends Command
     public void execute()
     {
         // backup for undo
-        _sourceConnections = _toBeDeleted.getSourceConnections();
-        _targetConnections = _toBeDeleted.getTargetConnections();
+        _sourceLinks = _shape.getSourceLinks();
+        _targetLinks = _shape.getTargetLinks();
         
         redo();
     }
@@ -59,11 +59,11 @@ public class ShapeDeleteCommand extends Command
     public void redo()
     {
         // remove the child and disconnect its connections
-        _wasRemoved = _parent.removeChild(_toBeDeleted);
+        _wasRemoved = _diagram.removeChild(_shape);
         if(_wasRemoved)
         {
-            removeConnections(_sourceConnections);
-            removeConnections(_targetConnections);
+            removeConnections(_sourceLinks);
+            removeConnections(_targetLinks);
         }
     }
 
@@ -71,10 +71,10 @@ public class ShapeDeleteCommand extends Command
     public void undo()
     {
         // recover the child and reconnect its connections
-        if(_parent.addChild(_toBeDeleted))
+        if(_diagram.addChild(_shape))
         {
-            addConnections(_sourceConnections);
-            addConnections(_targetConnections);
+            addConnections(_sourceLinks);
+            addConnections(_targetLinks);
         }
     }
 }

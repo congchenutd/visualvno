@@ -1,11 +1,11 @@
 package com.fujitsu.us.visualvno.figures;
 
-import org.eclipse.draw2d.AbstractConnectionAnchor;
+import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class PortAnchor extends AbstractConnectionAnchor
+public class PortAnchor extends ChopboxAnchor
 {
     private int _portNumber;
     
@@ -24,7 +24,7 @@ public class PortAnchor extends AbstractConnectionAnchor
     @Override
     public Point getLocation(Point reference)
     {
-        SwitchFigure figure = (SwitchFigure) getOwner();
+        ShapeFigure figure = (ShapeFigure) getOwner();
         int portCount = figure.getPortCount();
         Rectangle rect = figure.getBounds();
         int radius = rect.width() / 2 - PortFigure.RADIUS;

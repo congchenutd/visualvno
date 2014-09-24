@@ -16,22 +16,19 @@ public class SwitchModel extends ShapeModel
 
 	protected static IPropertyDescriptor[] _descriptors;
 	
-	public static final String DPID_PROP       = "Switch.DPID";
-	public static final String PORTCOUNT_PROP  = "Switch.PortCount";
+	public static final String DPID_PROP = "Switch.DPID";
 	
 	static
 	{
 	    // copy ShapeModel's descriptors, then add its own
-	    _descriptors = new IPropertyDescriptor[ShapeModel.descriptors.length + 2];
+	    _descriptors = new IPropertyDescriptor[ShapeModel.descriptors.length + 1];
 	    int i;
 	    for(i = 0; i < ShapeModel.descriptors.length; ++i)
 	        _descriptors[i] = ShapeModel.descriptors[i];
-	    _descriptors[i]    = new TextPropertyDescriptor(DPID_PROP,      "DPID");
-	    _descriptors[i+1]  = new TextPropertyDescriptor(PORTCOUNT_PROP, "Port count");
+	    _descriptors[i] = new TextPropertyDescriptor(DPID_PROP, "DPID");
 	}
 		
-	private String _dpid       = new String();
-	private int    _portCount  = 0;
+	private String _dpid = new String();
 		
 	public String getDPID() {
 		return _dpid;
@@ -46,19 +43,6 @@ public class SwitchModel extends ShapeModel
 		firePropertyChange(DPID_PROP, null, dpid);
 	}
 	
-	public int getPortCount() {
-	    return _portCount;
-	}
-	
-	public void setPortCount(int count)
-	{
-	    if(count < 0)
-            throw new IllegalArgumentException();
-	    
-	    _portCount = count;
-	    firePropertyChange(PORTCOUNT_PROP, null, count);
-	}
-
 	@Override
     public Image getIcon() {
 		return ICON;
