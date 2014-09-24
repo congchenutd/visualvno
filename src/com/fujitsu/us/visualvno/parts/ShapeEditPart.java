@@ -4,16 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -23,14 +17,15 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
-import com.fujitsu.us.visualvno.figures.LabeledShapeAdapter;
+import com.fujitsu.us.visualvno.figures.HostFigure;
+import com.fujitsu.us.visualvno.figures.LabeledShape;
+import com.fujitsu.us.visualvno.figures.ShapeFigure;
 import com.fujitsu.us.visualvno.figures.SwitchFigure;
-import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.PortModel;
-import com.fujitsu.us.visualvno.model.SwitchModel;
-import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.HostModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionEditPolicy;
 import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalEditPolicy;
 import com.fujitsu.us.visualvno.parts.policies.ShapeRenameEditPolicy;
@@ -38,12 +33,9 @@ import com.fujitsu.us.visualvno.parts.policies.ShapeRenameEditPolicy;
 /**
  * EditPart for all Shape instances
  */
-public class ShapeEditPart extends AbstractGraphicalEditPart 
-                           implements PropertyChangeListener, NodeEditPart
+public abstract class ShapeEditPart extends AbstractGraphicalEditPart 
+                                    implements PropertyChangeListener, NodeEditPart
 {
-
-    private ConnectionAnchor _anchor;
-
     @Override
     public void activate()
     {
@@ -98,10 +90,10 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
      */
     private IFigure createFigureForModel()
     {
+        if(getModel() instanceof SwitchModel)
+            return new SwitchFigure();
         if(getModel() instanceof HostModel)
-            return new LabeledShapeAdapter(new RectangleFigure());
-        else if(getModel() instanceof PortModel)
-            return new LabeledShapeAdapter(new RectangleFigure());
+            return new HostFigure();
         else
             throw new IllegalArgumentException();
     }
@@ -115,7 +107,7 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
 
     private void performDirectEditing()
     {
-        Label label = ((LabeledShapeAdapter) getFigure()).getLabel();
+        Label label = ((LabeledShape) getFigure()).getLabel();
         LabelDirectEditManager manager 
             = new LabelDirectEditManager(this, 
                                          TextCellEditor.class, 
@@ -128,9 +120,9 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     public void propertyChange(PropertyChangeEvent event)
     {
         String property = event.getPropertyName();
-        if(ShapeModel.SOURCE_PROP.equals(property))
+        if(ShapeModel.SOURCELINK_PROP.equals(property))
             refreshSourceConnections();
-        else if(ShapeModel.TARGET_PROP.equals(property))
+        else if(ShapeModel.TARGETLINK_PROP.equals(property))
             refreshTargetConnections();
         else
             refreshVisuals();
@@ -139,62 +131,34 @@ public class ShapeEditPart extends AbstractGraphicalEditPart
     @Override
     protected void refreshVisuals()
     {
+        ShapeFigure figure = (ShapeFigure) getFigure();
+        
         // notify parent container of changed position & location
         Rectangle bounds = new Rectangle(getCastedModel().getLocation(), 
                                          getCastedModel().getSize());
         ((GraphicalEditPart) getParent()).setLayoutConstraint(this, 
-                                                              getFigure(), 
+                                                              figure, 
                                                               bounds);
         
-        getFigure().setBackgroundColor(new Color(null, getCastedModel().getColor()));
+        figure.setBackgroundColor(new Color(null, getCastedModel().getColor()));
 
         // update label
-        IFigure figure = getFigure();
-        if(figure instanceof LabeledShapeAdapter)
-            ((LabeledShapeAdapter) getFigure()).setText(getCastedModel().getName());
+        figure.setText(getCastedModel().getName());
+        
+        figure.setPortCount(getCastedModel().getPortCount());
     }
     
     @Override
     protected List<LinkModel> getModelSourceConnections() {
-        return getCastedModel().getSourceConnections();
+        return getCastedModel().getSourceLinks();
     }
 
     @Override
     protected List<LinkModel> getModelTargetConnections() {
-        return getCastedModel().getTargetConnections();
-    }
-
-    @Override
-    public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-        return getConnectionAnchor();
-    }
-
-    @Override
-    public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-        return getConnectionAnchor();
-    }
-
-    @Override
-    public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-        return getConnectionAnchor();
-    }
-
-    @Override
-    public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-        return getConnectionAnchor();
+        return getCastedModel().getTargetLinks();
     }
     
-    protected ConnectionAnchor getConnectionAnchor()
-    {
-        if(_anchor == null)
-        {
-            if(getModel() instanceof SwitchModel)
-                _anchor = new EllipseAnchor(getFigure());
-            else if(getModel() instanceof HostModel)
-                _anchor = new ChopboxAnchor(getFigure());
-            else
-                throw new IllegalArgumentException("unexpected model");
-        }
-        return _anchor;
+    protected LabeledShape getCastedFigure() {
+        return (LabeledShape) getFigure();
     }
 }

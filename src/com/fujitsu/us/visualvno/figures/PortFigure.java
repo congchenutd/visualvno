@@ -4,7 +4,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
-public class PortFigure extends LabeledShapeAdapter
+public class PortFigure extends LabeledShape
 {
     public static final int RADIUS = 10;
     public static final int WIDTH  = 2 * RADIUS;

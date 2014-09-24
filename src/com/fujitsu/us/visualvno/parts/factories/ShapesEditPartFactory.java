@@ -3,15 +3,13 @@ package com.fujitsu.us.visualvno.parts.factories;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
+import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.HostModel;
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.PortModel;
-import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
-import com.fujitsu.us.visualvno.parts.LinkEditPart;
 import com.fujitsu.us.visualvno.parts.DiagramEditPart;
-import com.fujitsu.us.visualvno.parts.ShapeEditPart;
+import com.fujitsu.us.visualvno.parts.HostEditPart;
+import com.fujitsu.us.visualvno.parts.LinkEditPart;
 import com.fujitsu.us.visualvno.parts.SwitchEditPart;
 
 /**
@@ -37,9 +35,7 @@ public class ShapesEditPartFactory implements EditPartFactory
         if(modelElement instanceof SwitchModel)
             return new SwitchEditPart();
         if(modelElement instanceof HostModel)
-            return new ShapeEditPart();
-        if(modelElement instanceof PortModel)
-            return new ShapeEditPart();
+            return new HostEditPart();
         if(modelElement instanceof LinkModel)
             return new LinkEditPart();
         throw new RuntimeException(

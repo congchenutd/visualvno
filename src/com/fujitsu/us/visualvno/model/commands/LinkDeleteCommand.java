@@ -9,23 +9,23 @@ import com.fujitsu.us.visualvno.model.LinkModel;
  */
 public class LinkDeleteCommand extends Command
 {
-    private final LinkModel _connection;
+    private final LinkModel _link;
 
-    public LinkDeleteCommand(LinkModel connection)
+    public LinkDeleteCommand(LinkModel link)
     {
-        if(connection == null)
+        if(link == null)
             throw new IllegalArgumentException();
-        setLabel("Connection deletion");
-        _connection = connection;
+        setLabel("Link deletion");
+        _link = link;
     }
 
     @Override
     public void execute() {
-        _connection.disconnect();
+        _link.disconnect();
     }
 
     @Override
     public void undo() {
-        _connection.reconnect();
+        _link.reconnect();
     }
 }

@@ -4,7 +4,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
 
-import com.fujitsu.us.visualvno.figures.ConnectionWithLabel;
+import com.fujitsu.us.visualvno.figures.LinkConnection;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.commands.LinkRenameCommand;
 
@@ -28,6 +28,6 @@ public class LinkRenameEditPolicy extends DirectEditPolicy
     protected void showCurrentEditValue(DirectEditRequest request)
     {
         String value = (String) request.getCellEditor().getValue();
-        ((ConnectionWithLabel) getHostFigure()).setText(value);
+        ((LinkConnection) getHostFigure()).setText(value);
     }
 }

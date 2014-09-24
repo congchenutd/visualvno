@@ -3,59 +3,59 @@ package com.fujitsu.us.visualvno.model.commands;
 import org.eclipse.gef.commands.Command;
 
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.ShapeModel;
+import com.fujitsu.us.visualvno.model.Port;
 
 /**
  * A command to create a Link between two shapes.
  */
 public class LinkCreateCommand extends Command
 {
-    private LinkModel     		_connection;
-    private final int           _lineStyle;
-    private final ShapeModel	_source;
-    private ShapeModel          _target;
+    private LinkModel   _link;
+    private final int   _lineStyle;
+    private final Port  _sourcePort;
+    private Port        _targetPort;
 
-    public LinkCreateCommand(ShapeModel source, int lineStyle)
+    public LinkCreateCommand(Port sourcePort, int lineStyle)
     {
-        if(source == null)
+        if(sourcePort == null)
             throw new IllegalArgumentException();
 
-        setLabel("Connection creation");
-        _source    = source;
-        _lineStyle = lineStyle;
+        setLabel("Link creation");
+        _sourcePort = sourcePort;
+        _lineStyle  = lineStyle;
     }
     
-    public void setTarget(ShapeModel target)
+    public void setTarget(Port targetPort)
     {
-        if(target == null)
+        if(targetPort == null)
             throw new IllegalArgumentException();
         
-        _target = target;
+        _targetPort = targetPort;
     }
 
     @Override
     public boolean canExecute() {
-        return !_source.connectsTo(_target);
+        return !_sourcePort.connectsTo(_targetPort);
     }
 
     @Override
     public void execute()
     {
-        _connection = new LinkModel(_source, _target);
-        _connection.setLineStyle(_lineStyle);
+        _link = new LinkModel(_sourcePort, _targetPort);
+        _link.setLineStyle(_lineStyle);
     }
 
     @Override
     public void redo() {
-        _connection.reconnect();
+        _link.reconnect();
     }
 
     @Override
     public void undo() {
-        _connection.disconnect();
+        _link.disconnect();
     }
     
     public LinkModel getLink() {
-    	return _connection;
+    	return _link;
     }
 }

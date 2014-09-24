@@ -15,7 +15,7 @@ import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-import com.fujitsu.us.visualvno.figures.ConnectionWithLabel;
+import com.fujitsu.us.visualvno.figures.LinkConnection;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.commands.LinkDeleteCommand;
@@ -77,10 +77,10 @@ public class LinkEditPart extends AbstractConnectionEditPart
     @Override
     protected IFigure createFigure()
     {
-        ConnectionWithLabel connection = new ConnectionWithLabel();
-        connection.setLineStyle(getCastedModel().getLineStyle());
-        connection.setConnectionRouter(new BendpointConnectionRouter());
-        return connection;
+        LinkConnection link = new LinkConnection();
+        link.setLineStyle(getCastedModel().getLineStyle());
+        link.setConnectionRouter(new BendpointConnectionRouter());
+        return link;
     }
 
     @Override
@@ -90,10 +90,9 @@ public class LinkEditPart extends AbstractConnectionEditPart
             performDirectEditing();
     }
 
-    // TODO: how to call this automatically after a new connection is created?
     private void performDirectEditing()
     {
-        Label label = ((ConnectionWithLabel) getFigure()).getLabel();
+        Label label = ((LinkConnection) getFigure()).getLabel();
         LabelDirectEditManager manager 
             = new LabelDirectEditManager(this, 
                                          TextCellEditor.class, 
@@ -118,7 +117,7 @@ public class LinkEditPart extends AbstractConnectionEditPart
     protected void refreshVisuals()
     {
         LinkModel model = getCastedModel();
-        ConnectionWithLabel connection = (ConnectionWithLabel) getFigure();
+        LinkConnection connection = (LinkConnection) getFigure();
         connection.setLineStyle(model.getLineStyle());
         connection.setText     (model.getName());
     }
