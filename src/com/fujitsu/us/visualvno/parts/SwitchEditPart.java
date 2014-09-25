@@ -29,11 +29,8 @@ public class SwitchEditPart extends ShapeEditPart
     @Override
     public ConnectionAnchor getSourceConnectionAnchor(
                                 ConnectionEditPart connectionEditPart) {
-//        LinkModel link = (LinkModel) connectionEditPart.getModel();
-//        SwitchFigure figure = (SwitchFigure) getFigure();
-//        figure.getAnchor();
-        return getSwitchFigure().getAnchorByLocation(null);
-//        return getConnectionAnchor();
+        LinkModel link = (LinkModel) connectionEditPart.getModel();
+        return getSwitchFigure().getAnchorByNumber(link.getSourcePort().getNumber());
     }
 
     @Override
@@ -48,8 +45,7 @@ public class SwitchEditPart extends ShapeEditPart
                                     ConnectionEditPart connectionEditPart)
     {
         LinkModel link = (LinkModel) connectionEditPart.getModel();
-        link.getTargetShape();
-        return getSwitchFigure().getAnchorByLocation(null);
+        return getSwitchFigure().getAnchorByNumber(link.getTargetPort().getNumber());
     }
 
     @Override
