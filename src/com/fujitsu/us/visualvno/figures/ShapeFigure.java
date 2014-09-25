@@ -83,15 +83,20 @@ public class ShapeFigure extends LabeledShape
     {
         super.fillShape(graphics);
         
-        Rectangle rect = getBounds().getCopy();
-        int radius = rect.width() / 2 - PortFigure.RADIUS;
         for(int i = 0; i < getPortCount(); ++i)
-        {
-            double theta = 2 * Math.PI / getPortCount() * i;
-            int x = (int) (radius + radius * Math.sin(theta));
-            int y = (int) (radius - radius * Math.cos(theta));
-            setConstraint(_ports.get(i), new Rectangle(x, y, PortFigure.WIDTH, PortFigure.WIDTH));
-        }
+            setConstraint(_ports.get(i), getPortBounds(i));
+    }
+    
+    /**
+     * Calculate the bounds of a port
+     */
+    public Rectangle getPortBounds(int number)
+    {
+        int radius = getBounds().width() / 2 - PortFigure.RADIUS;
+        double theta = 2 * Math.PI / getPortCount() * number;
+        int x = (int) (radius + radius * Math.sin(theta));
+        int y = (int) (radius - radius * Math.cos(theta));
+        return new Rectangle(x, y, PortFigure.WIDTH, PortFigure.WIDTH);
     }
     
     @Override
