@@ -33,9 +33,9 @@ public class LinkReconnectCommand extends Command
     {
         // check for existing connection
         if(_newSource != null)
-            return !_newSource.connectsTo(_oldTarget);
+            return _oldTarget.canReconnectTo(_newSource);
         else if(_newTarget != null)
-            return !_newTarget.connectsTo(_oldSource);
+            return _oldSource.canReconnectTo(_newTarget);
         return false;
     }
 
