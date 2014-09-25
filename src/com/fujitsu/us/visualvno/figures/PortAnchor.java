@@ -32,7 +32,7 @@ public class PortAnchor extends AbstractConnectionAnchor
     {
         ShapeFigure figure = (ShapeFigure) getOwner();
         Rectangle rect = figure.getPortBounds(getPortNumber());
-        rect.translate(figure.getLocation());
+        rect.translate(figure.getLocation());  // convert to absolute
         return rect.getCenter();
     }
     
