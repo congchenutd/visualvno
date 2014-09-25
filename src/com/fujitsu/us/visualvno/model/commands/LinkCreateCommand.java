@@ -35,7 +35,9 @@ public class LinkCreateCommand extends Command
 
     @Override
     public boolean canExecute() {
-        return !_sourcePort.connectsTo(_targetPort);
+        return !_sourcePort.connectsTo(_targetPort) &&   // no multiple links
+                _targetPort != null &&                   // no connecting the same switch
+                _sourcePort.getShape() != _targetPort.getShape();
     }
 
     @Override

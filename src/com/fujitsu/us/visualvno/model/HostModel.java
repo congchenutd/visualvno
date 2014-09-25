@@ -33,6 +33,10 @@ public class HostModel extends ShapeModel
     private String _ip  = new String();
     private String _mac = new String();
     
+    public HostModel() {
+        setPortCount(1);
+    }
+    
     public String getIP() {
         return _ip;
     }
