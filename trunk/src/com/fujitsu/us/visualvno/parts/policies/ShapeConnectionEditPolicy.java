@@ -7,6 +7,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import com.fujitsu.us.visualvno.figures.PortAnchor;
 import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.Port;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.LinkReconnectCommand;
@@ -21,21 +22,24 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
     {
+        Port port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
+        if(port.getLink() != null)
+            return null;
+        
         LinkCreateCommand command = (LinkCreateCommand) request.getStartCommand();
-        PortAnchor anchor = (PortAnchor) getEditPart().getTargetConnectionAnchor(request);
-        ShapeModel shape = (ShapeModel) getHost().getModel();
-        command.setTarget(shape.getPort(anchor.getPortNumber()));
+        command.setTarget(port);
         return command;
     }
 
     @Override
     protected Command getConnectionCreateCommand(CreateConnectionRequest request)
     {
-        PortAnchor anchor = (PortAnchor) getEditPart().getSourceConnectionAnchor(request);
-        ShapeModel shape = (ShapeModel) getHost().getModel();
+        Port port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
+        if(port.getLink() != null)
+            return null;
+        
         int style = ((Integer) request.getNewObjectType()).intValue();
-        LinkCreateCommand command = new LinkCreateCommand(shape.getPort(anchor.getPortNumber()), 
-                                                          style);
+        LinkCreateCommand command = new LinkCreateCommand(port, style);
         request.setStartCommand(command);
         return command;
     }
@@ -43,28 +47,34 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getReconnectSourceCommand(ReconnectRequest request)
     {
-        LinkModel connection 
-            = (LinkModel) request.getConnectionEditPart().getModel();
-        PortAnchor anchor = (PortAnchor) getEditPart().getSourceConnectionAnchor(request);
-        ShapeModel shape = (ShapeModel) getHost().getModel();
+        Port port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
+        if(port.getLink() != null)
+            return null;
+        
+        LinkModel connection = (LinkModel) request.getConnectionEditPart().getModel();
         LinkReconnectCommand command = new LinkReconnectCommand(connection);
-        command.setNewSource(shape.getPort(anchor.getPortNumber()));
+        command.setNewSource(port);
         return command;
     }
 
     @Override
     protected Command getReconnectTargetCommand(ReconnectRequest request)
     {
-        LinkModel connection 
-            = (LinkModel) request.getConnectionEditPart().getModel();
-        PortAnchor anchor = (PortAnchor) getEditPart().getTargetConnectionAnchor(request);
-        ShapeModel shape = (ShapeModel) getHost().getModel();
+        Port port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
+        if(port.getLink() != null)
+            return null;
+        
+        LinkModel connection = (LinkModel) request.getConnectionEditPart().getModel();
         LinkReconnectCommand command = new LinkReconnectCommand(connection);
-        command.setNewTarget(shape.getPort(anchor.getPortNumber()));
+        command.setNewTarget(port);
         return command;
     }
     
     private ShapeEditPart getEditPart() {
         return (ShapeEditPart) getHost();
+    }
+    
+    private Port getPort(PortAnchor anchor) {
+        return ((ShapeModel) getHost().getModel()).getPort(anchor.getPortNumber());
     }
 }
