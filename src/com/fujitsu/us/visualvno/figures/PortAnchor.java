@@ -1,15 +1,25 @@
 package com.fujitsu.us.visualvno.figures;
 
-import org.eclipse.draw2d.ChopboxAnchor;
+import org.eclipse.draw2d.AbstractConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class PortAnchor extends ChopboxAnchor
-{
-    private int _portNumber;
+/**
+ * Anchor associated with a PortFigure
+ * 
+ * FIXME: currently the anchor's owner is the ShapeFigure, 
+ * not the PortFigure (child of ShapeFigure)
+ * otherwise, the link is not updated with the moving shape.
+ * 
+ * @author Cong Chen <Cong.Chen@us.fujitsu.com>
+ */
+public class PortAnchor extends AbstractConnectionAnchor
+{    private int _portNumber;
     
-    public PortAnchor(int portNumber) {
+    public PortAnchor(IFigure owner, int portNumber)
+    {
+        super(owner);
         setPortNumber(portNumber);
     }
 
@@ -25,17 +35,14 @@ public class PortAnchor extends ChopboxAnchor
     public Point getLocation(Point reference)
     {
         ShapeFigure figure = (ShapeFigure) getOwner();
-        int portCount = figure.getPortCount();
         Rectangle rect = figure.getBounds();
         int radius = rect.width() / 2 - PortFigure.RADIUS;
         
-        double theta = 2 * Math.PI / portCount * _portNumber;
-        int x = (int) (radius + radius * Math.sin(theta));
-        int y = (int) (radius - radius * Math.cos(theta));
+        double theta = 2 * Math.PI * _portNumber / figure.getPortCount();
+        int dx =  (int) (radius * Math.sin(theta));
+        int dy = -(int) (radius * Math.cos(theta));
         
-        Point point = new PrecisionPoint(x, y);
-        figure.translateToAbsolute(point);
-        return point;
+        return rect.getCenter().translate(dx, dy);
     }
     
     @Override

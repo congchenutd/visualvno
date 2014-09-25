@@ -1,9 +1,7 @@
 package com.fujitsu.us.visualvno.figures;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.EllipseAnchor;
@@ -14,7 +12,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 public class ShapeFigure extends LabeledShape
 {
-    private final Map<Integer, PortAnchor>  _anchors = new HashMap<Integer, PortAnchor>();
+    private final List<ConnectionAnchor>    _anchors = new ArrayList<ConnectionAnchor>();
     private final List<PortFigure>          _ports   = new ArrayList<PortFigure>();
 
     public ShapeFigure(Shape shape)
@@ -32,7 +30,7 @@ public class ShapeFigure extends LabeledShape
         // clear existing ports and anchors
         for(int i = 0; i < getPortCount(); ++i)
             remove(_ports.get(i));
-        _ports.clear();
+        _ports  .clear();
         _anchors.clear();
         
         // add new ports and anchors
@@ -42,7 +40,7 @@ public class ShapeFigure extends LabeledShape
             _ports.add(port);
             add(port);
             
-            _anchors.put(i + 1, new PortAnchor(i + 1));
+            _anchors.add(port.getAnchor());
         }
     }
 
@@ -60,7 +58,7 @@ public class ShapeFigure extends LabeledShape
         
         long min = Long.MAX_VALUE;
 
-        for(PortAnchor anchor: _anchors.values())
+        for(ConnectionAnchor anchor: _anchors)
         {
             Point p2 = anchor.getLocation(null);
             long d = (long) point.getDistance(p2);
@@ -74,7 +72,7 @@ public class ShapeFigure extends LabeledShape
     }
     
     public ConnectionAnchor getAnchorByNumber(int number) {
-        return _anchors.get(number);
+        return _anchors.isEmpty() ? null : _anchors.get(number - 1);
     }
 
     @Override
@@ -94,5 +92,10 @@ public class ShapeFigure extends LabeledShape
             int y = (int) (radius - radius * Math.cos(theta));
             setConstraint(_ports.get(i), new Rectangle(x, y, PortFigure.WIDTH, PortFigure.WIDTH));
         }
+    }
+    
+    @Override
+    public String toString() {
+        return getText();
     }
 }

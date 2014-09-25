@@ -89,5 +89,10 @@ public class HostModel extends ShapeModel
         else
             super.setPropertyValue(id, value);
     }
+    
+    @Override
+    public void setPortCount(int count) {
+        super.setPortCount(1);
+    }
 
 }

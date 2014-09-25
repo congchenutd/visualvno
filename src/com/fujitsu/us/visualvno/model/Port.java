@@ -53,7 +53,10 @@ public class Port implements Serializable
      * Whether this Port is connected to that
      */
     public boolean connectsTo(Port that) {
-        return getLink() != null && getLink().equals(that.getLink());
+        return getLink() != null && 
+               that != null && 
+               that.getLink() != null && 
+               getLink().equals(that.getLink());
     }
     
     @Override
