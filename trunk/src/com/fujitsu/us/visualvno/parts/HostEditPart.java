@@ -4,12 +4,10 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.Request;
 
-import com.fujitsu.us.visualvno.figures.PortAnchor;
+import com.fujitsu.us.visualvno.figures.ShapeFigure;
 
 public class HostEditPart extends ShapeEditPart
 {
-    private ConnectionAnchor _anchor;
-
     @Override
     public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
         return getConnectionAnchor();
@@ -30,10 +28,7 @@ public class HostEditPart extends ShapeEditPart
         return getConnectionAnchor();
     }
     
-    protected ConnectionAnchor getConnectionAnchor()
-    {
-        if(_anchor == null)
-            _anchor = new PortAnchor(1);
-        return _anchor;
+    protected ConnectionAnchor getConnectionAnchor() {
+        return ((ShapeFigure) getFigure()).getAnchorByNumber(1);
     }
 }
