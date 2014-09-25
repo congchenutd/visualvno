@@ -49,14 +49,14 @@ public class Port implements Serializable
         getShape().updateLink(link);  // allow shape to fire property change
     }
     
-    /**
-     * Whether this Port is connected to that
-     */
-    public boolean connectsTo(Port that) {
-        return getLink() != null && 
-               that != null && 
-               that.getLink() != null && 
-               getLink().equals(that.getLink());
+    public boolean canConnectTo(Port that) {
+        return this.getLink() == null && canReconnectTo(that);
+    }
+    
+    public boolean canReconnectTo(Port that) {
+        return that != null &&
+               that.getLink() == null &&
+               this.getShape() != that.getShape();
     }
     
     @Override
