@@ -15,34 +15,25 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
 public class PortAnchor extends AbstractConnectionAnchor
-{    private int _portNumber;
+{    private final PortFigure _port;
     
-    public PortAnchor(IFigure owner, int portNumber)
+    public PortAnchor(IFigure owner, PortFigure port)
     {
         super(owner);
-        setPortNumber(portNumber);
+        _port = port;
     }
 
-    public void setPortNumber(int number) {
-        _portNumber = number;
-    }
-    
     public int getPortNumber() {
-        return _portNumber;
+        return _port.getNumber();
     }
 
     @Override
     public Point getLocation(Point reference)
     {
         ShapeFigure figure = (ShapeFigure) getOwner();
-        Rectangle rect = figure.getBounds();
-        int radius = rect.width() / 2 - PortFigure.RADIUS;
-        
-        double theta = 2 * Math.PI * _portNumber / figure.getPortCount();
-        int dx =  (int) (radius * Math.sin(theta));
-        int dy = -(int) (radius * Math.cos(theta));
-        
-        return rect.getCenter().translate(dx, dy);
+        Rectangle rect = figure.getPortBounds(getPortNumber());
+        rect.translate(figure.getLocation());
+        return rect.getCenter();
     }
     
     @Override

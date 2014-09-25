@@ -40,7 +40,7 @@ public class PortFigure extends LabeledShape
     public ConnectionAnchor getAnchor()
     {
         if(_anchor == null)
-            _anchor = new PortAnchor(this.getParent(), getNumber());
+            _anchor = new PortAnchor(this.getParent(), this);
         return _anchor;
     }
     
@@ -48,4 +48,5 @@ public class PortFigure extends LabeledShape
     public String toString() {
         return getParent().toString() + " Port " + getNumber();
     }
+
 }
