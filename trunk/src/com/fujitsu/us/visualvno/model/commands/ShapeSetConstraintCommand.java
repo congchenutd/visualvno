@@ -24,10 +24,15 @@ public class ShapeSetConstraintCommand extends Command
 		if (shape == null || req == null || newBounds == null)
 			throw new IllegalArgumentException();
 
+		setLabel("Move / Resize");
 		_shape        = shape;
 		_request      = req;
 		_newBounds    = newBounds.getCopy();
-		setLabel("Move / Resize");
+
+		// ensure the shape is always a square or circle
+		int diameter = Math.max(newBounds.width(), newBounds.height());
+		_newBounds.setWidth (diameter);
+		_newBounds.setHeight(diameter);
 	}
 
 	@Override
