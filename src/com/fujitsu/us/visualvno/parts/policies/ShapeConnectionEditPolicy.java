@@ -34,11 +34,16 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCreateCommand(CreateConnectionRequest request)
     {
+        int style = ((Integer) request.getNewObjectType()).intValue();
+        if(style == LinkModel.DASHED_CONNECTION)
+        {
+
+        }
+        
         PortModel port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
         if(port.getLink() != null)
             return null;
         
-        int style = ((Integer) request.getNewObjectType()).intValue();
         LinkCreateCommand command = new LinkCreateCommand(port, style);
         request.setStartCommand(command);
         return command;
@@ -51,8 +56,8 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
         if(port.getLink() != null)
             return null;
         
-        LinkModel connection = (LinkModel) request.getConnectionEditPart().getModel();
-        LinkReconnectCommand command = new LinkReconnectCommand(connection);
+        LinkModel linkModel = (LinkModel) request.getConnectionEditPart().getModel();
+        LinkReconnectCommand command = new LinkReconnectCommand(linkModel);
         command.setNewSource(port);
         return command;
     }
@@ -64,8 +69,8 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
         if(port.getLink() != null)
             return null;
         
-        LinkModel connection = (LinkModel) request.getConnectionEditPart().getModel();
-        LinkReconnectCommand command = new LinkReconnectCommand(connection);
+        LinkModel linkModel = (LinkModel) request.getConnectionEditPart().getModel();
+        LinkReconnectCommand command = new LinkReconnectCommand(linkModel);
         command.setNewTarget(port);
         return command;
     }

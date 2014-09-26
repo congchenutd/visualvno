@@ -10,10 +10,10 @@ import com.fujitsu.us.visualvno.model.PortModel;
  */
 public class LinkCreateCommand extends Command
 {
-    private LinkModel   _link;
-    private final int   _lineStyle;
-    private final PortModel  _sourcePort;
-    private PortModel        _targetPort;
+    private LinkModel       _link;
+    private final int       _lineStyle;
+    private final PortModel _sourcePort;
+    private PortModel       _targetPort;
 
     public LinkCreateCommand(PortModel sourcePort, int lineStyle)
     {
@@ -25,12 +25,12 @@ public class LinkCreateCommand extends Command
         _lineStyle  = lineStyle;
     }
     
-    public void setTarget(PortModel targetPort)
+    public void setTarget(PortModel port)
     {
-        if(targetPort == null)
+        if(port == null)
             throw new IllegalArgumentException();
         
-        _targetPort = targetPort;
+        _targetPort = port;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class SwitchModel extends ShapeModel
 	protected static IPropertyDescriptor[] _descriptors;
 	
 	public static final String DPID_PROP = "Switch.DPID";
-	
+		
 	static
 	{
 	    // copy ShapeModel's descriptors, then add its own

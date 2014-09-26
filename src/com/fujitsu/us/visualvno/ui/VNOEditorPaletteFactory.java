@@ -86,23 +86,11 @@ public class VNOEditorPaletteFactory
 		CreationToolEntry mappingEntry = new ConnectionCreationToolEntry(
                 "Mapping",
                 "Create a Mapping",
-                new CreationFactory()
-                {
-                    @Override
-                    public Object getNewObject() {
-                        return new LinkModel();
-                    }
-
-                    @Override
-                    public Object getObjectType() {
-                        return LinkModel.DASHED_CONNECTION;
-                    }
-                }, 
+                new SimpleFactory(LinkModel.class), 
                 ImageDescriptor.createFromFile(VisualVNOPlugin.class,
                         LinkModel.imageFileSmall),
                 ImageDescriptor.createFromFile(VisualVNOPlugin.class,
                         LinkModel.imageFileBig));
-        mappingEntry.setToolClass(LinkCreationTool.class);
         componentsDrawer.add(mappingEntry);
 
 		return componentsDrawer;

@@ -1,8 +1,8 @@
 package com.fujitsu.us.visualvno.model;
 
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.eclipse.draw2d.Graphics;
 
 /**
  * A Link between two distinct shapes.
@@ -20,11 +20,11 @@ public class LinkModel extends ModelBase
     
     private static final IPropertyDescriptor[] _descriptors;
 
-    private String  _name       = new String();
-    private int     _lineStyle  = Graphics.LINE_SOLID;
-    private PortModel    _sourcePort;
-    private PortModel    _targetPort;
-    private boolean _isConnected;
+    private String      _name       = new String();
+    private int         _lineStyle  = Graphics.LINE_SOLID;
+    private PortModel   _sourcePort;
+    private PortModel   _targetPort;
+    private boolean     _isConnected;
 
     static
     {
@@ -153,5 +153,19 @@ public class LinkModel extends ModelBase
     @Override
     public String toString() {
         return getName();
+    }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+        
+        if(!(obj instanceof LinkModel))
+            return false;
+        
+        LinkModel that = (LinkModel) obj;
+        return this.getSourcePort().equals(that.getSourcePort()) &&
+               this.getTargetPort().equals(that.getTargetPort());
     }
 }

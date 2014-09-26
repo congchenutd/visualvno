@@ -7,17 +7,14 @@ import java.io.Serializable;
  * A Shape has 0-n ports
  * A Host always has 1 port
  * A port connects to 0-1 link
- * 
- * Not part of the model, 
- * as it doesn't show up in the property view or the editor
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
 public class PortModel implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private final int           _number;
-    private final ShapeModel    _shape;
-    private LinkModel           _link;
+    private final int        _number;
+    private final ShapeModel _shape;
+    private LinkModel        _link;
     
     public PortModel(ShapeModel shape, int number)
     {

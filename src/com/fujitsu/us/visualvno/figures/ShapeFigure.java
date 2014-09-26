@@ -9,7 +9,7 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class ShapeFigure extends LabeledShape
+public abstract class ShapeFigure extends LabeledShape
 {
     private final List<ConnectionAnchor>    _anchors = new ArrayList<ConnectionAnchor>();
     private final List<PortFigure>          _ports   = new ArrayList<PortFigure>();
@@ -45,7 +45,7 @@ public class ShapeFigure extends LabeledShape
     /**
      * Find the anchor closest to the given point
      */
-    public ConnectionAnchor getAnchorByLocation(Point point)
+    public ConnectionAnchor getPortAnchor(Point point)
     {
         ConnectionAnchor closest = null;
         long min = Long.MAX_VALUE;
@@ -61,10 +61,12 @@ public class ShapeFigure extends LabeledShape
         return closest;
     }
     
-    public ConnectionAnchor getAnchorByNumber(int number) {
+    public ConnectionAnchor getPortAnchor(int number) {
         return _anchors.isEmpty() ? null : _anchors.get(number - 1);
     }
-
+    
+    public abstract ConnectionAnchor getMappingAnchor();
+    
     @Override
     protected void outlineShape(Graphics graphics) {}
 
