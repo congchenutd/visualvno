@@ -9,11 +9,6 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -24,25 +19,6 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.commands.ActionHandler;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.TransferDropTargetListener;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.IPageSite;
-import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
@@ -66,6 +42,30 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.commands.ActionHandler;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.TransferDropTargetListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.PageBook;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.actions.AddPortAction;
@@ -191,10 +191,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 			                 true, false, monitor);
 			getCommandStack().markSaveLocation();
 		}
-		catch(CoreException e) {
-			e.printStackTrace();
-		}
-		catch(IOException e) {
+		catch(CoreException | IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -242,11 +239,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 				setInput(new FileEditorInput(file));
 				getCommandStack().markSaveLocation();
 			}
-			catch(InterruptedException e) {
-				// should not happen, since the monitor dialog is not cancelable
-				e.printStackTrace();
-			}
-			catch(InvocationTargetException e) {
+			catch(InterruptedException | InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
@@ -263,7 +256,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     @Override
 	public Object getAdapter(Class type)
 	{
-	    // adapt ot an OutlinePage
+	    // adapt to an OutlinePage
 		if(type == IContentOutlinePage.class)
 			return new OutlinePage(new TreeViewer());
 		return super.getAdapter(type);
@@ -284,13 +277,6 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		return PALETTE_MODEL;
 	}
 
-	private void handleLoadException(Exception e)
-	{
-		System.err.println("Load failed. Using default model.");
-		e.printStackTrace();
-		_diagram = new DiagramModel();
-	}
-
 	@Override
 	protected void initializeGraphicalViewer()
 	{
@@ -307,6 +293,9 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 		return true;
 	}
 
+	/**
+	 * Read file
+	 */
 	@Override
 	protected void setInput(IEditorInput input)
 	{
@@ -319,14 +308,10 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 			in.close();
 			setPartName(file.getName());
 		}
-		catch(IOException e) {
-			handleLoadException(e);
-		}
-		catch(CoreException e) {
-			handleLoadException(e);
-		}
-		catch(ClassNotFoundException e) {
-			handleLoadException(e);
+		catch(IOException | CoreException | ClassNotFoundException e) {
+			System.err.println("Load failed. Using default model.");
+			e.printStackTrace();
+			_diagram = new DiagramModel();
 		}
 	}
 

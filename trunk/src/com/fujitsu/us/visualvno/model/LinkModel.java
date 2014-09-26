@@ -22,8 +22,8 @@ public class LinkModel extends ModelBase
 
     private String  _name       = new String();
     private int     _lineStyle  = Graphics.LINE_SOLID;
-    private Port    _sourcePort;
-    private Port    _targetPort;
+    private PortModel    _sourcePort;
+    private PortModel    _targetPort;
     private boolean _isConnected;
 
     static
@@ -36,15 +36,15 @@ public class LinkModel extends ModelBase
 
     public LinkModel() {}
     
-    public LinkModel(Port source, Port target) {
+    public LinkModel(PortModel source, PortModel target) {
         reconnect(source, target);
     }
     
-    public Port getSourcePort() {
+    public PortModel getSourcePort() {
         return _sourcePort;
     }
     
-    public Port getTargetPort() {
+    public PortModel getTargetPort() {
         return _targetPort;
     }
     
@@ -127,7 +127,7 @@ public class LinkModel extends ModelBase
         }
     }
 
-    public void reconnect(Port sourcePort, Port targetPort)
+    public void reconnect(PortModel sourcePort, PortModel targetPort)
     {
         if(sourcePort == null || 
            targetPort == null || 

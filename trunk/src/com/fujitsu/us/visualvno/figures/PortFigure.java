@@ -1,8 +1,6 @@
 package com.fujitsu.us.visualvno.figures;
 
-import org.eclipse.draw2d.AbstractConnectionAnchor;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
@@ -15,7 +13,6 @@ public class PortFigure extends LabeledShape
 {
     public static final int RADIUS = 10;
     public static final int WIDTH  = 2 * RADIUS;
-    private AbstractConnectionAnchor _anchor;
     
     public PortFigure(int number)
     {
@@ -35,13 +32,6 @@ public class PortFigure extends LabeledShape
     @Override
     public Dimension getPreferredSize(int wHint, int hHint) {
         return new Dimension(WIDTH, WIDTH);
-    }
-    
-    public ConnectionAnchor getAnchor()
-    {
-        if(_anchor == null)
-            _anchor = new PortAnchor(this.getParent(), this);
-        return _anchor;
     }
     
     @Override

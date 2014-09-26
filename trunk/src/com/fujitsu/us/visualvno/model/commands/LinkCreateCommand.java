@@ -3,7 +3,7 @@ package com.fujitsu.us.visualvno.model.commands;
 import org.eclipse.gef.commands.Command;
 
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.Port;
+import com.fujitsu.us.visualvno.model.PortModel;
 
 /**
  * A command to create a Link between two shapes.
@@ -12,10 +12,10 @@ public class LinkCreateCommand extends Command
 {
     private LinkModel   _link;
     private final int   _lineStyle;
-    private final Port  _sourcePort;
-    private Port        _targetPort;
+    private final PortModel  _sourcePort;
+    private PortModel        _targetPort;
 
-    public LinkCreateCommand(Port sourcePort, int lineStyle)
+    public LinkCreateCommand(PortModel sourcePort, int lineStyle)
     {
         if(sourcePort == null)
             throw new IllegalArgumentException();
@@ -25,7 +25,7 @@ public class LinkCreateCommand extends Command
         _lineStyle  = lineStyle;
     }
     
-    public void setTarget(Port targetPort)
+    public void setTarget(PortModel targetPort)
     {
         if(targetPort == null)
             throw new IllegalArgumentException();
