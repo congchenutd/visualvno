@@ -12,10 +12,10 @@ public class LinkReconnectCommand extends Command
 {
 
     private final LinkModel _link;
-    private final PortModel      _oldSource;
-    private final PortModel      _oldTarget;
-    private       PortModel      _newSource;
-    private       PortModel      _newTarget;
+    private final PortModel _oldSource;
+    private final PortModel _oldTarget;
+    private       PortModel _newSource;
+    private       PortModel _newTarget;
 
     public LinkReconnectCommand(LinkModel link)
     {
@@ -58,13 +58,13 @@ public class LinkReconnectCommand extends Command
      * Note: _newTarget will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewSource(PortModel newSource)
+    public void setNewSource(PortModel port)
     {
-        if(newSource == null)
+        if(port == null)
             throw new IllegalArgumentException();
 
         setLabel("Move link startpoint");
-        _newSource = newSource;
+        _newSource = port;
         _newTarget = null;
     }
 
@@ -72,14 +72,14 @@ public class LinkReconnectCommand extends Command
      * Note: _newSource will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewTarget(PortModel newTarget)
+    public void setNewTarget(PortModel port)
     {
-        if(newTarget == null)
+        if(port == null)
             throw new IllegalArgumentException();
 
         setLabel("Move link endpoint");
         _newSource = null;
-        _newTarget = newTarget;
+        _newTarget = port;
     }
 
     @Override

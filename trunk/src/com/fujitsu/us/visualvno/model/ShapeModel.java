@@ -29,17 +29,19 @@ public abstract class ShapeModel extends ModelBase
     protected static IPropertyDescriptor[] descriptors;
 
     // property IDs
-    public static final String LOCATION_PROP    = "Shape.Location";
-    public static final String SIZE_PROP        = "Shape.Size";
-    public static final String SOURCELINK_PROP  = "Shape.SourceLinks";
-    public static final String TARGETLINK_PROP  = "Shape.TargetLinks";
-    public static final String NAME_PROP        = "Shape.Name";
-    public static final String PORTCOUNT_PROP   = "Shape.PortCount";
-    public static final String COLOR_PROP       = "Shape.Color";
-    public static final String HEIGHT_PROP      = "Shape.Height";
-    public static final String WIDTH_PROP       = "Shape.Width";
-    public static final String XPOS_PROP        = "Shape.X";
-    public static final String YPOS_PROP        = "Shape.Y";
+    public static final String LOCATION_PROP        = "Shape.Location";
+    public static final String SIZE_PROP            = "Shape.Size";
+    public static final String SOURCELINK_PROP      = "Shape.SourceLinks";
+    public static final String TARGETLINK_PROP      = "Shape.TargetLinks";
+    public static final String SOURCEMAPPING_PROP   = "Shape.SourceLinks";
+    public static final String TARGETMAPPING_PROP   = "Shape.TargetLinks";
+    public static final String NAME_PROP            = "Shape.Name";
+    public static final String PORTCOUNT_PROP       = "Shape.PortCount";
+    public static final String COLOR_PROP           = "Shape.Color";
+    public static final String HEIGHT_PROP          = "Shape.Height";
+    public static final String WIDTH_PROP           = "Shape.Width";
+    public static final String XPOS_PROP            = "Shape.X";
+    public static final String YPOS_PROP            = "Shape.Y";
     
     // properties
     private final Point     _location   = new Point(0, 0);
@@ -47,7 +49,8 @@ public abstract class ShapeModel extends ModelBase
     private       String    _name       = new String();
     private       RGB       _color      = new RGB(0, 255, 0);
     
-    private final List<PortModel> _ports = new ArrayList<PortModel>();
+    private final List<PortModel>  _ports       = new ArrayList<PortModel>();
+    private final MappingPortModel _mappingPort = new MappingPortModel(this);
 
     // initialize the property descriptors (for those appear in the property view)
     static
@@ -274,7 +277,7 @@ public abstract class ShapeModel extends ModelBase
                 links.add(port.getLink());
         return links;
     }
-
+    
     /**
      * Whether this and that are connected
      */

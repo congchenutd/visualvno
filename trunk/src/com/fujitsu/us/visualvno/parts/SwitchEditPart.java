@@ -9,6 +9,7 @@ import org.eclipse.gef.requests.DropRequest;
 
 import com.fujitsu.us.visualvno.figures.SwitchFigure;
 import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 
 public class SwitchEditPart extends ShapeEditPart
@@ -30,14 +31,15 @@ public class SwitchEditPart extends ShapeEditPart
     public ConnectionAnchor getSourceConnectionAnchor(
                                 ConnectionEditPart connectionEditPart) {
         LinkModel link = (LinkModel) connectionEditPart.getModel();
-        return getSwitchFigure().getAnchorByNumber(link.getSourcePort().getNumber());
+        PortModel port = (PortModel) link.getSourcePort();
+        return getSwitchFigure().getPortAnchor(port.getNumber());
     }
 
     @Override
     public ConnectionAnchor getSourceConnectionAnchor(Request request)
     {
         Point pt = new Point(((DropRequest) request).getLocation());
-        return getSwitchFigure().getAnchorByLocation(pt);
+        return getSwitchFigure().getPortAnchor(pt);
     }
 
     @Override
@@ -45,12 +47,13 @@ public class SwitchEditPart extends ShapeEditPart
                                     ConnectionEditPart connectionEditPart)
     {
         LinkModel link = (LinkModel) connectionEditPart.getModel();
-        return getSwitchFigure().getAnchorByNumber(link.getTargetPort().getNumber());
+        PortModel port = (PortModel) link.getSourcePort();
+        return getSwitchFigure().getPortAnchor(port.getNumber());
     }
 
     @Override
     public ConnectionAnchor getTargetConnectionAnchor(Request request) {
         Point pt = new Point(((DropRequest) request).getLocation());
-        return getSwitchFigure().getAnchorByLocation(pt);
+        return getSwitchFigure().getPortAnchor(pt);
     }
 }

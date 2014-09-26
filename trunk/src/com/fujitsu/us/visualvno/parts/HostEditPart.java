@@ -28,7 +28,10 @@ public class HostEditPart extends ShapeEditPart
         return getConnectionAnchor();
     }
     
+    /**
+     * @return  the only port anchor
+     */
     protected ConnectionAnchor getConnectionAnchor() {
-        return ((ShapeFigure) getFigure()).getAnchorByNumber(1);
+        return ((ShapeFigure) getFigure()).getPortAnchor(1);
     }
 }
