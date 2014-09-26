@@ -43,11 +43,11 @@ public abstract class ShapeModel extends ModelBase
     
     // properties
     private final Point     _location   = new Point(0, 0);
-    private final Dimension _size       = new Dimension(50, 50);
+    private final Dimension _size       = new Dimension(75, 75);
     private       String    _name       = new String();
     private       RGB       _color      = new RGB(0, 255, 0);
     
-    private final List<Port> _ports = new ArrayList<Port>();
+    private final List<PortModel> _ports = new ArrayList<PortModel>();
 
     // initialize the property descriptors (for those appear in the property view)
     static
@@ -222,12 +222,12 @@ public abstract class ShapeModel extends ModelBase
         
         _ports.clear();
         for(int i = 0; i < count; ++i)
-            _ports.add(new Port(this, i + 1));
+            _ports.add(new PortModel(this, i + 1));
             
         firePropertyChange(PORTCOUNT_PROP, null, count);
     }
     
-    public Port getPort(int portNumber) {
+    public PortModel getPort(int portNumber) {
         return _ports.isEmpty() ? null : _ports.get(portNumber - 1);
     }
     
@@ -260,7 +260,7 @@ public abstract class ShapeModel extends ModelBase
     public List<LinkModel> getSourceLinks()
     {
         List<LinkModel> links = new ArrayList<LinkModel>();
-        for(Port port: _ports)
+        for(PortModel port: _ports)
             if(port.getLink() != null && port.getLink().getSourcePort().equals(port))
                 links.add(port.getLink());
         return links;
@@ -269,7 +269,7 @@ public abstract class ShapeModel extends ModelBase
     public List<LinkModel> getTargetLinks()
     {
         List<LinkModel> links = new ArrayList<LinkModel>();
-        for(Port port: _ports)
+        for(PortModel port: _ports)
             if(port.getLink() != null && port.getLink().getTargetPort().equals(port))
                 links.add(port.getLink());
         return links;

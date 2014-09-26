@@ -3,7 +3,7 @@ package com.fujitsu.us.visualvno.model.commands;
 import org.eclipse.gef.commands.Command;
 
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.Port;
+import com.fujitsu.us.visualvno.model.PortModel;
 
 /**
  * A command to reconnect a Link to a different start point or end point.
@@ -12,10 +12,10 @@ public class LinkReconnectCommand extends Command
 {
 
     private final LinkModel _link;
-    private final Port      _oldSource;
-    private final Port      _oldTarget;
-    private       Port      _newSource;
-    private       Port      _newTarget;
+    private final PortModel      _oldSource;
+    private final PortModel      _oldTarget;
+    private       PortModel      _newSource;
+    private       PortModel      _newTarget;
 
     public LinkReconnectCommand(LinkModel link)
     {
@@ -58,7 +58,7 @@ public class LinkReconnectCommand extends Command
      * Note: _newTarget will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewSource(Port newSource)
+    public void setNewSource(PortModel newSource)
     {
         if(newSource == null)
             throw new IllegalArgumentException();
@@ -72,7 +72,7 @@ public class LinkReconnectCommand extends Command
      * Note: _newSource will be set to null, 
      * because _newSource and _newTarget are exclusive
      */
-    public void setNewTarget(Port newTarget)
+    public void setNewTarget(PortModel newTarget)
     {
         if(newTarget == null)
             throw new IllegalArgumentException();

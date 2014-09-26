@@ -1,87 +1,81 @@
 package com.fujitsu.us.visualvno.model;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import java.io.Serializable;
 
-public class PortModel extends ShapeModel
+
+/**
+ * A Shape has 0-n ports
+ * A Host always has 1 port
+ * A port connects to 0-1 link
+ * 
+ * Not part of the model, 
+ * as it doesn't show up in the property view or the editor
+ * @author Cong Chen <Cong.Chen@us.fujitsu.com>
+ */
+public class PortModel implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    public  static final String imageFileSmall  = "icons/Port.png";
-    public  static final String imageFileBig    = "icons/Port.png";
-    private static final Image  ICON            = createImage(imageFileSmall);
-
-    protected static IPropertyDescriptor[] _descriptors;
+    private final int           _number;
+    private final ShapeModel    _shape;
+    private LinkModel           _link;
     
-    public static final String NUMBER_PROP = "Port.Number";
-    public static final String MAC_PROP    = "Port.MAC";
-    
-    private int     _number = 1;
-    private String  _mac    = new String();
-    
-    static
+    public PortModel(ShapeModel shape, int number)
     {
-        _descriptors = new IPropertyDescriptor[] {
-                new TextPropertyDescriptor(NUMBER_PROP, "Number"),
-                new TextPropertyDescriptor(MAC_PROP,    "MAC"),
-        };
-    }
-    
-    @Override
-    public Image getIcon() {
-        return ICON;
-    }
-    
-    @Override
-    public IPropertyDescriptor[] getPropertyDescriptors() {
-        return _descriptors;
-    }
-    
-    @Override
-    public Object getPropertyValue(Object id)
-    {
-        if(NUMBER_PROP.equals(id))
-            return getNumber();
-        if(MAC_PROP.equals(id))
-            return getMAC();
-        return super.getPropertyValue(id);
-    }
-    
-    @Override
-    public void setPropertyValue(Object id, Object value)
-    {
-        if(NUMBER_PROP.equals(id))
-            setNumber((Integer) value);
-        if(MAC_PROP.equals(id))
-            setMAC((String) value);
-        else
-            super.setPropertyValue(id, value);
+        _shape  = shape;
+        _number = number;
     }
     
     public int getNumber() {
         return _number;
     }
     
-    public void setNumber(int number)
-    {
-        if(number < 1)
-            throw new IllegalArgumentException();
-        
-        _number = number;
-        firePropertyChange(NUMBER_PROP, null, number);
+    public ShapeModel getShape() {
+        return _shape;
     }
     
-    public String getMAC() {
-        return _mac;
+    public LinkModel getLink() {
+        return _link;
     }
     
-    public void setMAC(String mac)
+    public void setLink(LinkModel link)
     {
-        if(mac == null)
-            throw new IllegalArgumentException();
-        
-        _mac = mac;
-        firePropertyChange(MAC_PROP, null, mac);
+        _link = link;
+        getShape().updateLink(link);  // allow shape to fire property change
     }
-
+    
+    public void removeLink(LinkModel link)
+    {
+        _link = null;
+        getShape().updateLink(link);  // allow shape to fire property change
+    }
+    
+    public boolean canConnectTo(PortModel that) {
+        return this.getLink() == null && canReconnectTo(that);
+    }
+    
+    public boolean canReconnectTo(PortModel that) {
+        return that != null &&
+               that.getLink() == null &&
+               this.getShape() != that.getShape();
+    }
+    
+    @Override
+    public String toString() {
+        return getShape().toString() + ":" + getNumber();
+    }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+        
+        if(!(obj instanceof PortModel))
+            return false;
+        
+        PortModel that = (PortModel) obj;
+        return getShape().equals(that.getShape()) && 
+               getNumber() == that.getNumber();
+    }
+    
 }

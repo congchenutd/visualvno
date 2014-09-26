@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Point;
@@ -36,11 +35,10 @@ public class ShapeFigure extends LabeledShape
         // add new ports and anchors
         for(int i = 0; i < count; ++i)
         {
+            _anchors.add(new PortAnchor(this, i + 1));
             PortFigure port = new PortFigure(i + 1);
             _ports.add(port);
             add(port);
-            
-            _anchors.add(port.getAnchor());
         }
     }
 
@@ -49,19 +47,11 @@ public class ShapeFigure extends LabeledShape
      */
     public ConnectionAnchor getAnchorByLocation(Point point)
     {
-        if(getPortCount() == 0)
-            return null;
-        
-        ConnectionAnchor closest = new EllipseAnchor(this);
-        if(point == null)
-            return closest;
-        
+        ConnectionAnchor closest = null;
         long min = Long.MAX_VALUE;
-
         for(ConnectionAnchor anchor: _anchors)
         {
-            Point p2 = anchor.getLocation(null);
-            long d = (long) point.getDistance(p2);
+            long d = (long) point.getDistance(anchor.getLocation(null));
             if(d < min)
             {
                 min = d;
@@ -97,6 +87,16 @@ public class ShapeFigure extends LabeledShape
         int x = (int) (radius + radius * Math.sin(theta));
         int y = (int) (radius - radius * Math.cos(theta));
         return new Rectangle(x, y, PortFigure.WIDTH, PortFigure.WIDTH);
+    }
+    
+    /**
+     * Calculate the location of an anchor
+     */
+    public Point getAnchorLocation(int number)
+    {
+        Rectangle rect = getPortBounds(number);
+        rect.translate(getLocation());  // convert to absolute
+        return rect.getCenter();
     }
     
     @Override

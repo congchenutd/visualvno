@@ -7,7 +7,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import com.fujitsu.us.visualvno.figures.PortAnchor;
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.Port;
+import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.LinkReconnectCommand;
@@ -22,7 +22,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
     {
-        Port port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
+        PortModel port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
         if(port.getLink() != null)
             return null;
         
@@ -34,7 +34,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getConnectionCreateCommand(CreateConnectionRequest request)
     {
-        Port port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
+        PortModel port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
         if(port.getLink() != null)
             return null;
         
@@ -47,7 +47,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getReconnectSourceCommand(ReconnectRequest request)
     {
-        Port port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
+        PortModel port = getPort((PortAnchor) getEditPart().getSourceConnectionAnchor(request));
         if(port.getLink() != null)
             return null;
         
@@ -60,7 +60,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
     @Override
     protected Command getReconnectTargetCommand(ReconnectRequest request)
     {
-        Port port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
+        PortModel port = getPort((PortAnchor) getEditPart().getTargetConnectionAnchor(request));
         if(port.getLink() != null)
             return null;
         
@@ -74,7 +74,7 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
         return (ShapeEditPart) getHost();
     }
     
-    private Port getPort(PortAnchor anchor) {
+    private PortModel getPort(PortAnchor anchor) {
         return ((ShapeModel) getHost().getModel()).getPort(anchor.getPortNumber());
     }
 }

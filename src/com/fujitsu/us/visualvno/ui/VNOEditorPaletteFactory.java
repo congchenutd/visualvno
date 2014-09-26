@@ -1,6 +1,5 @@
 package com.fujitsu.us.visualvno.ui;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
@@ -12,12 +11,12 @@ import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.PortModel;
-import com.fujitsu.us.visualvno.model.SwitchModel;
 import com.fujitsu.us.visualvno.model.HostModel;
+import com.fujitsu.us.visualvno.model.LinkModel;
+import com.fujitsu.us.visualvno.model.SwitchModel;
 
 /**
  * Utility class that creates a GEF Palette
@@ -51,17 +50,6 @@ public class VNOEditorPaletteFactory
 		switchEntry.setToolClass(ShapeCreationTool.class);
 		componentsDrawer.add(switchEntry);
 		
-		CreationToolEntry portEntry = new CreationToolEntry(
-                "Port",
-                "Create a Port",
-                new SimpleFactory(PortModel.class), 
-                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                        HostModel.imageFileSmall),
-                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                        HostModel.imageFileBig));
-        portEntry.setToolClass(ShapeCreationTool.class);
-        componentsDrawer.add(portEntry);
-		
 		CreationToolEntry hostEntry = new CreationToolEntry(
 				"Host",
 				"Create a Host",
@@ -94,6 +82,28 @@ public class VNOEditorPaletteFactory
 			    		LinkModel.imageFileBig));
 		linkEntry.setToolClass(LinkCreationTool.class);
 		componentsDrawer.add(linkEntry);
+		
+		CreationToolEntry mappingEntry = new ConnectionCreationToolEntry(
+                "Mapping",
+                "Create a Mapping",
+                new CreationFactory()
+                {
+                    @Override
+                    public Object getNewObject() {
+                        return new LinkModel();
+                    }
+
+                    @Override
+                    public Object getObjectType() {
+                        return LinkModel.DASHED_CONNECTION;
+                    }
+                }, 
+                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                        LinkModel.imageFileSmall),
+                ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                        LinkModel.imageFileBig));
+        mappingEntry.setToolClass(LinkCreationTool.class);
+        componentsDrawer.add(mappingEntry);
 
 		return componentsDrawer;
 	}
