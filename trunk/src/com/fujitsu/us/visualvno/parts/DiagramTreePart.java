@@ -10,19 +10,19 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
+import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.DiagramModel;
 
 /**
  * TreeEditPart for a ShapesDiagram instance. 
  * Used in the Outline View of the ShapesEditor.
  */
-public class DiagramTreeEditPart extends AbstractTreeEditPart 
-                                 implements PropertyChangeListener
+public class DiagramTreePart extends    AbstractTreeEditPart 
+                             implements PropertyChangeListener
 {
 
-	public DiagramTreeEditPart(DiagramModel model) {
+	public DiagramTreePart(DiagramModel model) {
 		super(model);
 	}
 

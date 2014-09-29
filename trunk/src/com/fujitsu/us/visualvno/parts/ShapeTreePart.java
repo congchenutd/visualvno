@@ -3,22 +3,22 @@ package com.fujitsu.us.visualvno.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
+import org.eclipse.swt.graphics.Image;
 
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalPolicy;
 
 /**
  * TreeEditPart used for Shape instances.
  * This is used in the Outline View of the ShapesEditor.
  */
-public class ShapeTreeEditPart extends AbstractTreeEditPart 
-                               implements PropertyChangeListener
+public class ShapeTreePart extends      AbstractTreeEditPart 
+                           implements   PropertyChangeListener
 {
-    public ShapeTreeEditPart(ShapeModel model) {
+    public ShapeTreePart(ShapeModel model) {
         super(model);
     }
 
@@ -37,7 +37,7 @@ public class ShapeTreeEditPart extends AbstractTreeEditPart
     {
         // allow removal of the associated model element
         installEditPolicy(EditPolicy.COMPONENT_ROLE, 
-                          new ShapeRemovalEditPolicy());
+                          new ShapeRemovalPolicy());
     }
 
     @Override

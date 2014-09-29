@@ -20,7 +20,7 @@ import com.fujitsu.us.visualvno.VisualVNOPlugin;
 
 /**
  * Abstract base of a shape
- * Has a size, a location, and a list of connections.
+ * Has a size, location, background color, name, and a list of connections.
  */
 public abstract class ShapeModel extends ModelBase
 {

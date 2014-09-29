@@ -11,13 +11,13 @@ import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.model.commands.LinkCreateCommand;
 import com.fujitsu.us.visualvno.model.commands.LinkReconnectCommand;
-import com.fujitsu.us.visualvno.parts.ShapeEditPart;
+import com.fujitsu.us.visualvno.parts.ShapePart;
 
 /**
  * EditPolicy for creating and reconnecting connections
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
-public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
+public class ShapeConnectionPolicy extends GraphicalNodeEditPolicy
 {
     @Override
     protected Command getConnectionCompleteCommand(CreateConnectionRequest request)
@@ -75,8 +75,8 @@ public class ShapeConnectionEditPolicy extends GraphicalNodeEditPolicy
         return command;
     }
     
-    private ShapeEditPart getEditPart() {
-        return (ShapeEditPart) getHost();
+    private ShapePart getEditPart() {
+        return (ShapePart) getHost();
     }
     
     private PortModel getPort(PortAnchor anchor) {

@@ -7,7 +7,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 /**
  * An elliptical shape.
  */
-public class SwitchModel extends ShapeModel
+public class SwitchModel extends ContainerModel
 {
 	private static final long serialVersionUID = 1L;
     public  static final String imageFileSmall  = "icons/ellipse16.gif";

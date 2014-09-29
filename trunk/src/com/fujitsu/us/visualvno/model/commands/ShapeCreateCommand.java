@@ -4,21 +4,21 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
+import com.fujitsu.us.visualvno.model.ContainerModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.DiagramModel;
 
 /**
  * A command to add a Shape to a ShapeDiagram.
  */
 public class ShapeCreateCommand extends Command
 {
-    private final ShapeModel    _newShape;
-    private final DiagramModel  _parent;
-    private final Rectangle     _bounds;
+    private final ShapeModel        _newShape;
+    private final ContainerModel    _parent;
+    private final Rectangle         _bounds;
 
-    public ShapeCreateCommand(ShapeModel newShape, 
-                              DiagramModel parent, 
-                              Rectangle bounds)
+    public ShapeCreateCommand(ShapeModel        newShape, 
+                              ContainerModel    parent, 
+                              Rectangle         bounds)
     {
         _newShape = newShape;
         _parent   = parent;

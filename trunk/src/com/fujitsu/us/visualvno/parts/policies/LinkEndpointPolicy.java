@@ -4,7 +4,7 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-public class LinkEndpointEditPolicy extends ConnectionEndpointEditPolicy
+public class LinkEndpointPolicy extends ConnectionEndpointEditPolicy
 {
     /**
      * "Highlight" selected link

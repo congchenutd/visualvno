@@ -11,7 +11,7 @@ import com.fujitsu.us.visualvno.model.commands.ShapeDeleteCommand;
 /**
  * Edit policy for removal of a Shape from its container.
  */
-public class ShapeRemovalEditPolicy extends ComponentEditPolicy
+public class ShapeRemovalPolicy extends ComponentEditPolicy
 {
     @Override
     protected Command createDeleteCommand(GroupRequest deleteRequest)

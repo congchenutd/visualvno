@@ -15,7 +15,7 @@ import com.fujitsu.us.visualvno.model.commands.LinkRenameCommand;
  *  
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
-public class LinkRenameEditPolicy extends DirectEditPolicy
+public class LinkRenamePolicy extends DirectEditPolicy
 {
     @Override
     protected Command getDirectEditCommand(DirectEditRequest request) {
