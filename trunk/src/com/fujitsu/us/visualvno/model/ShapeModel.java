@@ -234,6 +234,10 @@ public abstract class ShapeModel extends ModelBase
         return _ports.isEmpty() ? null : _ports.get(portNumber - 1);
     }
     
+    public MappingPortModel getMappingPort() {
+        return _mappingPort;
+    }
+    
     public Point getLocation() {
         return _location.getCopy();
     }
