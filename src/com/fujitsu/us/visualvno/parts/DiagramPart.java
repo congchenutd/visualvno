@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
@@ -11,44 +12,23 @@ import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.swt.SWT;
 
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutPolicy;
 
 /**
- * EditPart for a ShapesDiagram.
+ * EditPart for a DiagramModel.
  */
-public class DiagramEditPart extends AbstractGraphicalEditPart
-                             implements PropertyChangeListener
+public class DiagramPart extends    ContainerPart
+                         implements PropertyChangeListener
 {
-
-    @Override
-    public void activate()
-    {
-        if(!isActive())
-        {
-            super.activate();
-            ((ModelBase) getModel()).addPropertyChangeListener(this);
-        }
-    }
-
-    @Override
-    public void deactivate()
-    {
-        if(isActive())
-        {
-            super.deactivate();
-            ((ModelBase) getModel()).removePropertyChangeListener(this);
-        }
-    }
-    
     private DiagramModel getCastedModel() {
         return (DiagramModel) getModel();
     }
@@ -63,7 +43,7 @@ public class DiagramEditPart extends AbstractGraphicalEditPart
         // handles constraint changes (e.g. moving and resizing)
         // and creation of children
         installEditPolicy(EditPolicy.LAYOUT_ROLE, 
-                          new DiagramLayoutEditPolicy());
+                          new DiagramLayoutPolicy());
     }
 
     @Override
@@ -93,6 +73,26 @@ public class DiagramEditPart extends AbstractGraphicalEditPart
         if(DiagramModel.CHILD_ADDED_PROP  .equals(property) ||
            DiagramModel.CHILD_REMOVED_PROP.equals(property))
             refreshChildren();
+    }
+
+    @Override
+    public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+        return null;
+    }
+
+    @Override
+    public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
+        return null;
+    }
+
+    @Override
+    public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+        return null;
+    }
+
+    @Override
+    public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+        return null;
     }
 
 }

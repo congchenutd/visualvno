@@ -49,9 +49,13 @@ public class PortModel implements Serializable
         getShape().updateLink(link);  // allow shape to fire property change
     }
     
-    public void addLink(LinkModel link) {
+    public void addLink(LinkModel link)
+    {
         if(!_links.contains(link))
+        {
             _links.add(link);
+            getShape().updateLink(link);  // allow shape to fire property change
+        }
     }
     
     public void removeLink(LinkModel link)

@@ -9,7 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.parts.ShapeEditPart;
+import com.fujitsu.us.visualvno.parts.ShapePart;
 
 public class AddPortAction extends SelectionAction
 {
@@ -29,7 +29,7 @@ public class AddPortAction extends SelectionAction
     @Override
     public void run()
     {
-        List<ShapeEditPart> editParts = getSelectedObjects();
+        List<ShapePart> editParts = getSelectedObjects();
         CompoundCommand compoundCommand = new CompoundCommand();
         compoundCommand.add(editParts.get(0).getCommand(request));
         execute(compoundCommand);
@@ -42,7 +42,7 @@ public class AddPortAction extends SelectionAction
             return false;
 
         for(Object selectedObject : getSelectedObjects())
-            if(!(selectedObject instanceof ShapeEditPart))
+            if(!(selectedObject instanceof ShapePart))
                 return false;
         return true;
     }

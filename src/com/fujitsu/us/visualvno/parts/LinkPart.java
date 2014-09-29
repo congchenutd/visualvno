@@ -19,14 +19,14 @@ import com.fujitsu.us.visualvno.figures.LinkConnection;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.commands.LinkDeleteCommand;
-import com.fujitsu.us.visualvno.parts.policies.LinkEndpointEditPolicy;
-import com.fujitsu.us.visualvno.parts.policies.LinkRenameEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.LinkEndpointPolicy;
+import com.fujitsu.us.visualvno.parts.policies.LinkRenamePolicy;
 
 /**
  * Edit part for LinkModel
  */
-public class LinkEditPart extends AbstractConnectionEditPart
-                          implements PropertyChangeListener
+public class LinkPart extends       AbstractConnectionEditPart
+                      implements    PropertyChangeListener
 {
     @Override
     public void activate()
@@ -57,7 +57,7 @@ public class LinkEditPart extends AbstractConnectionEditPart
     {
         // show a feedback when selected by the user.
         installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, 
-                          new LinkEndpointEditPolicy());
+                          new LinkEndpointPolicy());
 
         // Allows the removal of the connection
         installEditPolicy(EditPolicy.CONNECTION_ROLE, 
@@ -71,7 +71,7 @@ public class LinkEditPart extends AbstractConnectionEditPart
         
         // double click to edit the label
         installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-                          new LinkRenameEditPolicy());
+                          new LinkRenamePolicy());
     }
 
     @Override

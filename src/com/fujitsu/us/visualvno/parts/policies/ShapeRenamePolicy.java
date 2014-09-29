@@ -13,7 +13,7 @@ import com.fujitsu.us.visualvno.model.commands.ShapeRenameCommand;
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  *
  */
-public class ShapeRenameEditPolicy extends DirectEditPolicy
+public class ShapeRenamePolicy extends DirectEditPolicy
 {
     @Override
     protected Command getDirectEditCommand(DirectEditRequest request) {

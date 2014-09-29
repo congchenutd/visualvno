@@ -5,14 +5,14 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.Request;
 
-import com.fujitsu.us.visualvno.figures.HostFigure;
+import com.fujitsu.us.visualvno.figures.PortFigure;
 import com.fujitsu.us.visualvno.figures.ShapeFigure;
 
-public class HostPart extends ShapePart
+public class PortPart extends ShapePart
 {
     @Override
     protected IFigure createFigure() {
-        return new HostFigure();
+        return new PortFigure(0);
     }
     
     @Override

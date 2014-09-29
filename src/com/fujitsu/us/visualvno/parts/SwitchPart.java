@@ -4,6 +4,7 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.DropRequest;
 
@@ -11,9 +12,23 @@ import com.fujitsu.us.visualvno.figures.SwitchFigure;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
+import com.fujitsu.us.visualvno.parts.policies.ContainerHighlightPolicy;
+import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutPolicy;
 
-public class SwitchEditPart extends ShapeEditPart
+public class SwitchPart extends ContainerPart
 {
+    @Override
+    protected void createEditPolicies()
+    {
+        super.createEditPolicies();
+        
+        installEditPolicy(EditPolicy.LAYOUT_ROLE, 
+                          new DiagramLayoutPolicy());
+        
+        installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, 
+                          new ContainerHighlightPolicy());
+    }
+        
     protected SwitchModel getCastedModel() {
         return (SwitchModel) getModel();
     }
@@ -31,7 +46,7 @@ public class SwitchEditPart extends ShapeEditPart
     public ConnectionAnchor getSourceConnectionAnchor(
                                 ConnectionEditPart connectionEditPart) {
         LinkModel link = (LinkModel) connectionEditPart.getModel();
-        PortModel port = (PortModel) link.getSourcePort();
+        PortModel port = link.getSourcePort();
         return getSwitchFigure().getPortAnchor(port.getNumber());
     }
 
@@ -47,7 +62,7 @@ public class SwitchEditPart extends ShapeEditPart
                                     ConnectionEditPart connectionEditPart)
     {
         LinkModel link = (LinkModel) connectionEditPart.getModel();
-        PortModel port = (PortModel) link.getSourcePort();
+        PortModel port = link.getSourcePort();
         return getSwitchFigure().getPortAnchor(port.getNumber());
     }
 

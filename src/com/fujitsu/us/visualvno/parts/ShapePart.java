@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -17,24 +16,19 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Color;
 
-import com.fujitsu.us.visualvno.figures.HostFigure;
 import com.fujitsu.us.visualvno.figures.LabeledShape;
 import com.fujitsu.us.visualvno.figures.ShapeFigure;
-import com.fujitsu.us.visualvno.figures.SwitchFigure;
-import com.fujitsu.us.visualvno.model.HostModel;
 import com.fujitsu.us.visualvno.model.LinkModel;
-import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.SwitchModel;
-import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionEditPolicy;
-import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalEditPolicy;
-import com.fujitsu.us.visualvno.parts.policies.ShapeRenameEditPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRemovalPolicy;
+import com.fujitsu.us.visualvno.parts.policies.ShapeRenamePolicy;
 
 /**
  * EditPart for all Shape instances
  */
-public abstract class ShapeEditPart extends AbstractGraphicalEditPart 
-                                    implements PropertyChangeListener, NodeEditPart
+public abstract class ShapePart extends     AbstractGraphicalEditPart 
+                                implements  PropertyChangeListener, NodeEditPart
 {
     @Override
     public void activate()
@@ -42,7 +36,7 @@ public abstract class ShapeEditPart extends AbstractGraphicalEditPart
         if(!isActive())
         {
             super.activate();
-            ((ModelBase) getModel()).addPropertyChangeListener(this);
+            getCastedModel().addPropertyChangeListener(this);
         }
     }
     
@@ -52,12 +46,8 @@ public abstract class ShapeEditPart extends AbstractGraphicalEditPart
         if(isActive())
         {
             super.deactivate();
-            ((ModelBase) getModel()).removePropertyChangeListener(this);
+            getCastedModel().removePropertyChangeListener(this);
         }
-    }
-
-    private ShapeModel getCastedModel() {
-        return (ShapeModel) getModel();
     }
 
     @Override
@@ -65,37 +55,15 @@ public abstract class ShapeEditPart extends AbstractGraphicalEditPart
     {
         // allow removal of the shape
         installEditPolicy(EditPolicy.COMPONENT_ROLE, 
-                          new ShapeRemovalEditPolicy());
+                          new ShapeRemovalPolicy());
 
         // allow creation and reconnection of connections between shapes
         installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, 
-                          new ShapeConnectionEditPolicy());
+                          new ShapeConnectionPolicy());
         
         // double click to edit the label
         installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-                          new ShapeRenameEditPolicy());
-    }
-
-    @Override
-    protected IFigure createFigure()
-    {
-        IFigure figure = createFigureForModel();
-        figure.setOpaque(true);
-        figure.setBackgroundColor(ColorConstants.green);
-        return figure;
-    }
-    
-    /**
-     * A Figure factory.
-     */
-    private IFigure createFigureForModel()
-    {
-        if(getModel() instanceof SwitchModel)
-            return new SwitchFigure();
-        if(getModel() instanceof HostModel)
-            return new HostFigure();
-        else
-            throw new IllegalArgumentException();
+                          new ShapeRenamePolicy());
     }
     
     @Override
@@ -131,6 +99,7 @@ public abstract class ShapeEditPart extends AbstractGraphicalEditPart
     @Override
     protected void refreshVisuals()
     {
+        IFigure f = getFigure();
         ShapeFigure figure = (ShapeFigure) getFigure();
         
         // notify parent container of changed position & location
@@ -156,6 +125,10 @@ public abstract class ShapeEditPart extends AbstractGraphicalEditPart
     @Override
     protected List<LinkModel> getModelTargetConnections() {
         return getCastedModel().getTargetLinks();
+    }
+    
+    private ShapeModel getCastedModel() {
+        return (ShapeModel) getModel();
     }
     
     protected LabeledShape getCastedFigure() {
