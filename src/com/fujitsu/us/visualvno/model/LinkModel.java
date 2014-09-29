@@ -168,4 +168,5 @@ public class LinkModel extends ModelBase
         return this.getSourcePort().equals(that.getSourcePort()) &&
                this.getTargetPort().equals(that.getTargetPort());
     }
+
 }

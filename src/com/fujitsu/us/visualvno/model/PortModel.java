@@ -1,6 +1,8 @@
 package com.fujitsu.us.visualvno.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -14,7 +16,7 @@ public class PortModel implements Serializable
     private static final long serialVersionUID = 1L;
     private final int        _number;
     private final ShapeModel _shape;
-    private LinkModel        _link;
+    private final List<LinkModel> _links = new LinkedList<LinkModel>();
     
     public PortModel(ShapeModel shape, int number)
     {
@@ -30,19 +32,31 @@ public class PortModel implements Serializable
         return _shape;
     }
     
+    /**
+     * @return  the first (and assumably the only) link
+     */
     public LinkModel getLink() {
-        return _link;
+        return _links.isEmpty() ? null : _links.get(0);
     }
     
+    /**
+     * Set the given link as the only link
+     */
     public void setLink(LinkModel link)
     {
-        _link = link;
+        _links.clear();
+        _links.add(link);
         getShape().updateLink(link);  // allow shape to fire property change
+    }
+    
+    public void addLink(LinkModel link) {
+        if(!_links.contains(link))
+            _links.add(link);
     }
     
     public void removeLink(LinkModel link)
     {
-        _link = null;
+        _links.remove(link);
         getShape().updateLink(link);  // allow shape to fire property change
     }
     
