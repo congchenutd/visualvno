@@ -17,9 +17,9 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.swt.SWT;
 
+import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutEditPolicy;
 
 /**
@@ -60,8 +60,8 @@ public class DiagramEditPart extends AbstractGraphicalEditPart
         installEditPolicy(EditPolicy.COMPONENT_ROLE, 
                           new RootComponentEditPolicy());
         
-        // handles constraint changes (e.g. moving and resizing) of model
-        // elements and creation of new model elements
+        // handles constraint changes (e.g. moving and resizing)
+        // and creation of children
         installEditPolicy(EditPolicy.LAYOUT_ROLE, 
                           new DiagramLayoutEditPolicy());
     }
