@@ -94,5 +94,8 @@ public class DiagramPart extends    ContainerPart
     public ConnectionAnchor getTargetConnectionAnchor(Request request) {
         return null;
     }
+    
+    @Override
+    protected void refreshVisuals() {}
 
 }
