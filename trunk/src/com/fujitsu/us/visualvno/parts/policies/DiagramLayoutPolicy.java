@@ -57,7 +57,7 @@ public class DiagramLayoutPolicy extends XYLayoutEditPolicy
         if(childClass == SwitchModel.class || 
            childClass == HostModel.class   ||
            childClass == PortModel.class)
-            return new ShapeCreateCommand((ShapeModel)      childClass,
+            return new ShapeCreateCommand((ShapeModel)      request.getNewObject(),
                                           (ContainerModel)  getHost().getModel(),
                                           (Rectangle)       getConstraintFor(request));
         return null;

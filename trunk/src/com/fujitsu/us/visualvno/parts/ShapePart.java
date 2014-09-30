@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -99,7 +98,6 @@ public abstract class ShapePart extends     AbstractGraphicalEditPart
     @Override
     protected void refreshVisuals()
     {
-        IFigure f = getFigure();
         ShapeFigure figure = (ShapeFigure) getFigure();
         
         // notify parent container of changed position & location
