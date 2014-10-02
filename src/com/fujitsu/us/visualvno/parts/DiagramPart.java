@@ -21,7 +21,6 @@ import org.eclipse.swt.SWT;
 
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
-import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutPolicy;
 
 /**
  * EditPart for a DiagramModel.
@@ -36,14 +35,16 @@ public class DiagramPart extends    ContainerPart
     @Override
     protected void createEditPolicies()
     {
+        super.createEditPolicies();
+        
         // disallows the removal of this edit part from its parent
         installEditPolicy(EditPolicy.COMPONENT_ROLE, 
                           new RootComponentEditPolicy());
         
         // handles constraint changes (e.g. moving and resizing)
         // and creation of children
-        installEditPolicy(EditPolicy.LAYOUT_ROLE, 
-                          new DiagramLayoutPolicy());
+//        installEditPolicy(EditPolicy.LAYOUT_ROLE, 
+//                          new DiagramLayoutPolicy());
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -17,6 +18,7 @@ import org.eclipse.swt.graphics.Color;
 
 import com.fujitsu.us.visualvno.figures.LabeledShape;
 import com.fujitsu.us.visualvno.figures.ShapeFigure;
+import com.fujitsu.us.visualvno.model.ContainerModel;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.ShapeModel;
 import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionPolicy;
@@ -91,6 +93,11 @@ public abstract class ShapePart extends     AbstractGraphicalEditPart
             refreshSourceConnections();
         else if(ShapeModel.TARGETLINK_PROP.equals(property))
             refreshTargetConnections();
+        else if(ContainerModel.CHILD_ADDED_PROP.equals(property))
+            addChild(createChild(event.getNewValue()),
+                     ((Integer)  event.getOldValue()).intValue());
+        else if(ContainerModel.CHILD_REMOVED_PROP.equals(property))
+            removeChild((EditPart) getViewer().getEditPartRegistry().get(event.getOldValue()));
         else
             refreshVisuals();
     }

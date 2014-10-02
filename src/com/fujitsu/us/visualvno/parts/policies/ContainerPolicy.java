@@ -20,12 +20,13 @@ public class ContainerPolicy extends ContainerEditPolicy
         return null;
     }
  
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Command getOrphanChildrenCommand(GroupRequest request)
     {
         CompoundCommand result = new CompoundCommand("Orphan children");
         ContainerModel parent = (ContainerModel) getHost().getModel();
-        List<EditPart> parts = request.getEditParts();
+        List<EditPart> parts = (List<EditPart>) request.getEditParts();
         for(EditPart part: parts)
         {
             ShapeModel child = (ShapeModel) part.getModel();

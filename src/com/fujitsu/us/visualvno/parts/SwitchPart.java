@@ -12,7 +12,6 @@ import com.fujitsu.us.visualvno.figures.SwitchFigure;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
-import com.fujitsu.us.visualvno.parts.policies.ContainerHighlightPolicy;
 import com.fujitsu.us.visualvno.parts.policies.DiagramLayoutPolicy;
 
 public class SwitchPart extends ContainerPart
@@ -21,12 +20,7 @@ public class SwitchPart extends ContainerPart
     protected void createEditPolicies()
     {
         super.createEditPolicies();
-        
-        installEditPolicy(EditPolicy.LAYOUT_ROLE, 
-                          new DiagramLayoutPolicy());
-        
-        installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, 
-                          new ContainerHighlightPolicy());
+        installEditPolicy(EditPolicy.LAYOUT_ROLE, new DiagramLayoutPolicy());
     }
         
     protected SwitchModel getCastedModel() {
