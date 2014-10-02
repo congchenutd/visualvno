@@ -25,7 +25,7 @@ public abstract class ContainerModel extends ShapeModel
             return false;
             
         _children.add(index, shape);
-        firePropertyChange(CHILD_ADDED_PROP, null, shape);
+        firePropertyChange(CHILD_ADDED_PROP, index, shape);
         return true;
     }
 

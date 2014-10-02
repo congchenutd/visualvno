@@ -23,6 +23,11 @@ import com.fujitsu.us.visualvno.parts.ShapePart;
 public class DiagramLayoutPolicy extends XYLayoutEditPolicy
 {
 
+	public DiagramLayoutPolicy()
+	{
+		super();
+	}
+	
     @Override
     protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
                                                     EditPart child,
@@ -43,9 +48,9 @@ public class DiagramLayoutPolicy extends XYLayoutEditPolicy
     protected Command createAddCommand(ChangeBoundsRequest request,
                                        EditPart child, Object constraint)
     {
-        ContainerModel  container   = (ContainerModel)  getHost().getModel();
-        ShapeModel      shape       = (ShapeModel)      child.getModel();
-        Rectangle       rect        = (Rectangle)       constraint;
+        ContainerModel container = (ContainerModel) getHost().getModel();
+        ShapeModel     shape     = (ShapeModel)     child.getModel();
+        Rectangle      rect      = (Rectangle)      constraint;
         AddToContainerCommand cmd = new AddToContainerCommand(container, shape, -1);
         return cmd.chain(new ShapeSetConstraintCommand(shape, request, rect));
     }
