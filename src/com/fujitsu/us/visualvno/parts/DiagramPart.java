@@ -36,15 +36,7 @@ public class DiagramPart extends    ContainerPart
     protected void createEditPolicies()
     {
         super.createEditPolicies();
-        
-        // disallows the removal of this edit part from its parent
-        installEditPolicy(EditPolicy.COMPONENT_ROLE, 
-                          new RootComponentEditPolicy());
-        
-        // handles constraint changes (e.g. moving and resizing)
-        // and creation of children
-//        installEditPolicy(EditPolicy.LAYOUT_ROLE, 
-//                          new DiagramLayoutPolicy());
+        installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.fujitsu.us.visualvno.figures;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.EllipseAnchor;
-import org.eclipse.draw2d.XYLayout;
 
 public class SwitchFigure extends ShapeFigure
 {
@@ -12,7 +11,6 @@ public class SwitchFigure extends ShapeFigure
     public SwitchFigure()
     {
         super(new Ellipse());
-        setLayoutManager(new XYLayout());
     }
 
     @Override
