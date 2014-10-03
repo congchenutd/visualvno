@@ -3,6 +3,8 @@ package com.fujitsu.us.visualvno.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
+
 /**
  * A container for multiple shapes.
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
@@ -45,5 +47,10 @@ public abstract class ContainerModel extends ShapeModel
      */
     public List<ShapeModel> getChildren() {
         return _children;
+    }
+    
+    @Override
+    public Image getIcon() {
+        return null;
     }
 }
