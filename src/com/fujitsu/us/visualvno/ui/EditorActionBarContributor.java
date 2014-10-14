@@ -2,7 +2,6 @@ package com.fujitsu.us.visualvno.ui;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
@@ -36,7 +35,6 @@ public class EditorActionBarContributor extends ActionBarContributor
 	/**
 	 * Create actions managed by this contributor.
 	 */
-	@SuppressWarnings("restriction")
     @Override
     protected void buildActions()
 	{
@@ -49,11 +47,11 @@ public class EditorActionBarContributor extends ActionBarContributor
        
         addRetargetAction(new RetargetAction(
             GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
-            GEFMessages.ToggleSnapToGeometry_Label, IAction.AS_CHECK_BOX));
+            "Snap to Geometry", IAction.AS_CHECK_BOX));
 
         addRetargetAction(new RetargetAction(
             GEFActionConstants.TOGGLE_GRID_VISIBILITY,
-            GEFMessages.ToggleGrid_Label, IAction.AS_CHECK_BOX));
+            "Show Grid", IAction.AS_CHECK_BOX));
         
         addRetargetAction(new AlignmentRetargetAction(PositionConstants.LEFT));
         addRetargetAction(new AlignmentRetargetAction(PositionConstants.CENTER));
