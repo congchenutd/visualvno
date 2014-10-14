@@ -2,20 +2,20 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-    <extension point="org.eclipse.ui.editors">
+	<extension point="org.eclipse.ui.editors">
     
-        <editor name = "Visual VNO"
+        <editor name = "Visual VNO Editor"
               extensions        = "vno"
               icon              = "Networks.png"
               default           = "true"
-              class             = "com.fujitsu.us.visualvno.ui.VNOEditor"
-              contributorClass  = "com.fujitsu.us.visualvno.ui.VNOEditorActionBarContributor"
+              class             = "org.eclipse.gef.examples.shapes.ui.VNOEditor"
+              contributorClass  = "org.eclipse.gef.examples.shapes.ui.EditorActionBarContributor"
               id                = "Visual VNO Editor">
         </editor>
         
     </extension>
    
-    <extension point = "org.eclipse.ui.newWizards">
+	<extension point = "org.eclipse.ui.newWizards">
         
         <category
             name    = "Visual VNO"
@@ -26,12 +26,10 @@
             name        = "Visual VNO Diagram"
             icon        = "Networks.png"
             category    = "com.fujitsu.us.visualvno.category"
-            class       = "com.fujitsu.us.visualvno.ui.NewVNODiagramWizard"
-            id          = "com.fujitsu.us.visualvno.ui.NewVNODiagramWizard">
-        
-            <description>Create a Visual VNO diagram</description>
+            class       = "org.eclipse.gef.examples.shapes.ui.VNOCreationWizard"
+            id          = "org.eclipse.gef.examples.shapes.ui.VNOCreationWizard">
         </wizard>
         
     </extension>
-    
+   
 </plugin>
