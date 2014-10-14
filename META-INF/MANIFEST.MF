@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.name
 Bundle-SymbolicName: Shapes;singleton:=true
 Bundle-Version: 3.8.0.qualifier
-Bundle-Activator: org.eclipse.gef.examples.shapes.VisualVNOPlugin
+Bundle-Activator: com.fujitsu.us.visualvno.VisualVNOPlugin
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.gef;bundle-version="[3.5.0,4.0.0)",
