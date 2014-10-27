@@ -8,8 +8,8 @@
               extensions        = "vno"
               icon              = "Networks.png"
               default           = "true"
-              class             = "org.eclipse.gef.examples.shapes.ui.VNOEditor"
-              contributorClass  = "org.eclipse.gef.examples.shapes.ui.EditorActionBarContributor"
+              class             = "com.fujitsu.us.visualvno.ui.VNOEditor"
+              contributorClass  = "com.fujitsu.us.visualvno.ui.EditorActionBarContributor"
               id                = "Visual VNO Editor">
         </editor>
         
@@ -26,8 +26,8 @@
             name        = "Visual VNO Diagram"
             icon        = "Networks.png"
             category    = "com.fujitsu.us.visualvno.category"
-            class       = "org.eclipse.gef.examples.shapes.ui.VNOCreationWizard"
-            id          = "org.eclipse.gef.examples.shapes.ui.VNOCreationWizard">
+            class       = "com.fujitsu.us.visualvno.ui.VNOCreationWizard"
+            id          = "com.fujitsu.us.visualvno.ui.VNOCreationWizard">
         </wizard>
         
     </extension>

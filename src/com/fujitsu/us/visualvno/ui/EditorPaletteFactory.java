@@ -16,7 +16,6 @@ import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.HostModel;
 import com.fujitsu.us.visualvno.model.LinkModel;
 import com.fujitsu.us.visualvno.model.MappingModel;
-import com.fujitsu.us.visualvno.model.PortModel;
 import com.fujitsu.us.visualvno.model.SwitchModel;
 
 /**
@@ -36,7 +35,7 @@ class EditorPaletteFactory
 
     private static PaletteContainer createDrawer()
     {
-        PaletteDrawer drawer = new PaletteDrawer("Network elements");
+        PaletteDrawer drawer = new PaletteDrawer("Elements");
 
         CombinedTemplateCreationEntry switchEntry = 
             new CombinedTemplateCreationEntry(
@@ -60,16 +59,6 @@ class EditorPaletteFactory
         );
         hostEntry.setToolClass(ShapeCreationTool.class);
         
-        CombinedTemplateCreationEntry portEntry = 
-            new CombinedTemplateCreationEntry(
-                "Port",
-                "Create a port", 
-                PortModel.class,
-                new SimpleFactory(PortModel.class),
-                ImageDescriptor.createFromFile(VisualVNOPlugin.class, PortModel.SMALL_IMAGE),
-                ImageDescriptor.createFromFile(VisualVNOPlugin.class, PortModel.BIG_IMAGE)
-        );
-        
         CreationToolEntry linkEntry = new ConnectionCreationToolEntry(
                 "Link",
                 "Create a link",
@@ -89,7 +78,6 @@ class EditorPaletteFactory
         
         drawer.add(switchEntry);
         drawer.add(hostEntry);
-        drawer.add(portEntry);
         drawer.add(linkEntry);
         drawer.add(mappingEntry);
         return drawer;
