@@ -1,9 +1,11 @@
 package com.fujitsu.us.visualvno.model.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 
+import com.fujitsu.us.visualvno.model.ContainerModel;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.LinkBase;
 import com.fujitsu.us.visualvno.model.ShapeBase;
@@ -15,8 +17,8 @@ public class ShapeDeleteCommand extends Command
 {
     private final ShapeBase    _shape;
     private final DiagramModel _parent;
-    private List<LinkBase>     _sourceLinks;
-    private List<LinkBase>     _targetLinks;
+    private List<LinkBase>     _sourceLinks = new ArrayList<LinkBase>();
+    private List<LinkBase>     _targetLinks = new ArrayList<LinkBase>();
     private boolean            _wasRemoved;
 
     public ShapeDeleteCommand(DiagramModel parent, ShapeBase toBeDeleted)
@@ -29,13 +31,34 @@ public class ShapeDeleteCommand extends Command
         _shape   = toBeDeleted;
     }
 
-    private void addLinks(List<LinkBase> links) {
-        for(LinkBase link: links)
+    private void restoreLinks(ShapeBase shape)
+    {
+        for(LinkBase link: _sourceLinks)
             link.reconnect();
+        for(LinkBase link: _targetLinks)
+            link.reconnect();
+        _sourceLinks.clear();
+        _targetLinks.clear();
     }
     
-    private void removeLinks(List<LinkBase> links) {
-        for(LinkBase link: links)
+    /**
+     * Remove all the links of a shape
+     */
+    private void removeLinks(ShapeBase shape)
+    {
+        // recursively remove (and backup) the links of its children
+        if(shape instanceof ContainerModel)
+        {
+            ContainerModel container = (ContainerModel) shape;
+            for(ShapeBase child: container.getChildren())
+                removeLinks(child);
+        }
+        
+        _sourceLinks.addAll(shape.getSourceLinks());  // backup
+        _targetLinks.addAll(shape.getTargetLinks());
+        for(LinkBase link: _sourceLinks)
+            link.disconnect();
+        for(LinkBase link: _targetLinks)
             link.disconnect();
     }
 
@@ -50,12 +73,7 @@ public class ShapeDeleteCommand extends Command
     }
 
     @Override
-    public void execute()
-    {
-        // backup for undo
-        _sourceLinks = _shape.getSourceLinks();
-        _targetLinks = _shape.getTargetLinks();
-        
+    public void execute() {
         redo();
     }
     
@@ -65,10 +83,7 @@ public class ShapeDeleteCommand extends Command
         // remove the child and disconnect its connections
         _wasRemoved = _parent.removeChild(_shape);
         if(_wasRemoved)
-        {
-            removeLinks(_sourceLinks);
-            removeLinks(_targetLinks);
-        }
+            removeLinks(_shape);
     }
 
     @Override
@@ -76,9 +91,6 @@ public class ShapeDeleteCommand extends Command
     {
         // recover the child and reconnect its connections
         if(_parent.addChild(_shape))
-        {
-            addLinks(_sourceLinks);
-            addLinks(_targetLinks);
-        }
+            restoreLinks(_shape);
     }
 }
