@@ -52,6 +52,13 @@ public abstract class ShapeBase extends ModelBase
     private List<LinkBase> _sourceLinks = new ArrayList<LinkBase>();
     private List<LinkBase> _targetLinks = new ArrayList<LinkBase>();
     
+    /**
+     * Kill itself
+     * Do nothing by default
+     * Container models may need to kill its children
+     */
+    public void destroy() {}
+    
     public List<LinkBase> getSourceLinks() {
         return new ArrayList<LinkBase>(_sourceLinks);
     }

@@ -21,6 +21,12 @@ public abstract class ContainerModel extends ShapeBase
     // property
     private List<ShapeBase> _children = new ArrayList<ShapeBase>();
  
+    @Override
+    public void destroy() {
+        for(ShapeBase child: _children)
+            removeChild(child);
+    }
+    
     /**
      * Whether a child can be added into this container
      * Some subclasses may limit the types of children
