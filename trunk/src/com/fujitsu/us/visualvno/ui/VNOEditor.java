@@ -79,9 +79,11 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.actions.PauseAction;
+import com.fujitsu.us.visualvno.actions.DecommissionAction;
+import com.fujitsu.us.visualvno.actions.InitAction;
 import com.fujitsu.us.visualvno.actions.StartAction;
 import com.fujitsu.us.visualvno.actions.StopAction;
+import com.fujitsu.us.visualvno.actions.VerifyAction;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.parts.factories.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
@@ -89,8 +91,9 @@ import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
 public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 {
 
-    private DiagramModel       _diagram;        // root of the model
-    private static PaletteRoot PALETTE_MODEL;   // palette
+    private static PaletteRoot  PALETTE_MODEL;   // palette
+    private DiagramModel        _diagram;        // root of the model
+    private IEditorInput        _input;
 
     public VNOEditor() {
         setEditDomain(new DefaultEditDomain(this));
@@ -179,9 +182,11 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         registry.registerAction(action);
         getSelectionActions().add(action.getId());
         
+        registry.registerAction(new InitAction());
+        registry.registerAction(new VerifyAction());
         registry.registerAction(new StartAction());
-        registry.registerAction(new PauseAction());
         registry.registerAction(new StopAction());
+        registry.registerAction(new DecommissionAction());
     }
     
     protected void saveProperties()
@@ -338,6 +343,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
                
                 // set input to the new file
                 setInput(new FileEditorInput(file));
+                doSetInput();
                 getCommandStack().markSaveLocation();
             }
             catch(InterruptedException | InvocationTargetException e) {
@@ -389,13 +395,24 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     protected void setInput(IEditorInput input)
     {
         super.setInput(input);
+        _input = input;
+        _diagram = new DiagramModel();
+//        doSetInput();
+    }
+    
+    public void doSetInput()
+    {
+        super.setInput(_input);
         try
         {
-            IFile file = ((IFileEditorInput) input).getFile();
+            IFile file = ((IFileEditorInput) _input).getFile();
             ObjectInputStream in = new ObjectInputStream(file.getContents());
             _diagram = (DiagramModel) in.readObject();
             in.close();
             setPartName(file.getName());
+
+            getGraphicalViewer().setContents(getModel());
+            loadProperties();
         }
         catch(IOException | CoreException | ClassNotFoundException e)
         {
@@ -403,8 +420,6 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             e.printStackTrace();
             _diagram = new DiagramModel();
         }
-        
-        loadProperties();
     }
 
     /**
