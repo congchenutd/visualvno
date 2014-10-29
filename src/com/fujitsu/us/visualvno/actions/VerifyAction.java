@@ -5,7 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import com.fujitsu.us.visualvno.Demo;
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class VerifyAction extends ActionBase
 {
@@ -22,11 +21,14 @@ public class VerifyAction extends ActionBase
     @Override
     public void run()
     {
-        VNOEditor editor = getActiveEditor();
-        if(!editor.getTitle().startsWith("Global"))
+        String title = getActiveEditor().getTitle();
+        if(title.startsWith("VNO"))
         {
-            DiagramModel diagram = editor.getModel();
-            diagram.addNetwork(Demo.getInstance().createVirtualNetwork(diagram.getVNOID()));
+            int vnoID = Integer.valueOf("" + title.charAt(3));
+            String wholeEditorName  = "VNO" + vnoID + ".vno";
+            String wholeDiagramName = "VNO" + vnoID + "Whole.vno";
+            DiagramModel diagram = Demo.getInstance().loadDiagram(wholeDiagramName);
+            getEditor(wholeEditorName).setDiagram(diagram);
         }
     }
 }

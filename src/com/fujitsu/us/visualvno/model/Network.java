@@ -15,7 +15,7 @@ public class Network
     
     public Network(DiagramModel diagram, int vnoID)
     {
-        _vnoID   = vnoID;
+        _vnoID = vnoID;
         for(ShapeBase child: diagram.getChildren())
             if(child.getVNOID() == vnoID)
             {
