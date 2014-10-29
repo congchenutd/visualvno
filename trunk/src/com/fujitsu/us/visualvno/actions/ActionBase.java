@@ -8,6 +8,12 @@ import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public abstract class ActionBase extends Action
 {
+    public static InitAction            INIT            = new InitAction();
+    public static VerifyAction          VERIFY          = new VerifyAction();
+    public static StartAction           START           = new StartAction();
+    public static StopAction            STOP            = new StopAction();
+    public static DecommissionAction    DECOMMISSION    = new DecommissionAction();
+    
     protected VNOEditor getActiveEditor() {
         return (VNOEditor) PlatformUI.getWorkbench()
                                      .getActiveWorkbenchWindow()

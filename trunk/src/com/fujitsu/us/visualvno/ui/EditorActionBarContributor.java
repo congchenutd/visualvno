@@ -21,11 +21,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
-import com.fujitsu.us.visualvno.actions.DecommissionAction;
-import com.fujitsu.us.visualvno.actions.InitAction;
-import com.fujitsu.us.visualvno.actions.StartAction;
-import com.fujitsu.us.visualvno.actions.StopAction;
-import com.fujitsu.us.visualvno.actions.VerifyAction;
+import com.fujitsu.us.visualvno.actions.ActionBase;
 
 /**
  * Contributes actions to a toolbar. 
@@ -64,11 +60,11 @@ public class EditorActionBarContributor extends ActionBarContributor
         
         addRetargetAction(new MatchSizeRetargetAction());
         
-        addAction(new InitAction());
-        addAction(new VerifyAction());
-        addAction(new StartAction());
-        addAction(new StopAction());
-        addAction(new DecommissionAction());
+        addAction(ActionBase.INIT);
+        addAction(ActionBase.VERIFY);
+        addAction(ActionBase.START);
+        addAction(ActionBase.STOP);
+        addAction(ActionBase.DECOMMISSION);
 	}
 
 	/**
@@ -104,11 +100,11 @@ public class EditorActionBarContributor extends ActionBarContributor
         toolBarManager.add(new ZoomComboContributionItem(getPage(), zoomStrings));
         
         toolBarManager.add(new Separator());
-        toolBarManager.add(getAction(InitAction.ID));
-        toolBarManager.add(getAction(VerifyAction.ID));
-        toolBarManager.add(getAction(StartAction.ID));
-        toolBarManager.add(getAction(StopAction.ID));
-        toolBarManager.add(getAction(DecommissionAction.ID));
+        toolBarManager.add(ActionBase.INIT);
+        toolBarManager.add(ActionBase.VERIFY);
+        toolBarManager.add(ActionBase.START);
+        toolBarManager.add(ActionBase.STOP);
+        toolBarManager.add(ActionBase.DECOMMISSION);
 	}
 	
 	/**

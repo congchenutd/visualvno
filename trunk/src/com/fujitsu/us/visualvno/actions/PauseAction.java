@@ -14,8 +14,8 @@ public class PauseAction extends Action
     {
         setId(ID);
         setText("Pause");
-        this.setImageDescriptor(ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                                               "icons/Pause.png"));
+        setImageDescriptor(ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                                                          "icons/Pause.png"));
     }
     
     @Override
