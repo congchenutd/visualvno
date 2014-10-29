@@ -91,9 +91,9 @@ import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
 public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 {
 
-    private static PaletteRoot  PALETTE_MODEL;   // palette
-    private DiagramModel        _diagram;        // root of the model
-    private IEditorInput        _input;
+    private static PaletteRoot PALETTE_MODEL;   // palette
+    private DiagramModel       _diagram;        // root of the model
+    private IEditorInput       _input;
 
     public VNOEditor() {
         setEditDomain(new DefaultEditDomain(this));
@@ -343,7 +343,6 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
                
                 // set input to the new file
                 setInput(new FileEditorInput(file));
-                doSetInput();
                 getCommandStack().markSaveLocation();
             }
             catch(InterruptedException | InvocationTargetException e) {
@@ -363,7 +362,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         return super.getAdapter(type);
     }
 
-    DiagramModel getModel() {
+    public DiagramModel getModel() {
         return _diagram;
     }
 
@@ -379,11 +378,11 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     protected void initializeGraphicalViewer()
     {
         super.initializeGraphicalViewer();
-        GraphicalViewer viewer = getGraphicalViewer();
-        viewer.setContents(getModel()); // set the contents of this editor
+        showDiagram(); // set the contents of this editor
 
         // listen for dropped parts
-        viewer.addDropTargetListener(createTransferDropTargetListener());
+        getGraphicalViewer().addDropTargetListener(
+                                    createTransferDropTargetListener());
     }
 
     @Override
@@ -396,8 +395,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     {
         super.setInput(input);
         _input = input;
-        _diagram = new DiagramModel();
-//        doSetInput();
+        doSetInput();
     }
     
     public void doSetInput()
@@ -410,8 +408,6 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             _diagram = (DiagramModel) in.readObject();
             in.close();
             setPartName(file.getName());
-
-            getGraphicalViewer().setContents(getModel());
             loadProperties();
         }
         catch(IOException | CoreException | ClassNotFoundException e)
@@ -420,6 +416,10 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             e.printStackTrace();
             _diagram = new DiagramModel();
         }
+    }
+    
+    public void showDiagram() {
+        getGraphicalViewer().setContents(getModel());
     }
 
     /**

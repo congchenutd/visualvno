@@ -63,14 +63,6 @@ public class SwitchModel extends    ContainerModel
         return result;
     }
     
-//    @Override
-//    public boolean removeChild(ShapeBase child)
-//    {
-//        boolean result = super.removeChild(child);
-//        reorderPortNumbers();
-//        return result;
-//    }
-    
     private void reorderPortNumbers()
     {
         int i = 1;

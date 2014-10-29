@@ -1,12 +1,12 @@
 package com.fujitsu.us.visualvno.actions;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
+import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.ui.VNOEditor;
 
-public class DecommissionAction extends Action
+public class DecommissionAction extends ActionBase
 {
     public static final String ID = "DECOMMISSION";
     
@@ -21,6 +21,14 @@ public class DecommissionAction extends Action
     @Override
     public void run()
     {
-        MessageDialog.openInformation(null, "Decommission", "The VNO is decommissioned");
+        VNOEditor editor = getActiveEditor();
+        if(!editor.getTitle().startsWith("Global"))
+        {
+            DiagramModel globalDiagram = getEditor("Global.vno").getModel();
+            DiagramModel diagram = editor.getModel();
+            diagram.removeNetwork(diagram.getVNOID());
+            diagram.removeNetwork(0);
+            globalDiagram.removeNetwork(diagram.getVNOID());
+        }
     }
 }
