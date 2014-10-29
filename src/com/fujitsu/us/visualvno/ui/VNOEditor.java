@@ -79,11 +79,7 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
-import com.fujitsu.us.visualvno.actions.DecommissionAction;
-import com.fujitsu.us.visualvno.actions.InitAction;
-import com.fujitsu.us.visualvno.actions.StartAction;
-import com.fujitsu.us.visualvno.actions.StopAction;
-import com.fujitsu.us.visualvno.actions.VerifyAction;
+import com.fujitsu.us.visualvno.actions.ActionBase;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.parts.factories.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
@@ -182,11 +178,11 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         registry.registerAction(action);
         getSelectionActions().add(action.getId());
         
-        registry.registerAction(new InitAction());
-        registry.registerAction(new VerifyAction());
-        registry.registerAction(new StartAction());
-        registry.registerAction(new StopAction());
-        registry.registerAction(new DecommissionAction());
+        registry.registerAction(ActionBase.INIT);
+        registry.registerAction(ActionBase.VERIFY);
+        registry.registerAction(ActionBase.START);
+        registry.registerAction(ActionBase.STOP);
+        registry.registerAction(ActionBase.DECOMMISSION);
     }
     
     protected void saveProperties()
@@ -531,7 +527,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             tbm.add(_showOverviewAction);
             
             // default page
-            showPage(ID_OUTLINE);
+            showPage(ID_OVERVIEW);
         }
         
         private void initThumbnail()

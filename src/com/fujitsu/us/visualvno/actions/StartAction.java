@@ -2,9 +2,10 @@ package com.fujitsu.us.visualvno.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.fujitsu.us.visualvno.Demo;
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
+import com.fujitsu.us.visualvno.demo.Demo;
 import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class StartAction extends ActionBase
 {
@@ -21,7 +22,8 @@ public class StartAction extends ActionBase
     @Override
     public void run()
     {
-        String title = getActiveEditor().getTitle();
+        VNOEditor editor = getActiveEditor();
+        String title = editor.getTitle();
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
@@ -30,6 +32,8 @@ public class StartAction extends ActionBase
                 globalDiagram.addNetwork(Demo.getInstance()._network1);
             else
                 globalDiagram.addNetwork(Demo.getInstance()._network2);
+            
+            Demo.getInstance().start(vnoID);
         }
     }
 }

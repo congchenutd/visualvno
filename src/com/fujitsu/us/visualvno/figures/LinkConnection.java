@@ -3,6 +3,8 @@ package com.fujitsu.us.visualvno.figures;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * A polyline connection with an editable label
@@ -18,6 +20,8 @@ public class LinkConnection extends PolylineConnection
         
         // put the label in the middle of the connection
         add(_label, new MidpointLocator(this, 0));
+        
+        setFont(new Font(null, "Arial", 14, SWT.NORMAL));
     }
 
     public Label getLabel() {

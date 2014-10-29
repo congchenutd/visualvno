@@ -9,6 +9,7 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * Base class for all the figures
@@ -30,6 +31,8 @@ public abstract class ShapeFigure extends Shape
         
         _childrenPane.setLayoutManager(new CircleLayout());
         add(_childrenPane);
+        
+        setFont(new Font(null, "Arial", 14, SWT.NORMAL));
     }
     
     @Override

@@ -2,9 +2,10 @@ package com.fujitsu.us.visualvno.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.fujitsu.us.visualvno.Demo;
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
+import com.fujitsu.us.visualvno.demo.Demo;
 import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class VerifyAction extends ActionBase
 {
@@ -14,14 +15,15 @@ public class VerifyAction extends ActionBase
     {
         setId(ID);
         setText("Verify");
-        this.setImageDescriptor(ImageDescriptor.createFromFile(VisualVNOPlugin.class,
-                                                               "icons/Verify.png"));
+        setImageDescriptor(ImageDescriptor.createFromFile(VisualVNOPlugin.class,
+                                                          "icons/Verify.png"));
     }
     
     @Override
     public void run()
     {
-        String title = getActiveEditor().getTitle();
+        VNOEditor editor = getActiveEditor();
+        String title = editor.getTitle();
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
@@ -29,6 +31,8 @@ public class VerifyAction extends ActionBase
             String wholeDiagramName = "VNO" + vnoID + "Whole.vno";
             DiagramModel diagram = Demo.getInstance().loadDiagram(wholeDiagramName);
             getEditor(wholeEditorName).setDiagram(diagram);
+            
+            Demo.getInstance().verify(vnoID);
         }
     }
 }

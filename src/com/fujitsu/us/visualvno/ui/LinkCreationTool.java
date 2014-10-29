@@ -27,7 +27,7 @@ public class LinkCreationTool extends ConnectionCreationTool
 		    return result;
 		LinkBase model = ((LinkCreateCommand) cmd).getLink();
 		
-		Object obj = getCurrentViewer().getEditPartRegistry().get(model);
+		final Object obj = getCurrentViewer().getEditPartRegistry().get(model);
 		if(obj instanceof EditPart)
 		{
 			Display.getCurrent().asyncExec(new Runnable()

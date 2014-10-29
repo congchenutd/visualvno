@@ -23,7 +23,7 @@ public class Network
                 collectLinks(child);
             }
     }
-    
+
     public int getVNOID() {
         return _vnoID;
     }
