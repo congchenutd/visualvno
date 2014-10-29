@@ -16,12 +16,15 @@ public abstract class LinkBase extends ModelBase
     public static final String NAME_PROP  = "LinkModel.Name";
     public static final String STYLE_PROP = "LinkModel.LineStyle";
     public static final String WIDTH_PROP = "LinkModel.LineWidth";
+    public static final String VNOID_PROP = "LinkModel.VNOID";
     
     // descriptors
     private static final IPropertyDescriptor[] _descriptors;
     static {
         _descriptors = new IPropertyDescriptor[] {
-                new TextPropertyDescriptor(NAME_PROP, "Name") };
+                new TextPropertyDescriptor(NAME_PROP,  "Name"),
+                new TextPropertyDescriptor(VNOID_PROP, "VNO ID")
+        };
     }
     
     // property values
@@ -148,6 +151,8 @@ public abstract class LinkBase extends ModelBase
     {
         if(NAME_PROP.equals(id))
             return getName();
+        if(VNOID_PROP.equals(id))
+            return Integer.toString(getVNOID());
         return super.getPropertyValue(id);
     }
     
@@ -156,6 +161,8 @@ public abstract class LinkBase extends ModelBase
     {
         if(NAME_PROP.equals(id))
             setName((String) value);
+        else if(VNOID_PROP.equals(id))
+            setVNOID(Integer.parseInt((String) value));
         else
             super.setPropertyValue(id, value);
     }

@@ -1,5 +1,7 @@
 package com.fujitsu.us.visualvno.model;
 
+
+
 /**
  * The diagram hosting all other shapes
  * @author Cong Chen <cong.chen@us.fujitsu.com>
@@ -39,9 +41,19 @@ public class DiagramModel extends ContainerModel
         _zoomFactor = zoom;
     }   
     
-    
     @Override
     public String toString() {
         return getName();
     }
+    
+    public void removeNetwork(int vnoID) {
+        new Network(this, vnoID).removeFrom(this);
+    }
+    
+    public void addNetwork(Network network)
+    {
+        removeNetwork(network.getVNOID());
+        network.addTo(this);
+    }
+
 }

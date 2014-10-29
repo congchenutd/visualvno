@@ -32,6 +32,7 @@ public abstract class ShapeBase extends ModelBase
     public static final String SIZE_PROP         = "ShapeModel.Size";
     public static final String COLOR_PROP        = "ShapeModel.Color";
     public static final String NAME_PROP         = "ShapeModel.Name";
+    public static final String VNOID_PROP        = "ShapeModel.VNOID";
 
     // init property descriptors
     static
@@ -40,6 +41,7 @@ public abstract class ShapeBase extends ModelBase
             new PropertyDescriptor      (LOCATION_PROP, "Location"),
             new PropertyDescriptor      (SIZE_PROP,     "Size"),
             new TextPropertyDescriptor  (NAME_PROP,     "Name"),
+            new TextPropertyDescriptor  (VNOID_PROP,    "VNO ID"),
             new ColorPropertyDescriptor (COLOR_PROP,    "Color")
         };
     }
@@ -51,13 +53,6 @@ public abstract class ShapeBase extends ModelBase
     private RGB       _color    = new RGB(0, 255, 0);
     private List<LinkBase> _sourceLinks = new ArrayList<LinkBase>();
     private List<LinkBase> _targetLinks = new ArrayList<LinkBase>();
-    
-    /**
-     * Kill itself
-     * Do nothing by default
-     * Container models may need to kill its children
-     */
-    public void destroy() {}
     
     public List<LinkBase> getSourceLinks() {
         return new ArrayList<LinkBase>(_sourceLinks);
@@ -229,6 +224,8 @@ public abstract class ShapeBase extends ModelBase
             return _name;
         if(COLOR_PROP.equals(id))
             return getColor();
+        if(VNOID_PROP.equals(id))
+            return Integer.toString(getVNOID());
         return super.getPropertyValue(id);
     }
 
@@ -243,6 +240,8 @@ public abstract class ShapeBase extends ModelBase
             setName((String) value);
         else if(COLOR_PROP.equals(id))
             setColor((RGB) value);
+        else if(VNOID_PROP.equals(id))
+            setVNOID(Integer.parseInt((String) value));
         else
             super.setPropertyValue(id, value);
     }

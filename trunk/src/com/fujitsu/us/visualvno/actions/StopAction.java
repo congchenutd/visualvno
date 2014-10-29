@@ -1,12 +1,12 @@
 package com.fujitsu.us.visualvno.actions;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
+import com.fujitsu.us.visualvno.model.DiagramModel;
+import com.fujitsu.us.visualvno.ui.VNOEditor;
 
-public class StopAction extends Action
+public class StopAction extends ActionBase
 {
     public static final String ID = "STOP";
     
@@ -21,6 +21,12 @@ public class StopAction extends Action
     @Override
     public void run()
     {
-        MessageDialog.openInformation(null, "Stop", "The VNO is stopped");
+        VNOEditor editor = getActiveEditor();
+        if(!editor.getTitle().startsWith("Global"))
+        {
+            DiagramModel globalDiagram = getEditor("Global.vno").getModel();
+            DiagramModel diagram = editor.getModel();
+            globalDiagram.removeNetwork(diagram.getVNOID());
+        }
     }
 }

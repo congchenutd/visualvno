@@ -24,6 +24,8 @@ public abstract class ModelBase implements IPropertySource, Serializable
 
     private static final IPropertyDescriptor[] EMPTY_ARRAY = new IPropertyDescriptor[0];
     
+    private int _vnoID = 0;  // 0 means physical
+    
     // takes care of event forwarding
     private transient PropertyChangeSupport pcsDelegate
                             = new PropertyChangeSupport(this);
@@ -78,4 +80,12 @@ public abstract class ModelBase implements IPropertySource, Serializable
 
     @Override
     public void setPropertyValue(Object id, Object value) {}
+    
+    public int getVNOID() {
+        return _vnoID;
+    }
+    
+    public void setVNOID(int id) {
+        _vnoID = id;
+    }
 }
