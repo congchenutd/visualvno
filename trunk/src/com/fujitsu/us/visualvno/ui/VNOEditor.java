@@ -191,7 +191,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     
     protected void saveProperties()
     {
-        DiagramModel    diagram = getModel();
+        DiagramModel    diagram = getDiagram();
         GraphicalViewer viewer  = getGraphicalViewer();
         
         diagram.setGridEnabled(
@@ -210,7 +210,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     
     protected void loadProperties()
     {
-        DiagramModel    diagram = getModel();
+        DiagramModel    diagram = getDiagram();
         GraphicalViewer viewer  = getGraphicalViewer();
         if(viewer == null)
             return;
@@ -249,7 +249,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     private void createOutputStream(OutputStream os) throws IOException
     {
         ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeObject(getModel());
+        oos.writeObject(getDiagram());
         oos.close();
     }
 
@@ -362,8 +362,13 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         return super.getAdapter(type);
     }
 
-    public DiagramModel getModel() {
+    public DiagramModel getDiagram() {
         return _diagram;
+    }
+    
+    public void setDiagram(DiagramModel diagram) {
+        _diagram = diagram;
+        showDiagram();
     }
 
     @Override
@@ -419,7 +424,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
     }
     
     public void showDiagram() {
-        getGraphicalViewer().setContents(getModel());
+        getGraphicalViewer().setContents(getDiagram());
     }
 
     /**
@@ -479,7 +484,7 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
             
             // hook outline viewer
             getSelectionSynchronizer().addViewer(getViewer());
-            getViewer().setContents(getModel());
+            getViewer().setContents(getDiagram());
         }
         
         private void initOutline()

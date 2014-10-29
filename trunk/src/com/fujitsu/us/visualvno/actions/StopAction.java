@@ -4,7 +4,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class StopAction extends ActionBase
 {
@@ -21,12 +20,12 @@ public class StopAction extends ActionBase
     @Override
     public void run()
     {
-        VNOEditor editor = getActiveEditor();
-        if(!editor.getTitle().startsWith("Global"))
+        String title = getActiveEditor().getTitle();
+        if(title.startsWith("VNO"))
         {
-            DiagramModel globalDiagram = getEditor("Global.vno").getModel();
-            DiagramModel diagram = editor.getModel();
-            globalDiagram.removeNetwork(diagram.getVNOID());
+            int vnoID = Integer.valueOf("" + title.charAt(3));
+            DiagramModel globalDiagram = getEditor("Global.vno").getDiagram();
+            globalDiagram.removeNetwork(vnoID);
         }
     }
 }

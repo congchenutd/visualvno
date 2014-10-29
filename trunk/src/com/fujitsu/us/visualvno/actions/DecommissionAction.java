@@ -4,7 +4,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class DecommissionAction extends ActionBase
 {
@@ -21,14 +20,17 @@ public class DecommissionAction extends ActionBase
     @Override
     public void run()
     {
-        VNOEditor editor = getActiveEditor();
-        if(!editor.getTitle().startsWith("Global"))
+        String title = getActiveEditor().getTitle();
+        if(title.startsWith("VNO"))
         {
-            DiagramModel globalDiagram = getEditor("Global.vno").getModel();
-            DiagramModel diagram = editor.getModel();
-            diagram.removeNetwork(diagram.getVNOID());
-            diagram.removeNetwork(0);
-            globalDiagram.removeNetwork(diagram.getVNOID());
+            int vnoID = Integer.valueOf("" + title.charAt(3));
+            String virtualEditorName  = "VNO" + vnoID + "Virtual.vno";
+            String wholeEditorName    = "VNO" + vnoID + ".vno";
+            getEditor(virtualEditorName).setDiagram(new DiagramModel());
+            getEditor(wholeEditorName)  .setDiagram(new DiagramModel());
+            
+            DiagramModel globalDiagram = getEditor("Global.vno").getDiagram();
+            globalDiagram.removeNetwork(vnoID);
         }
     }
 }
