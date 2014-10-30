@@ -29,10 +29,10 @@ public class StartAction extends ActionBase
             	return;
             
             DiagramModel globalDiagram = getGlobalEditor().getDiagram();
-            if(vnoID == 1)
-                globalDiagram.addNetwork(Demo.getInstance()._network1);
-            else
-                globalDiagram.addNetwork(Demo.getInstance()._network2);
+            globalDiagram.addNetwork(Demo.getInstance().getNetwork(vnoID));
+            
+//            getUserEditor    (vnoID).getDiagram()
+//            getInternalEditor(vnoID).getDiagram();
             
             Demo.getInstance().start(vnoID);
         }
