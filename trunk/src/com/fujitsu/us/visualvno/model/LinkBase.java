@@ -115,8 +115,10 @@ public abstract class LinkBase extends ModelBase
         return _lineWidth;
     }
     
-    public void setLineWidth(int width) {
+    public void setLineWidth(int width)
+    {
         _lineWidth = width;
+        firePropertyChange(WIDTH_PROP, null, width);
     }
     
     /**

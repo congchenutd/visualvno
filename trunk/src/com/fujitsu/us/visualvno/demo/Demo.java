@@ -60,8 +60,7 @@ class ActionManager
 public class Demo
 {
     private static Demo _instance;
-    public Network _network1;
-    public Network _network2;
+    public Network[] _networks = new Network[2];
     private LearningSwitchController _controller;
     private Thread _thread;
     private ActionManager[] _actionManagers = new ActionManager[] {
@@ -92,11 +91,15 @@ public class Demo
     public void loadGlobal(VNOEditor editor)
     {
         DiagramModel diagram = Demo.getInstance().loadDiagram("Global12.vno");
-        _network1 = new Network(diagram, 1);
-        _network2 = new Network(diagram, 2);
+        _networks[0] = new Network(diagram, 1);
+        _networks[1] = new Network(diagram, 2);
         diagram.removeNetwork(1);
         diagram.removeNetwork(2);
         editor.setDiagram(diagram);
+    }
+    
+    public Network getNetwork(int vnoID) {
+        return _networks[vnoID-1];
     }
     
     private Demo()
