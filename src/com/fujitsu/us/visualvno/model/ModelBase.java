@@ -21,8 +21,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
 public abstract class ModelBase implements IPropertySource, Serializable
 {
     private static final long serialVersionUID = 1;
-
     private static final IPropertyDescriptor[] EMPTY_ARRAY = new IPropertyDescriptor[0];
+    protected static final String FONT_NAME = "Arial";
     
     private int _vnoID = 0;  // 0 means physical
     

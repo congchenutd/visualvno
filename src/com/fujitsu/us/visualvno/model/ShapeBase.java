@@ -32,7 +32,7 @@ public abstract class ShapeBase extends ModelBase
     public static final String SIZE_PROP         = "ShapeModel.Size";
     public static final String COLOR_PROP        = "ShapeModel.Color";
     public static final String NAME_PROP         = "ShapeModel.Name";
-    public static final String VNOID_PROP        = "ShapeModel.VNOID";
+    public static final String VNOID_PROP        = "ShapeModel.VnoID";
 
     // init property descriptors
     static

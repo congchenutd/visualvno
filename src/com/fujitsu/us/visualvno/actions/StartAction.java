@@ -5,7 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.demo.Demo;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class StartAction extends ActionBase
 {
@@ -22,15 +21,14 @@ public class StartAction extends ActionBase
     @Override
     public void run()
     {
-        VNOEditor editor = getActiveEditor();
-        String title = editor.getTitle();
+        String title = getActiveEditor().getTitle();
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
             if(!Demo.getInstance().canStart(vnoID))
             	return;
             
-            DiagramModel globalDiagram = getEditor("Global.vno").getDiagram();
+            DiagramModel globalDiagram = getGlobalEditor().getDiagram();
             if(vnoID == 1)
                 globalDiagram.addNetwork(Demo.getInstance()._network1);
             else
