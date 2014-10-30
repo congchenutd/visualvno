@@ -27,6 +27,9 @@ public class DecommissionAction extends ActionBase
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
+            if(!Demo.getInstance().canDecommission(vnoID))
+            	return;
+            
             String virtualEditorName  = "VNO" + vnoID + "Virtual.vno";
             String wholeEditorName    = "VNO" + vnoID + ".vno";
             getEditor(virtualEditorName).setDiagram(new DiagramModel());

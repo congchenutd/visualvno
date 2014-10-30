@@ -28,6 +28,9 @@ public class InitAction extends ActionBase
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
+            if(!Demo.getInstance().canInit(vnoID))
+            	return;
+            
             String virtualEditorName  = "VNO" + vnoID + "Virtual.vno";
             String wholeEditorName    = "VNO" + vnoID + ".vno";
             String virtualDiagramName = virtualEditorName;
@@ -40,7 +43,7 @@ public class InitAction extends ActionBase
                 Demo.getInstance().loadGlobal(getEditor("Global.vno"));
                 first = false;
             }
-            Demo.getInstance().init();
+            Demo.getInstance().init(vnoID);
         }
     }
 }

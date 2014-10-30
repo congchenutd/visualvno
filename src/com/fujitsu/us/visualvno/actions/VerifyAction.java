@@ -27,6 +27,9 @@ public class VerifyAction extends ActionBase
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
+            if(!Demo.getInstance().canVerify(vnoID))
+            	return;
+            
             String wholeEditorName  = "VNO" + vnoID + ".vno";
             String wholeDiagramName = "VNO" + vnoID + "Whole.vno";
             DiagramModel diagram = Demo.getInstance().loadDiagram(wholeDiagramName);
