@@ -5,7 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import com.fujitsu.us.visualvno.VisualVNOPlugin;
 import com.fujitsu.us.visualvno.demo.Demo;
 import com.fujitsu.us.visualvno.model.DiagramModel;
-import com.fujitsu.us.visualvno.ui.VNOEditor;
 
 public class InitAction extends ActionBase
 {
@@ -23,7 +22,6 @@ public class InitAction extends ActionBase
     @Override
     public void run()
     {
-        VNOEditor editor = getActiveEditor();
         String title = getActiveEditor().getTitle();
         if(title.startsWith("VNO"))
         {
@@ -31,16 +29,13 @@ public class InitAction extends ActionBase
             if(!Demo.getInstance().canInit(vnoID))
             	return;
             
-            String virtualEditorName  = "VNO" + vnoID + "Virtual.vno";
-            String wholeEditorName    = "VNO" + vnoID + ".vno";
-            String virtualDiagramName = virtualEditorName;
-            DiagramModel diagram = Demo.getInstance().loadDiagram(virtualDiagramName);
-            getEditor(virtualEditorName).setDiagram(diagram);
-            getEditor(wholeEditorName)  .setDiagram(diagram);
+            DiagramModel diagram = loadVirtualDiagram(vnoID);
+            getUserEditor    (vnoID).setDiagram(diagram);
+            getInternalEditor(vnoID).setDiagram(diagram);
             
             if(first)
             {
-                Demo.getInstance().loadGlobal(getEditor("Global.vno"));
+                Demo.getInstance().loadGlobal(getGlobalEditor());
                 first = false;
             }
             Demo.getInstance().init(vnoID);
