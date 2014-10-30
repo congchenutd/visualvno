@@ -27,6 +27,9 @@ public class StopAction extends ActionBase
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
+            if(!Demo.getInstance().canStop(vnoID))
+            	return;
+            
             DiagramModel globalDiagram = getEditor("Global.vno").getDiagram();
             globalDiagram.removeNetwork(vnoID);
             

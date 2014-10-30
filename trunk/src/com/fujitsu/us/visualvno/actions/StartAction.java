@@ -27,6 +27,9 @@ public class StartAction extends ActionBase
         if(title.startsWith("VNO"))
         {
             int vnoID = Integer.valueOf("" + title.charAt(3));
+            if(!Demo.getInstance().canStart(vnoID))
+            	return;
+            
             DiagramModel globalDiagram = getEditor("Global.vno").getDiagram();
             if(vnoID == 1)
                 globalDiagram.addNetwork(Demo.getInstance()._network1);

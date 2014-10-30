@@ -11,6 +11,52 @@ import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.Network;
 import com.fujitsu.us.visualvno.ui.VNOEditor;
 
+class ActionManager
+{
+	private enum State {UNINIT, INIT, VERIFY, START, STOP};
+	private State _state = State.UNINIT;
+	
+	public boolean canInit() {
+		return _state == State.UNINIT;
+	}
+	
+	public boolean canVerify() {
+		return _state == State.INIT;
+	}
+	
+	public boolean canStart() {
+		return _state == State.VERIFY || _state == State.STOP;
+	}
+	
+	public boolean canStop() {
+		return _state == State.START;
+	}
+	
+	public boolean canDecommission() {
+		return _state != State.UNINIT;
+	}
+	
+	public void init() {
+		_state = State.INIT;
+	}
+	
+	public void verify() {
+		_state = State.VERIFY;
+	}
+	
+	public void start() {
+		_state = State.START;
+	}
+	
+	public void stop() {
+		_state = State.STOP;
+	}
+	
+	public void decommission() {
+		_state = State.UNINIT;
+	}
+}
+
 public class Demo
 {
     private static Demo _instance;
@@ -18,6 +64,8 @@ public class Demo
     public Network _network2;
     private LearningSwitchController _controller;
     private Thread _thread;
+    private ActionManager[] _actionManagers = new ActionManager[] {
+    	new ActionManager(), new ActionManager() };
     
     public static Demo getInstance()
     {
@@ -69,47 +117,51 @@ public class Demo
         _controller.addToGroup(new IPAddress("10.0.0.5"), 2);
     }
     
-    public void init()
+    public void init(int vnoID)
     {
-//        ActionBase.VERIFY       .setEnabled(true);
-//        ActionBase.START        .setEnabled(false);
-//        ActionBase.STOP         .setEnabled(false);
-//        ActionBase.DECOMMISSION .setEnabled(false);
+    	_actionManagers[vnoID-1].init();
     }
     
     public void verify(int vnoID)
     {
-//        ActionBase.VERIFY       .setEnabled(false);
-//        ActionBase.START        .setEnabled(true);
-//        ActionBase.STOP         .setEnabled(false);
-//        ActionBase.DECOMMISSION .setEnabled(false);
+    	_actionManagers[vnoID-1].verify();
     }
     
     public void start(int vnoID)
     {
-        _controller.start(vnoID);
-//        ActionBase.VERIFY       .setEnabled(false);
-//        ActionBase.START        .setEnabled(false);
-//        ActionBase.STOP         .setEnabled(true);
-//        ActionBase.DECOMMISSION .setEnabled(true);
+    	_actionManagers[vnoID-1].start();
+    	_controller.start(vnoID);
     }
     
     public void stop(int vnoID)
     {
-        _controller.stop(vnoID);
-//        ActionBase.VERIFY       .setEnabled(false);
-//        ActionBase.START        .setEnabled(true);
-//        ActionBase.STOP         .setEnabled(false);
-//        ActionBase.DECOMMISSION .setEnabled(false);
+    	_actionManagers[vnoID-1].stop();
+    	_controller.stop(vnoID);
     }
     
     public void decommission(int vnoID)
     {
-        _controller.stop(vnoID);
-//        ActionBase.VERIFY       .setEnabled(false);
-//        ActionBase.START        .setEnabled(false);
-//        ActionBase.STOP         .setEnabled(false);
-//        ActionBase.DECOMMISSION .setEnabled(false);
+    	_actionManagers[vnoID-1].decommission();
+    	_controller.stop(vnoID);
     }
-
+    
+    public boolean canInit(int vnoID) {
+		return _actionManagers[vnoID-1].canInit();
+	}
+	
+	public boolean canVerify(int vnoID) {
+		return _actionManagers[vnoID-1].canVerify();
+	}
+	
+	public boolean canStart(int vnoID) {
+		return _actionManagers[vnoID-1].canStart();
+	}
+	
+	public boolean canStop(int vnoID) {
+		return _actionManagers[vnoID-1].canStop();
+	}
+	
+	public boolean canDecommission(int vnoID) {
+		return _actionManagers[vnoID-1].canDecommission();
+	}
 }
