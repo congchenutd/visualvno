@@ -13,6 +13,8 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 
 import com.fujitsu.us.visualvno.figures.LinkConnection;
 import com.fujitsu.us.visualvno.model.LinkBase;
@@ -106,7 +108,9 @@ public class LinkEditPart  extends     AbstractConnectionEditPart
     {
         String property = event.getPropertyName();
         if(LinkBase.NAME_PROP .equals(property) ||
-           LinkBase.STYLE_PROP.equals(property))
+           LinkBase.STYLE_PROP.equals(property) ||
+           LinkBase.WIDTH_PROP.equals(property) ||
+           LinkBase.COLOR_PROP.equals(property))
             refreshVisuals();
     }
     
@@ -117,6 +121,10 @@ public class LinkEditPart  extends     AbstractConnectionEditPart
         LinkConnection connection = (LinkConnection) getFigure();
         connection.setLineStyle(model.getLineStyle());
         connection.setText     (model.getName());
+        connection.setLineWidth(model.getLineWidth());
+        RGB rgb = model.getColor();
+        if(rgb != null)
+            connection.setForegroundColor(new Color(null, rgb));
     }
 
 }

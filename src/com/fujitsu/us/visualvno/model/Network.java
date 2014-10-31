@@ -3,6 +3,8 @@ package com.fujitsu.us.visualvno.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.RGB;
+
 /**
  * A collection of shapes and links belonging to a network
  * @author Cong Chen <cong.chen@us.fujitsu.com>
@@ -79,5 +81,27 @@ public class Network
             for(ShapeBase child: container.getChildren())
                 collectLinks(child);
         }
+    }
+    
+    public void highlightLinks()
+    {
+        RGB color = new RGB(0, 200, 0);
+        for(LinkBase link: getLinks())
+            if(link instanceof LinkModel)
+            {
+                link.setColor(color);
+                link.setLineWidth((int) (link.getLineWidth() * 1.5));
+            }
+    }
+    
+    public void deHighlightLinks()
+    {
+        RGB color = new RGB(0, 0, 0);
+        for(LinkBase link: getLinks())
+            if(link instanceof LinkModel)
+            {
+                link.setColor(color);
+                link.setLineWidth((int) (link.getLineWidth() / 1.5));
+            }
     }
 }
