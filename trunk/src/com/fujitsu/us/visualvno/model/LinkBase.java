@@ -1,6 +1,7 @@
 package com.fujitsu.us.visualvno.model;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
@@ -16,13 +17,15 @@ public abstract class LinkBase extends ModelBase
     public static final String NAME_PROP  = "LinkModel.Name";
     public static final String STYLE_PROP = "LinkModel.LineStyle";
     public static final String WIDTH_PROP = "LinkModel.LineWidth";
-    public static final String VNOID_PROP = "LinkModel.VNOID";
+    public static final String VNOID_PROP = "LinkModel.VnoID";
+    public static final String COLOR_PROP = "LinkModel.Color";
     
     // descriptors
     private static final IPropertyDescriptor[] _descriptors;
     static {
         _descriptors = new IPropertyDescriptor[] {
                 new TextPropertyDescriptor(NAME_PROP,  "Name"),
+                new TextPropertyDescriptor(WIDTH_PROP, "Line width"),
                 new TextPropertyDescriptor(VNOID_PROP, "VNO ID")
         };
     }
@@ -33,7 +36,8 @@ public abstract class LinkBase extends ModelBase
     private ILinkEnd  _target;
     private boolean   _isConnected;
     private int       _lineStyle = Graphics.LINE_SOLID;
-    private int       _lineWidth = 2;
+    private int       _lineWidth = 3;
+    private RGB       _color = new RGB(0, 0, 0);
 
     public ILinkEnd getSource() {
         return _source;
@@ -121,6 +125,19 @@ public abstract class LinkBase extends ModelBase
         firePropertyChange(WIDTH_PROP, null, width);
     }
     
+    public RGB getColor() {
+        return _color;
+    }
+
+    public void setColor(RGB color)
+    {
+        if(color == null)
+            throw new IllegalArgumentException();
+        
+        _color = color;
+        firePropertyChange(COLOR_PROP, null, color);
+    }
+    
     /**
      * Whether two ends can be connected by a link
      */
@@ -153,6 +170,8 @@ public abstract class LinkBase extends ModelBase
     {
         if(NAME_PROP.equals(id))
             return getName();
+        if(WIDTH_PROP.equals(id))
+            return Integer.toString(getLineWidth());
         if(VNOID_PROP.equals(id))
             return Integer.toString(getVNOID());
         return super.getPropertyValue(id);
@@ -163,6 +182,8 @@ public abstract class LinkBase extends ModelBase
     {
         if(NAME_PROP.equals(id))
             setName((String) value);
+        else if(WIDTH_PROP.equals(id))
+            setLineWidth(Integer.parseInt((String) value));
         else if(VNOID_PROP.equals(id))
             setVNOID(Integer.parseInt((String) value));
         else
