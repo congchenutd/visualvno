@@ -23,7 +23,6 @@ import com.fujitsu.us.oovn.io.Server;
  * Implements EventHandler, a callback for Server
  * 
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
- *
  */
 public abstract class Controller implements EventHandler
 {
@@ -90,9 +89,9 @@ public abstract class Controller implements EventHandler
         messages.add(_factory.getMessage(OFType.FEATURES_REQUEST));
         sw.getStream().write(messages);
 
-        // register for WRITE
+        // register for WRITE operation
         int ops = SelectionKey.OP_READ;
-        if (sw.getStream().needsFlush())
+        if(sw.getStream().needsFlush())
             ops |= SelectionKey.OP_WRITE;
 
         _server.register(switchChannel, ops);
@@ -136,7 +135,7 @@ public abstract class Controller implements EventHandler
                             break;
                         case ECHO_REQUEST:
                             OFEchoReply reply = (OFEchoReply) stream.getMessageFactory()
-                                                                        .getMessage(OFType.ECHO_REPLY);
+                                                                    .getMessage(OFType.ECHO_REPLY);
                             reply.setXid(message.getXid());
                             stream.write(reply);
                             break;

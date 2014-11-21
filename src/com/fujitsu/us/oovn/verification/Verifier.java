@@ -3,7 +3,7 @@ package com.fujitsu.us.oovn.verification;
 import com.fujitsu.us.oovn.core.VNO;
 
 /**
- * The base class for the verification chain (chain of responsibility DP)
+ * The base class for the verification chain (chain of responsibility)
  * 
  * Each concrete Verifier class should implement verify() in the following way:
  * 1. do its own verification
