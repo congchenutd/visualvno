@@ -9,8 +9,13 @@
 	<classpathentry kind="lib" path="lib/neo4j-graph-algo-2.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/neo4j-kernel-2.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/neo4j-rest-graphdb-2.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/netty-all-5.0.0.Alpha1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/netty-all-5.0.0.Alpha1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/netty-all-5.0.0.Alpha1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/netty-3.9.5.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

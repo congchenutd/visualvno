@@ -1,8 +1,10 @@
 package org.openflow.protocol;
 
 import java.lang.reflect.Constructor;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
+import org.openflow.util.U8;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * List of OpenFlow types and mappings to wire protocol value and derived
@@ -129,7 +131,7 @@ public enum OFType {
                                     return new OFUnknownMessage();
                             }});
 
-//    protected static Logger log = LoggerFactory.getLogger(OFType.class);
+    protected static Logger log = LoggerFactory.getLogger(OFType.class);
 
     static OFType[] mapping;
 
@@ -196,7 +198,7 @@ public enum OFType {
         try {
             return OFType.mapping[i];
         } catch (ArrayIndexOutOfBoundsException e) {
-//            log.warn("Unknown message type requested: {}", U8.f(i));
+            log.warn("Unknown message type requested: {}", U8.f(i));
             return UNKNOWN;
         }
     }

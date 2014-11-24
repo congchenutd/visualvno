@@ -1,11 +1,6 @@
 package com.fujitsu.us.oovn.core.io;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -18,16 +13,16 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Server
 {
-    private final int port;
-
-    public Server(int port) {
-        this.port = port;
+    private final int port = 6634;
+    private static Server _instance;
+    
+    public static Server getInstance()
+    {
+        if(_instance == null)
+            _instance = new Server();
+        return _instance;
     }
 
     public void run() throws Exception
@@ -48,7 +43,7 @@ public class Server
                                                                         Delimiters.lineDelimiter()));
                         pipeline.addLast("decoder", new StringDecoder());
                         pipeline.addLast("encoder", new StringEncoder());
-                        pipeline.addLast("handler", new EchoServerHandler());
+                        pipeline.addLast("handler", new SwitchChannelHandler(Server.getInstance()));
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)
@@ -66,53 +61,53 @@ public class Server
     
     public static void main(String[] args) throws Exception
     {
-        new Server(8888).run();
+        getInstance().run();
     }
 }
 
 
-class EchoServerHandler extends ChannelHandlerAdapter
-{
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg)
-    {
-        System.out.println((String) msg);
-        ctx.write(msg);
-        ctx.flush();
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
-    }
-}
-
-class TimeServerHandler extends ChannelHandlerAdapter
-{
-
-    @Override
-    public void channelActive(final ChannelHandlerContext ctx)
-    {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        byte[] bytes = dateFormat.format(date).getBytes();
-        final ByteBuf buffer = ctx.alloc().buffer(bytes.length);
-        buffer.writeBytes(bytes);
-        final ChannelFuture f = ctx.writeAndFlush(buffer);
-        
-        f.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) {
-                assert f == future;
-                ctx.close();
-            }
-        });
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
-    }
-}
+//class EchoServerHandler extends ChannelHandlerAdapter
+//{
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg)
+//    {
+//        System.out.println((String) msg);
+//        ctx.write(msg);
+//        ctx.flush();
+//    }
+//
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//}
+//
+//class TimeServerHandler extends ChannelHandlerAdapter
+//{
+//
+//    @Override
+//    public void channelActive(final ChannelHandlerContext ctx)
+//    {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//        Date date = new Date();
+//        byte[] bytes = dateFormat.format(date).getBytes();
+//        final ByteBuf buffer = ctx.alloc().buffer(bytes.length);
+//        buffer.writeBytes(bytes);
+//        final ChannelFuture f = ctx.writeAndFlush(buffer);
+//        
+//        f.addListener(new ChannelFutureListener() {
+//            @Override
+//            public void operationComplete(ChannelFuture future) {
+//                assert f == future;
+//                ctx.close();
+//            }
+//        });
+//    }
+//
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//}

@@ -11,8 +11,8 @@ import com.fujitsu.us.visualvno.model.ShapeBase;
 public class ShapeRenameCommand extends Command
 {
     private final ShapeBase    _shape;
-    private final String        _newName;
-    private String              _oldName;
+    private final String       _newName;
+    private String             _oldName;
 
     public ShapeRenameCommand(ShapeBase shape, String newName)
     {
