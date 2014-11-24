@@ -19,7 +19,7 @@ public class ShapeRenamePolicy extends DirectEditPolicy
     protected Command getDirectEditCommand(DirectEditRequest request) {
         return new ShapeRenameCommand(
                       (ShapeBase) getHost().getModel(),
-                      (String)     request.getCellEditor().getValue());
+                      (String)    request.getCellEditor().getValue());
     }
 
     /**

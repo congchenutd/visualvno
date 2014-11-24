@@ -29,7 +29,7 @@ public class LinkModel extends LinkBase
         if(source instanceof SwitchModel)
             return false;
         if(source instanceof HostModel)
-            return target instanceof PortModel || target instanceof PortModel;
+            return target instanceof PortModel;
         if(source instanceof PortModel)
             return target instanceof PortModel || target instanceof HostModel;
         return false;

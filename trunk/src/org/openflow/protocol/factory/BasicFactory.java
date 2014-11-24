@@ -24,7 +24,17 @@ import org.openflow.protocol.statistics.OFVendorStatistics;
  *
  */
 public class BasicFactory implements OFMessageFactory, OFActionFactory,
-        OFQueuePropertyFactory, OFStatisticsFactory {
+        OFQueuePropertyFactory, OFStatisticsFactory
+{
+    private static BasicFactory _instance = null;
+    
+    public static BasicFactory getInstance()
+    {
+        if(_instance == null)
+            _instance = new BasicFactory();
+        return _instance;
+    }
+    
     @Override
     public OFMessage getMessage(OFType t) {
         return t.newInstance();
