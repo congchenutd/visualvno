@@ -12,6 +12,9 @@ import com.google.gson.JsonObject;
  * The configuration file must define each element type, 
  * e.g., "type" = "SingleSwitch"
  * 
+ * An ElementFactory only builds or fetches one type of element
+ * A builder knows what elements are needed for a network
+ * 
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
 public interface NetworkBuilder

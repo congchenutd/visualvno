@@ -7,14 +7,17 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 /**
- * A dimension editor used by the Property view
+ * A dimension editor (in the format of (x, y)) used by the Property view
  */
 public class DimensionPropertySource implements IPropertySource
 {
 
+    private static int MIN_WIDTH = 10;
+    
+    // property ids
     public static String ID_WIDTH  = "width";
     public static String ID_HEIGHT = "height";
-    private static int MIN_WIDTH = 10;
+    
     protected static IPropertyDescriptor[] _descriptors;
 
     static
@@ -26,6 +29,7 @@ public class DimensionPropertySource implements IPropertySource
         _descriptors = new IPropertyDescriptor[] { widthProp, heightProp };
     }
 
+    // the value
     protected Dimension _dimension = null;
 
     public DimensionPropertySource(Dimension dimension) {
@@ -38,11 +42,7 @@ public class DimensionPropertySource implements IPropertySource
     }
 
     @Override
-    public Object getPropertyValue(Object propName) {
-        return getPropertyValue((String) propName);
-    }
-
-    public Object getPropertyValue(String propName)
+    public Object getPropertyValue(Object propName)
     {
         if(ID_HEIGHT.equals(propName))
             return String.valueOf(_dimension.height());
@@ -52,11 +52,7 @@ public class DimensionPropertySource implements IPropertySource
     }
 
     @Override
-    public void setPropertyValue(Object propName, Object value) {
-        setPropertyValue((String) propName, value);
-    }
-
-    public void setPropertyValue(String propName, Object value)
+    public void setPropertyValue(Object propName, Object value)
     {
         if(ID_HEIGHT.equals(propName))
             _dimension.height = Integer.valueOf((String) value);
@@ -73,11 +69,8 @@ public class DimensionPropertySource implements IPropertySource
     public void resetPropertyValue(Object propName) {}
 
     @Override
-    public boolean isPropertySet(Object propName) {
-        return true;
-    }
-
-    public boolean isPropertySet(String propName) {
+    public boolean isPropertySet(Object propName)
+    {
         return ID_HEIGHT.equals(propName) || 
                ID_WIDTH .equals(propName);
     }

@@ -30,6 +30,7 @@ public class LinkCreationTool extends ConnectionCreationTool
 		final Object obj = getCurrentViewer().getEditPartRegistry().get(model);
 		if(obj instanceof EditPart)
 		{
+		    // send a direct edit request to the edit part
 			Display.getCurrent().asyncExec(new Runnable()
 			{
 				@Override

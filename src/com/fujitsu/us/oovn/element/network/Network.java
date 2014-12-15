@@ -37,7 +37,7 @@ public abstract class Network<SwitchType extends Switch,
     
     public void addSwitch(SwitchType sw) {
         if(sw != null)
-            _switches.put(sw.getDPID().toInt(), sw);
+            _switches.put(sw.getDPID().toLong(), sw);
     }
     
     public void removeSwitch(SwitchType sw) {
@@ -64,10 +64,10 @@ public abstract class Network<SwitchType extends Switch,
     
     public SwitchType getSwitch(DPID dpid)
     {
-        if(dpid == null || !_switches.containsKey(dpid.toInt()))
+        if(dpid == null || !_switches.containsKey(dpid.toLong()))
             return null;
             
-        return _switches.get(dpid.toInt());
+        return _switches.get(dpid.toLong());
     }
     
     public Map<Long, SwitchType> getSwitches() {

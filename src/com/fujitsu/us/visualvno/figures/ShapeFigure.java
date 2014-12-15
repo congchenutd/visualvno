@@ -19,7 +19,7 @@ import org.eclipse.swt.SWT;
 public abstract class ShapeFigure extends Shape
 {
     protected Label   _label        = new Label("Label");
-    protected IFigure _childrenPane = new FreeformLayer();
+    protected IFigure _childrenPane = new FreeformLayer();  // for children figures
     protected ConnectionAnchor _anchor;
     
     public ShapeFigure()
@@ -32,6 +32,9 @@ public abstract class ShapeFigure extends Shape
         add(_childrenPane);
     }
     
+    /**
+     * Move the label and childrenPane to the center
+     */
     @Override
     protected void fillShape(Graphics graphics)
     {

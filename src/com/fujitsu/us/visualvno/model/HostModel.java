@@ -7,10 +7,15 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+/**
+ * The model for a host
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public class HostModel extends ShapeBase
                        implements ILinkEnd
 {
     private static final long  serialVersionUID = 1;
+    
     public  static final String SMALL_IMAGE  = "icons/Host.png";
     public  static final String BIG_IMAGE    = "icons/Host.png";
     private static final Image  ICON         = createImage(SMALL_IMAGE);

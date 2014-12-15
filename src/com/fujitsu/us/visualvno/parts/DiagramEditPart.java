@@ -55,6 +55,9 @@ public class DiagramEditPart extends ContainerEditPart
         return figure;
     }
     
+    /**
+     * Listens to property changes of the model
+     */
     @Override
     public void propertyChange(PropertyChangeEvent event)
     {

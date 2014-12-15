@@ -19,7 +19,7 @@ public class IPAddress extends SectionedString
 
     @Override
     public int hashCode() {
-        return (int) toInt();
+        return (int) toLong();
     }
     
     @Override

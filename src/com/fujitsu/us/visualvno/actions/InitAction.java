@@ -29,10 +29,12 @@ public class InitAction extends ActionBase
             if(!Demo.getInstance().canInit(vnoID))
             	return;
             
+            // load the virtual diagram to both user and internal editors
             DiagramModel diagram = loadVirtualDiagram(vnoID);
             getUserEditor    (vnoID).setDiagram(diagram);
             getInternalEditor(vnoID).setDiagram(diagram);
             
+            // load global (physical) diagram
             if(first)
             {
                 Demo.getInstance().loadGlobal(getGlobalEditor());

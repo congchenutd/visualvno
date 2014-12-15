@@ -28,9 +28,11 @@ public class DecommissionAction extends ActionBase
             if(!Demo.getInstance().canDecommission(vnoID))
             	return;
             
+            // set user and internal editor empty
             getUserEditor    (vnoID).setDiagram(new DiagramModel());
             getInternalEditor(vnoID).setDiagram(new DiagramModel());
             
+            // remove the vno from the global diagram
             DiagramModel globalDiagram = getGlobalEditor().getDiagram();
             globalDiagram.removeNetwork(vnoID);
             

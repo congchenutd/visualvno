@@ -19,6 +19,12 @@ public class VirtualIPAddress extends IPAddress implements Jsonable
         super(ipString);
         _vno = vno;
     }
+    
+    public VirtualIPAddress(VNO vno, long value)
+    {
+        super(value);
+        _vno = vno;
+    }
 
     public VNO getVNO() {
         return _vno;

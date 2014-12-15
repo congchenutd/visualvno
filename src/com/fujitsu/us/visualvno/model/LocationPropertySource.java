@@ -13,6 +13,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 public class LocationPropertySource implements IPropertySource
 {
 
+    // property ids
     public static String ID_XPOS = "XPos";
     public static String ID_YPOS = "YPos";
     protected static IPropertyDescriptor[] _descriptors;
@@ -26,6 +27,7 @@ public class LocationPropertySource implements IPropertySource
         _descriptors = new IPropertyDescriptor[] { xProp, yProp };
     }
 
+    // the value
     protected Point _location = null;
 
     public LocationPropertySource(Point location) {

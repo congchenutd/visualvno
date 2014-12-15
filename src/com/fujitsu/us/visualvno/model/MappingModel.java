@@ -5,7 +5,6 @@ import org.eclipse.draw2d.Graphics;
 /**
  * A mapping "link" between a virtual node and physical node
  * @author Cong Chen <cong.chen@us.fujitsu.com>
- *
  */
 public class MappingModel extends LinkBase
 {

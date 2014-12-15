@@ -10,7 +10,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import com.fujitsu.us.visualvno.model.PortModel;
 
 /**
- * A XYLayout that keeps the children in a circule
+ * A XYLayout that keeps the children (PortFigure) in a circle
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
 public class CircleLayout extends XYLayout
@@ -27,8 +27,8 @@ public class CircleLayout extends XYLayout
         int radius = container.getSize().width() / 2 - portWidth / 2;
         for(int i = 0; i < portCount; ++i)
         {
-            PortFigure child = ports.get(i);
-            Rectangle constraint = (Rectangle) getConstraint(child);
+            PortFigure port = ports.get(i);
+            Rectangle constraint = (Rectangle) getConstraint(port);
             if(constraint == null)
                 continue;
             
@@ -38,8 +38,8 @@ public class CircleLayout extends XYLayout
             // just added, arrange the ports clockwise
             if(x == 0 && y == 0)
             {
-                double theta = 2 * Math.PI / portCount * i;        // clockwise
-                x = (int) (radius + radius * Math.sin(theta)); // relative coordinates
+                double theta = 2 * Math.PI / portCount * i;      // clockwise
+                x = (int) (radius + radius * Math.sin(theta));   // relative coordinates
                 y = (int) (radius - radius * Math.cos(theta));
             }
             // ensure the ports are on a circle
@@ -50,13 +50,13 @@ public class CircleLayout extends XYLayout
                 int d = (int) Math.sqrt(dx * dx + dy * dy);
                 if(d == 0)  // avoid divided by 0
                     x = y = 0;
-                else if(d != radius)
+                else if(d != radius)   // move the port to the circle
                 {
                     x = radius + radius * dx / d;
                     y = radius + radius * dy / d;
                 }
             }
-            child.setBounds(new Rectangle(x, y, portWidth, portWidth));
+            port.setBounds(new Rectangle(x, y, portWidth, portWidth));
         }
     }
 

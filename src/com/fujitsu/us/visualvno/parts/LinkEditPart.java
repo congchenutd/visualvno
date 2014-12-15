@@ -23,8 +23,8 @@ import com.fujitsu.us.visualvno.model.commands.LinkDeleteCommand;
 import com.fujitsu.us.visualvno.parts.policies.LinkEndpointPolicy;
 import com.fujitsu.us.visualvno.parts.policies.LinkRenamePolicy;
 
-public class LinkEditPart  extends     AbstractConnectionEditPart 
-                    implements  PropertyChangeListener
+public class LinkEditPart   extends     AbstractConnectionEditPart 
+                            implements  PropertyChangeListener
 {
 
     @Override
@@ -75,14 +75,14 @@ public class LinkEditPart  extends     AbstractConnectionEditPart
     @Override
     public void performRequest(Request req) {
         if(req.getType() == RequestConstants.REQ_OPEN ||
-                req.getType() == RequestConstants.REQ_DIRECT_EDIT)
+           req.getType() == RequestConstants.REQ_DIRECT_EDIT)
         {
             Label label = ((LinkConnection) getFigure()).getLabel();
             LabelDirectEditManager manager 
-            = new LabelDirectEditManager(this, 
-                    TextCellEditor.class, 
-                    new LabelCellEditorLocator(label), 
-                    label);
+                = new LabelDirectEditManager(this, 
+                                             TextCellEditor.class, 
+                                             new LabelCellEditorLocator(label), 
+                                             label);
             manager.show();
         }
     }

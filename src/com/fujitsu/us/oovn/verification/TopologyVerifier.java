@@ -2,15 +2,11 @@ package com.fujitsu.us.oovn.verification;
 
 import java.util.Iterator;
 
-import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Node;
 import org.neo4j.rest.graphdb.query.RestQueryResult;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
-import com.fujitsu.us.oovn.element.datapath.PhysicalSwitch;
-import com.fujitsu.us.oovn.element.link.PhysicalLink;
-import com.fujitsu.us.oovn.element.port.PhysicalPort;
+import com.fujitsu.us.oovn.factory.ElementFactory;
 import com.fujitsu.us.oovn.map.GlobalMap;
 
 /**
@@ -48,11 +44,6 @@ public class TopologyVerifier extends Verifier
                 " WHERE mapCount > 1" +
                 " RETURN p");
         
-//        System.out.println(
-//                "MATCH (v:Virtual {vnoid:" + vno.getID() + "})-[:Maps]->(p:ZPhysical)" +
-//                " WITH p, count(v) AS mapCount" +
-//                " WHERE mapCount > 1" +
-//                " RETURN p");
         Iterator<Node> it = result.to(Node.class).iterator();
         
         // remove the vno from the global map
@@ -61,27 +52,9 @@ public class TopologyVerifier extends Verifier
         if(it.hasNext())
             return new VerificationResult(false, 
                     "This physical node is mapped by more than one virtual node: " +
-                    fromNode(it.next()).toString());
+                    ElementFactory.fromNode(it.next()).toString());
 
         // pass the task to the next verifier
         return super.verify(vno);
     }
-    
-    /**
-     * Generate a physical element from a db node
-     */
-    private NetworkElement fromNode(Node node)
-    {
-        if(node.hasLabel(DynamicLabel.label("ZPhysical")))
-        {
-            if(node.hasLabel(DynamicLabel.label("Switch")))
-                return PhysicalSwitch.fromNode(node);
-            else if(node.hasLabel(DynamicLabel.label("Link")))
-                return PhysicalLink.fromNode(node);
-            else if(node.hasLabel(DynamicLabel.label("Port")))
-                return PhysicalPort.fromNode(node);
-        }
-        return null;
-    }
-
 }

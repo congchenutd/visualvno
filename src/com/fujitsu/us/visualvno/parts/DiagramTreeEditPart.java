@@ -14,7 +14,7 @@ import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeBase;
 
 /**
- * Tree edit part for the diagram model 
+ * Tree edit part for the diagram model, used by the outline view 
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
 public class DiagramTreeEditPart extends    AbstractTreeEditPart

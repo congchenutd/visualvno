@@ -71,8 +71,9 @@ public class LocalMap extends MapBase
         return super.getVirtualLink(pLink, _vno);
     }
     
+    @Override
     public VirtualIPAddress getVirtualIPAddress(PhysicalIPAddress pIP) {
-        return super.getVirtualIPAddress(pIP, _vno);
+        return super.getVirtualIPAddress(pIP);
     }
 }
 

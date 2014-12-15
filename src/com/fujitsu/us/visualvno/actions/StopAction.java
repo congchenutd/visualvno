@@ -29,9 +29,11 @@ public class StopAction extends ActionBase
             if(!Demo.getInstance().canStop(vnoID))
             	return;
             
+            // remove the vno from the global diagram
             DiagramModel globalDiagram = getGlobalEditor().getDiagram();
             globalDiagram.removeNetwork(vnoID);
             
+            // de-highlight the network
             Network userNetwork     = new Network(getUserEditor    (vnoID).getDiagram(), vnoID);
             Network internalNetwork = new Network(getInternalEditor(vnoID).getDiagram(), vnoID);
             userNetwork    .deHighlightLinks();

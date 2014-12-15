@@ -28,6 +28,7 @@ public class ShapeCreationTool extends CreationTool
 		final Object obj = viewer.getEditPartRegistry().get(model);
 		if(obj instanceof EditPart)
 		{
+		    // send a direct edit request to the edit part
 			Display.getCurrent().asyncExec(new Runnable()
 			{
 				@Override

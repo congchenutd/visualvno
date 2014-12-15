@@ -64,6 +64,10 @@ public class VirtualNetwork extends Network<VirtualSwitch, VirtualLink, VirtualP
             _hosts.put(host.getID(), host);
     }
     
+    public Host getHost(int hostID) {
+        return _hosts.get(hostID);
+    }
+    
     public Map<Integer, Host> getHosts() {
         return Collections.unmodifiableMap(_hosts);
     }

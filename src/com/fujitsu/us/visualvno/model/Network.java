@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.RGB;
 
 /**
  * A collection of shapes and links belonging to a network
+ * For Demo only
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
 public class Network

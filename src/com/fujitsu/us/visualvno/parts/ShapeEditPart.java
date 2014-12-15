@@ -26,6 +26,10 @@ import com.fujitsu.us.visualvno.parts.policies.ShapeComponentPolicy;
 import com.fujitsu.us.visualvno.parts.policies.ShapeConnectionPolicy;
 import com.fujitsu.us.visualvno.parts.policies.ShapeRenamePolicy;
 
+/**
+ * Base for all Shape edit parts
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public abstract class ShapeEditPart extends    AbstractGraphicalEditPart 
 						            implements PropertyChangeListener, NodeEditPart
 {
@@ -107,8 +111,7 @@ public abstract class ShapeEditPart extends    AbstractGraphicalEditPart
     }
 
     @Override
-    public ConnectionAnchor getSourceConnectionAnchor(
-            ConnectionEditPart connection)  {
+    public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection)  {
         return getAnchor();
     }
 
@@ -118,8 +121,7 @@ public abstract class ShapeEditPart extends    AbstractGraphicalEditPart
     }
 
     @Override
-    public ConnectionAnchor getTargetConnectionAnchor(
-            ConnectionEditPart connection) {
+    public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
         return getAnchor();
     }
 

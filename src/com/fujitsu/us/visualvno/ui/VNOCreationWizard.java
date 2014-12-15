@@ -19,11 +19,15 @@ import org.eclipse.ui.ide.IDE;
 
 import com.fujitsu.us.visualvno.model.DiagramModel;
 
+/**
+ * A wizard for creating a new vno file
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public class VNOCreationWizard extends Wizard implements INewWizard
 {
 
     private static int   _fileCount = 1;
-    private CreationPage _page1;
+    private CreationPage _page1;          // the only wizard page
 
     @Override
     public void addPages() {

@@ -25,7 +25,6 @@ import com.fujitsu.us.visualvno.actions.ActionBase;
 
 /**
  * Contributes actions to a toolbar. 
- * This class is tied to the editor in plugin.xml
  */
 public class EditorActionBarContributor extends ActionBarContributor
 {

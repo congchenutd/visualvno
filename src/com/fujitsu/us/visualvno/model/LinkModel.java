@@ -1,7 +1,7 @@
 package com.fujitsu.us.visualvno.model;
 
 /**
- * A link between two ports or a port and a host
+ * A link connecting two ports or a port and a host
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
 public class LinkModel extends LinkBase
@@ -25,7 +25,7 @@ public class LinkModel extends LinkBase
             if(!link.equals(this))
                 return false;
         
-        // match types
+        // the types of the ends must match
         if(source instanceof SwitchModel)
             return false;
         if(source instanceof HostModel)

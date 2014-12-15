@@ -28,6 +28,7 @@ public class VerifyAction extends ActionBase
             if(!Demo.getInstance().canVerify(vnoID))
             	return;
             
+            // load the whole diagram of the vno
             DiagramModel diagram = loadWholeDiagram(vnoID);
             getInternalEditor(vnoID).setDiagram(diagram);
             

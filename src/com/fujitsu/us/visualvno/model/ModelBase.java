@@ -14,7 +14,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
  * Provides property change events forwarding via a PropertyChangeSupport object
  * EditParts should call addPropertyChangeLister() to add itself as listerner
  * Subclasses should call firePropertyChange() to send updates to EditParts,
- * which will handle via propertyChanged()
+ * which will be handled via EditPart.propertyChanged()
  * 
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */

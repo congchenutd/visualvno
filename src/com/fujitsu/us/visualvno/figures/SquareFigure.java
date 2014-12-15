@@ -6,7 +6,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Base class for PortFigure and HostFigure
+ * A square figure
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
 public class SquareFigure extends ShapeFigure
@@ -16,9 +16,12 @@ public class SquareFigure extends ShapeFigure
     protected void fillShape(Graphics graphics)
     {
         super.fillShape(graphics);
-        graphics.fillRectangle(getBounds());
+        graphics.fillRectangle(getBounds());  // fill a rectangle
     }
 
+    /**
+     * Draw the outline
+     */
     @Override
     protected void outlineShape(Graphics graphics)
     {
@@ -39,7 +42,7 @@ public class SquareFigure extends ShapeFigure
 	public ConnectionAnchor getAnchor()
 	{
 		if(_anchor == null)
-			return new ChopboxAnchor(this);
+			return new ChopboxAnchor(this);  // lazy creation of the anchor
 		return _anchor;
 	}
     

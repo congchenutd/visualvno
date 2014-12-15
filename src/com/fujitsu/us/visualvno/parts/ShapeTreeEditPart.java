@@ -11,8 +11,12 @@ import com.fujitsu.us.visualvno.model.ModelBase;
 import com.fujitsu.us.visualvno.model.ShapeBase;
 import com.fujitsu.us.visualvno.parts.policies.ShapeComponentPolicy;
 
-public class ShapeTreeEditPart extends AbstractTreeEditPart implements
-        PropertyChangeListener
+/**
+ * Tree edit part of a shape, used by the outline view
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
+public class ShapeTreeEditPart extends      AbstractTreeEditPart 
+                               implements   PropertyChangeListener
 {
 
     public ShapeTreeEditPart(ShapeBase model)

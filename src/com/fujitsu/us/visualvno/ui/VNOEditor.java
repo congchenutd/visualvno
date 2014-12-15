@@ -84,6 +84,10 @@ import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.parts.factories.ShapesEditPartFactory;
 import com.fujitsu.us.visualvno.parts.factories.ShapesTreeEditPartFactory;
 
+/**
+ * The editor for a .vno file
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public class VNOEditor extends GraphicalEditorWithFlyoutPalette
 {
 
@@ -362,7 +366,8 @@ public class VNOEditor extends GraphicalEditorWithFlyoutPalette
         return _diagram;
     }
     
-    public void setDiagram(DiagramModel diagram) {
+    public void setDiagram(DiagramModel diagram)
+    {
         _diagram = diagram;
         showDiagram();
     }
