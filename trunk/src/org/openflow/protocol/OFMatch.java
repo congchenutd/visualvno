@@ -59,9 +59,15 @@ public class OFMatch implements Cloneable, Serializable {
                                                      * IP ToS (DSCP field, 6
                                                      * bits).
                                                      */
+    
+    final public static int OFPFW_ALL_SANITIZED = (1 << 22) - 1
+            & ~OFMatch.OFPFW_NW_SRC_MASK & ~OFMatch.OFPFW_NW_DST_MASK
+            | OFMatch.OFPFW_NW_SRC_ALL | OFMatch.OFPFW_NW_DST_ALL;
+    
     // END WILDCARD RELATED
 
     public static final short OFP_VLAN_NONE = (short) 0xffff;
+    
 
     /* List of Strings for marshalling and unmarshalling to human readable forms */
     final public static String STR_IN_PORT = "in_port";
@@ -400,6 +406,10 @@ public class OFMatch implements Cloneable, Serializable {
      */
     public int getWildcards() {
         return this.wildcards;
+    }
+    
+    public Wildcards getWildcardObj() {
+        return Wildcards.of(this.wildcards);
     }
 
     /**

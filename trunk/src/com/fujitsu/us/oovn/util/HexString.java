@@ -7,7 +7,10 @@ package com.fujitsu.us.oovn.util;
  */
 public class HexString extends SectionedString
 {
-   
+    public HexString(byte[] bytes, char separator) {
+        super(bytes, separator);
+    }
+    
     public HexString(long value, int length, char separator) {
         super(value, length, separator);
     }

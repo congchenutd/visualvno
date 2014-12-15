@@ -23,7 +23,6 @@ import com.fujitsu.us.visualvno.VisualVNOPlugin;
 public abstract class ShapeBase extends ModelBase
 {
     private static final long serialVersionUID = 1;
-    protected static IPropertyDescriptor[] _descriptors;
     
     // property IDs
     public static final String SOURCE_LINKS_PROP = "ShapeModel.SourceLinks";
@@ -35,6 +34,7 @@ public abstract class ShapeBase extends ModelBase
     public static final String VNOID_PROP        = "ShapeModel.VnoID";
 
     // init property descriptors
+    protected static IPropertyDescriptor[] _descriptors;
     static
     {
         _descriptors = new IPropertyDescriptor[] {
@@ -51,7 +51,11 @@ public abstract class ShapeBase extends ModelBase
     private Dimension _size     = new Dimension(50, 50);
     private String    _name     = new String();
     private RGB       _color    = new RGB(0, 255, 0);
+    
+    // links that use this shape is the source
     private List<LinkBase> _sourceLinks = new ArrayList<LinkBase>();
+    
+    // links that use this shape is the target
     private List<LinkBase> _targetLinks = new ArrayList<LinkBase>();
     
     public List<LinkBase> getSourceLinks() {
@@ -106,7 +110,8 @@ public abstract class ShapeBase extends ModelBase
     
     public List<LinkBase> getAllLinks()
     {
-        List<LinkBase> result = new ArrayList<LinkBase>(getSourceLinks());
+        List<LinkBase> result = new ArrayList<LinkBase>();
+        result.addAll(getSourceLinks());
         result.addAll(getTargetLinks());
         return result;
     }
@@ -120,7 +125,7 @@ public abstract class ShapeBase extends ModelBase
             return true;
 
         for(LinkBase link: getAllLinks())
-            if(link.getTarget().equals(that))
+            if(link.getTarget().equals(that) || link.getSource().equals(that))
                 return true;
         
         return false;
@@ -141,6 +146,7 @@ public abstract class ShapeBase extends ModelBase
         int newWidth  = newSize.width();
         int newHeight = newSize.height();
         
+        // the following ensures that the shape is always a "square"
         // one dimension is changed, update both
         if(oldWidth == newWidth)
             _size.setSize(newHeight, newHeight);

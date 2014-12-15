@@ -17,6 +17,10 @@ import com.fujitsu.us.visualvno.model.ShapeBase;
 import com.fujitsu.us.visualvno.parts.policies.ContainerLayoutPolicy;
 import com.fujitsu.us.visualvno.parts.policies.ContainerPolicy;
 
+/**
+ * Edit part for all the containers
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public abstract class ContainerEditPart extends ShapeEditPart
 {
     @Override
@@ -24,7 +28,7 @@ public abstract class ContainerEditPart extends ShapeEditPart
     {
         super.createEditPolicies();
         
-        // generate orphan command for dragging a child out of its parent
+        // generate an orphan command for dragging a child out of its parent
         installEditPolicy(EditPolicy.CONTAINER_ROLE, new ContainerPolicy());
         
         // for creating, moving, adding children  

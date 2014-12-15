@@ -15,7 +15,7 @@ public class SwitchFigure extends ShapeFigure
     protected void fillShape(Graphics graphics)
     {
         super.fillShape(graphics);
-        graphics.fillOval(getBounds());
+        graphics.fillOval(getBounds());  // fill the circle
     }
 
     @Override
@@ -23,6 +23,9 @@ public class SwitchFigure extends ShapeFigure
         graphics.drawOval(getOptimizedBounds());
     }
     
+    /**
+     * Generate the outline of the circle
+     */
     private Rectangle getOptimizedBounds()
     {
         float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
@@ -41,7 +44,7 @@ public class SwitchFigure extends ShapeFigure
 	public ConnectionAnchor getAnchor()
     {
     	if(_anchor == null)
-    		return new EllipseAnchor(this);
+    		return new EllipseAnchor(this);  // lazy creation of the anchor
 		return _anchor;
 	}
 

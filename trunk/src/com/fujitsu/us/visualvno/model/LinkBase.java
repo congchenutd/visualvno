@@ -32,7 +32,7 @@ public abstract class LinkBase extends ModelBase
     
     // property values
     private String    _name = new String();
-    private ILinkEnd  _source;
+    private ILinkEnd  _source;        // the links are uni-directional, as GEF suggests
     private ILinkEnd  _target;
     private boolean   _isConnected;
     private int       _lineStyle = Graphics.LINE_SOLID;
@@ -59,7 +59,7 @@ public abstract class LinkBase extends ModelBase
     }
 
     /**
-     * Reconnect this connection to previous ends
+     * Reconnect this connection to the previous ends
      */
     public void reconnect()
     {
@@ -71,6 +71,9 @@ public abstract class LinkBase extends ModelBase
         }
     }
 
+    /**
+     * Connect or reconnect to the ends
+     */
     public void reconnect(ILinkEnd newSource, ILinkEnd newTarget)
     {
         if(newSource == null || newTarget == null || newSource == newTarget)

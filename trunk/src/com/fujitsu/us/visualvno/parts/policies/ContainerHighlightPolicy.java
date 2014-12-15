@@ -9,6 +9,10 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.swt.graphics.Color;
 
+/**
+ * The policy to highlight a container when a child is being dropped into it
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public class ContainerHighlightPolicy extends GraphicalEditPolicy
 {
     private Color _revertColor;

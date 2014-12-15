@@ -23,7 +23,7 @@ public class ContainerLayoutPolicy extends XYLayoutEditPolicy
 {
 
     /**
-     * Add a child to a container (this)
+     * Add a child to a container
      */
     @Override
     protected Command createAddCommand(

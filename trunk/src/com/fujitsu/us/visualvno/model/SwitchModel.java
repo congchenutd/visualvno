@@ -12,6 +12,7 @@ public class SwitchModel extends    ContainerModel
                          implements ILinkEnd
 {
     private static final long  serialVersionUID = 1;
+    
     public  static final String SMALL_IMAGE  = "icons/Switch.png";
     public  static final String BIG_IMAGE    = "icons/Switch.png";
     private static final Image  ICON         = createImage(SMALL_IMAGE);
@@ -63,6 +64,9 @@ public class SwitchModel extends    ContainerModel
         return result;
     }
     
+    /**
+     * Re-number the ports
+     */
     private void reorderPortNumbers()
     {
         int i = 1;

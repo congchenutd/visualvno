@@ -27,13 +27,16 @@ public abstract class ContainerModel extends ShapeBase
      * e.g., SwitchModel only allows PortModel 
      */
     public boolean canAdd(ShapeBase child) {
-        return true;
+        return true;  // default
     }
     
     public boolean addChild(ShapeBase child) {
         return addChild(child, _children.size());
     }
     
+    /**
+     * Add a child to the given index
+     */
     public boolean addChild(ShapeBase child, int index)
     {
         if(child == null)

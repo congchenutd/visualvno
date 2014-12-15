@@ -14,6 +14,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 public class DiagramModel extends ContainerModel
 {
     private static final long  serialVersionUID = 1;
+    
     private boolean _gridEnabled;
     private boolean _snapToGeometry;
     private double  _zoomFactor;
@@ -106,6 +107,7 @@ public class DiagramModel extends ContainerModel
         return getName();
     }
     
+    // the following are for demo only
     public void removeNetwork(int vnoID) {
         new Network(this, vnoID).removeFrom(this);
     }

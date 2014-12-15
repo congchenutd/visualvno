@@ -18,6 +18,7 @@ public class PortModel extends ShapeBase
                        implements ILinkEnd
 {
     private static final long serialVersionUID = 1L;
+    
     public  static final String SMALL_IMAGE  = "icons/Port.png";
     public  static final String BIG_IMAGE    = "icons/Port.png";
     private static final Image  ICON         = createImage(SMALL_IMAGE);

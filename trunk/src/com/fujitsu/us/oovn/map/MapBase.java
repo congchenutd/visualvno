@@ -3,6 +3,8 @@ package com.fujitsu.us.oovn.map;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -12,6 +14,8 @@ import org.neo4j.rest.graphdb.query.RestCypherQueryEngine;
 import org.neo4j.rest.graphdb.query.RestQueryResult;
 
 import com.fujitsu.us.oovn.core.VNO;
+import com.fujitsu.us.oovn.core.VNOPool;
+import com.fujitsu.us.oovn.element.address.MACAddress;
 import com.fujitsu.us.oovn.element.address.PhysicalIPAddress;
 import com.fujitsu.us.oovn.element.address.VirtualIPAddress;
 import com.fujitsu.us.oovn.element.datapath.PhysicalSwitch;
@@ -32,6 +36,13 @@ import com.fujitsu.us.oovn.factory.ElementFactory;
  */
 public class MapBase
 {
+    // ip and mac mapping
+    private Map<PhysicalIPAddress, VirtualIPAddress> _physicalVirtualIPMap
+                = new ConcurrentHashMap<PhysicalIPAddress, VirtualIPAddress>();
+    private Map<VirtualIPAddress, Map<Integer, PhysicalIPAddress>> _virtualPhysicalIPMap 
+                = new ConcurrentHashMap<VirtualIPAddress, Map<Integer, PhysicalIPAddress>>();
+    private Map<MACAddress, Integer> _macVNOMap 
+                = new ConcurrentHashMap<MACAddress, Integer>();
     
     /**
      * @param vsw a VirtualSwitch
@@ -156,14 +167,55 @@ public class MapBase
         }
     }
     
+    /**
+     * Get the physical ip address from a given virtual ip address (and the vno)
+     */
     public PhysicalIPAddress getPhysicalIPAddress(VirtualIPAddress vIP)
     {
-        return null;
+        Map<Integer, PhysicalIPAddress> map = _virtualPhysicalIPMap.get(vIP);
+        return map != null ? map.get(vIP.getVNO().getID()) : null;
     }
     
-    public VirtualIPAddress getVirtualIPAddress(PhysicalIPAddress pIP, VNO vno)
+    /**
+     * Get the virtual ip address of a given physical ip address
+     */
+    public VirtualIPAddress getVirtualIPAddress(PhysicalIPAddress pIP) {
+        return _physicalVirtualIPMap.get(pIP);
+    }
+    
+    /**
+     * Get the VNO of a MAC address (of a host)
+     */
+    public VNO getVNOfromMAC(MACAddress mac) {
+        return VNOPool.getInstance().getVNO(_macVNOMap.get(mac));
+    }
+    
+    /**
+     * Add a MAC address -> VNO id mapping
+     */
+    public void addMACVNOMapping(MACAddress mac, VNO vno) {
+        _macVNOMap.put(mac, vno.getID());
+    }
+    
+    /**
+     * Add a physical ip -> virtual ip mapping
+     */
+    public void addPhysicalVirtualIPMapping(PhysicalIPAddress pIP, VirtualIPAddress vIP) {
+        _physicalVirtualIPMap.put(pIP, vIP);
+    }
+    
+    /**
+     * Add a virtual ip -> physical ip mapping
+     */
+    public void addVirtualPhysicalIPMapping(VirtualIPAddress vIP, PhysicalIPAddress pIP)
     {
-        return null;
+        Map<Integer, PhysicalIPAddress> map = _virtualPhysicalIPMap.get(vIP);
+        if(map == null)
+        {
+            map = new ConcurrentHashMap<Integer, PhysicalIPAddress>();
+            _virtualPhysicalIPMap.put(vIP, map);
+        }
+        map.put(vIP.getVNO().getID(), pIP);
     }
     
     /**
@@ -226,6 +278,9 @@ public class MapBase
         }
     }
     
+    /**
+     * Clear the entire DB
+     */
     public void clear()
     {
         try(Transaction tx = _graphDb.beginTx()) {
@@ -233,11 +288,17 @@ public class MapBase
         }
     }
     
+    /** a graph db holding all the element mapping information */
     protected final RestGraphDatabase     _graphDb;
+    
+    /** all queries are done via this query engine */
     protected final RestCypherQueryEngine _engine;
     
+    /**
+     * Run a Cypher query
+     * @return  query result
+     */
     public RestQueryResult query(String query) {
-//        System.out.println(query);
         return (RestQueryResult) _engine.query(query, null);
     }
         

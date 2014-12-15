@@ -29,9 +29,11 @@ public class StartAction extends ActionBase
             if(!Demo.getInstance().canStart(vnoID))
             	return;
             
+            // add the network to the global diagram
             DiagramModel globalDiagram = getGlobalEditor().getDiagram();
             globalDiagram.addNetwork(Demo.getInstance().getNetwork(vnoID));
             
+            // highlight the links
             Network userNetwork     = new Network(getUserEditor    (vnoID).getDiagram(), vnoID);
             Network internalNetwork = new Network(getInternalEditor(vnoID).getDiagram(), vnoID);
             userNetwork    .highlightLinks();

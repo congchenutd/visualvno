@@ -8,6 +8,10 @@ import com.fujitsu.us.visualvno.demo.Demo;
 import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.ui.VNOEditor;
 
+/**
+ * Base class of all actions
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 public abstract class ActionBase extends Action
 {
     public static InitAction            INIT            = new InitAction();
@@ -16,6 +20,9 @@ public abstract class ActionBase extends Action
     public static StopAction            STOP            = new StopAction();
     public static DecommissionAction    DECOMMISSION    = new DecommissionAction();
     
+    /**
+     * Get currently active (selected) editor
+     */
     protected VNOEditor getActiveEditor() {
         return (VNOEditor) PlatformUI.getWorkbench()
                                      .getActiveWorkbenchWindow()
@@ -23,6 +30,9 @@ public abstract class ActionBase extends Action
                                      .getActiveEditor();
     }
     
+    /**
+     * Get the editor with the given name
+     */
     protected VNOEditor getEditor(String name)
     {
         IEditorReference[] references = PlatformUI.getWorkbench()

@@ -11,6 +11,10 @@ import com.fujitsu.us.visualvno.model.DiagramModel;
 import com.fujitsu.us.visualvno.model.Network;
 import com.fujitsu.us.visualvno.ui.VNOEditor;
 
+/**
+ * Manages the state of the actions of a vno
+ * @author Cong Chen <cong.chen@us.fujitsu.com>
+ */
 class ActionManager
 {
 	private enum State {UNINIT, INIT, VERIFY, START, STOP};
@@ -63,6 +67,8 @@ public class Demo
     public Network[] _networks = new Network[2];
     private LearningSwitchController _controller;
     private Thread _thread;
+    
+    // two action managers, one for each vno
     private ActionManager[] _actionManagers = new ActionManager[] {
     	new ActionManager(), new ActionManager() };
     
@@ -120,13 +126,11 @@ public class Demo
         _controller.addToGroup(new IPAddress("10.0.0.5"), 2);
     }
     
-    public void init(int vnoID)
-    {
+    public void init(int vnoID) {
     	_actionManagers[vnoID-1].init();
     }
     
-    public void verify(int vnoID)
-    {
+    public void verify(int vnoID) {
     	_actionManagers[vnoID-1].verify();
     }
     

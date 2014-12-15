@@ -16,8 +16,19 @@ import com.google.gson.JsonPrimitive;
  */
 public abstract class SectionedString implements Jsonable
 {
-    private final byte[] _bytes;
-    private final char   _separator;
+    protected final byte[] _bytes;
+    protected final char   _separator;
+    
+    /**
+     * Construct the string using byte[]
+     * @param bytes     the byte[]
+     * @param separator the separator
+     */
+    public SectionedString(byte[] bytes, char separator)
+    {
+        _bytes = Arrays.copyOf(bytes, bytes.length);
+        _separator = separator;
+    }
     
     /**
      * Construct the string using integer
@@ -44,10 +55,10 @@ public abstract class SectionedString implements Jsonable
     {
         _separator = separator;
         
-        if (string == null)
+        if(string == null)
             throw new IllegalArgumentException("Null String");
         
-        // convert . to \\. because String.split() only supports regex, not wildcard
+        // convert . to \. because String.split() only supports regex, not wildcard
         String s = String.valueOf(_separator);
         if(s.equals("."))
             s = "\\.";
@@ -74,13 +85,17 @@ public abstract class SectionedString implements Jsonable
         return builder.toString();
     }
     
-    public long toInt()
+    public long toLong()
     {
         long result = 0;
         for (int i = 0; i < _bytes.length; ++i) {
             result |= ((long)_bytes[i] & 0xFF) << (_bytes.length-1-i) * 8;
         }
         return result;
+    }
+    
+    public byte[] toBytes() {
+        return Arrays.copyOf(_bytes, _bytes.length);
     }
     
     @Override

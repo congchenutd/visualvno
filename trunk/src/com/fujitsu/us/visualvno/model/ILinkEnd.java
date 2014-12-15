@@ -3,7 +3,7 @@ package com.fujitsu.us.visualvno.model;
 import java.util.List;
 
 /**
- * Interface for a shape that can be connected, 
+ * Interface for the shapes that can be connected, 
  * such as SwitchModel, PortModel and HostModel
  * @author Cong Chen <cong.chen@us.fujitsu.com>
  */
