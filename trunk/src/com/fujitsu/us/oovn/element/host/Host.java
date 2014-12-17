@@ -1,7 +1,7 @@
 package com.fujitsu.us.oovn.element.host;
 
 import com.fujitsu.us.oovn.element.Jsonable;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.IPAddress;
 import com.fujitsu.us.oovn.element.address.MACAddress;
 import com.fujitsu.us.oovn.element.address.VirtualIPAddress;
@@ -16,7 +16,7 @@ import com.google.gson.JsonObject;
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  *
  */
-public class Host implements Jsonable, NetworkElement
+public class Host implements Jsonable, Neo4jable
 {
     private final int              _id;
     private final String           _name;

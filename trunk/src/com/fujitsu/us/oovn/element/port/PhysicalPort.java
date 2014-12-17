@@ -1,6 +1,6 @@
 package com.fujitsu.us.oovn.element.port;
 
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.MACAddress;
 import com.fujitsu.us.oovn.element.datapath.PhysicalSwitch;
 import com.fujitsu.us.oovn.element.link.PhysicalLink;
@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class PhysicalPort extends Port<PhysicalSwitch, PhysicalLink> 
-                          implements NetworkElement
+                          implements Neo4jable
 {
     public PhysicalPort(int number, MACAddress mac) {
         super(number, mac);

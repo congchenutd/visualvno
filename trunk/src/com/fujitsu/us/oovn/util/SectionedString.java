@@ -119,14 +119,14 @@ public abstract class SectionedString implements Jsonable
     
     /**
      * Template method. Subclasses determine how to print the section
-     * @param b a byte to print
-     * @return the print
+     * @param b     the byte to print
+     * @return      the printout
      */
     protected abstract String printSection(byte b);
     
     /**
      * Template method. Subclasses determine how to evaluate the section
-     * @param section a section to evaluate
+     * @param section   the section to evaluate
      * @return the byte value of the section
      */
     protected abstract byte sectionValue(String section);

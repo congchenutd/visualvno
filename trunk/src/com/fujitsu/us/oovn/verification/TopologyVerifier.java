@@ -10,7 +10,7 @@ import com.fujitsu.us.oovn.factory.ElementFactory;
 import com.fujitsu.us.oovn.map.GlobalMap;
 
 /**
- * Verify if a VNO has valid topology
+ * Verify if a VNO has a valid topology
  * i.e., no wrong mappings (to none-existing physical node) 
  *       or conflicted mappings (n virtual -> 1 physical)
  * 

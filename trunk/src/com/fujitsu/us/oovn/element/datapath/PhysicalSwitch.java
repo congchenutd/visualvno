@@ -1,12 +1,12 @@
 package com.fujitsu.us.oovn.element.datapath;
 
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.DPID;
 import com.fujitsu.us.oovn.element.port.PhysicalPort;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class PhysicalSwitch extends Switch<PhysicalPort> implements NetworkElement
+public class PhysicalSwitch extends Switch<PhysicalPort> implements Neo4jable
 {
     public PhysicalSwitch(DPID dpid, String name) {
         super(dpid, name);

@@ -6,7 +6,7 @@ import java.util.List;
 import org.neo4j.graphdb.Node;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.datapath.VirtualSwitch;
 import com.fujitsu.us.oovn.element.port.PhysicalPort;
 import com.fujitsu.us.oovn.element.port.VirtualPort;
@@ -15,7 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class VirtualLink extends Link<VirtualSwitch, VirtualPort> implements NetworkElement
+public class VirtualLink extends Link<VirtualSwitch, VirtualPort> implements Neo4jable
 {
     private final VNO          _vno;
     private List<PhysicalLink> _path;

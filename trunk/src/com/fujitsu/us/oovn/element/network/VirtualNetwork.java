@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.IPAddress;
 import com.fujitsu.us.oovn.element.datapath.VirtualSwitch;
 import com.fujitsu.us.oovn.element.host.Host;
@@ -20,7 +20,7 @@ import com.google.gson.JsonObject;
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
 public class VirtualNetwork extends Network<VirtualSwitch, VirtualLink, VirtualPort>
-                            implements NetworkElement
+                            implements Neo4jable
 {
     private final VNO _vno;
     private IPAddress _networkIP;

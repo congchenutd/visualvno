@@ -3,7 +3,7 @@ package com.fujitsu.us.oovn.factory;
 import org.neo4j.graphdb.Node;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.DPID;
 import com.fujitsu.us.oovn.exception.InvalidConfigurationException;
 import com.google.gson.JsonObject;
@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 public class VirtualPortFactory extends ElementFactory {
 
     @Override
-    protected NetworkElement create(Node node, VNO vno)
+    protected Neo4jable create(Node node, VNO vno)
     {
         DPID dpid   = new DPID       (node.getProperty("switch").toString());
         int  number = Integer.valueOf(node.getProperty("number").toString());
@@ -19,7 +19,7 @@ public class VirtualPortFactory extends ElementFactory {
     }
 
     @Override
-    protected NetworkElement create(JsonObject json, JsonObject parentJson, VNO vno) 
+    protected Neo4jable create(JsonObject json, JsonObject parentJson, VNO vno) 
                             throws InvalidConfigurationException
     {
         if(json == null || json.isJsonNull())

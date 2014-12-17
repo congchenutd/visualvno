@@ -3,7 +3,7 @@ package com.fujitsu.us.oovn.factory;
 import org.neo4j.graphdb.Node;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.MACAddress;
 import com.fujitsu.us.oovn.element.address.VirtualIPAddress;
 import com.fujitsu.us.oovn.element.host.Host;
@@ -15,12 +15,12 @@ public class HostFactory extends ElementFactory
 {
 
     @Override
-    protected NetworkElement create(Node node, VNO vno) {
+    protected Neo4jable create(Node node, VNO vno) {
         return null;
     }
 
     @Override
-    protected NetworkElement create(JsonObject json, JsonObject parentJson, VNO vno) 
+    protected Neo4jable create(JsonObject json, JsonObject parentJson, VNO vno) 
                                     throws InvalidConfigurationException
     {
         if(!json.has("id"))
