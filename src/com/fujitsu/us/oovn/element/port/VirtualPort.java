@@ -3,7 +3,7 @@ package com.fujitsu.us.oovn.element.port;
 import org.neo4j.graphdb.Node;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.address.DPID;
 import com.fujitsu.us.oovn.element.address.MACAddress;
 import com.fujitsu.us.oovn.element.datapath.VirtualSwitch;
@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class VirtualPort extends Port<VirtualSwitch, VirtualLink> 
-                         implements NetworkElement
+                         implements Neo4jable
 {
     private PhysicalPort _physicalPort;
     

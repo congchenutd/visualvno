@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.fujitsu.us.oovn.builder.PhysicalNetworkBuilder;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.datapath.PhysicalSwitch;
 import com.fujitsu.us.oovn.element.link.PhysicalLink;
 import com.fujitsu.us.oovn.element.port.PhysicalPort;
@@ -19,7 +19,7 @@ import com.google.gson.JsonParser;
  *
  */
 public class PhysicalNetwork extends Network<PhysicalSwitch, PhysicalLink, PhysicalPort>
-                             implements NetworkElement
+                             implements Neo4jable
 {
     /**
      * initialize the network from a json configuration file

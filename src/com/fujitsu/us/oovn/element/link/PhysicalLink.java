@@ -1,12 +1,12 @@
 package com.fujitsu.us.oovn.element.link;
 
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.element.datapath.PhysicalSwitch;
 import com.fujitsu.us.oovn.element.port.PhysicalPort;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class PhysicalLink extends Link<PhysicalSwitch, PhysicalPort> implements NetworkElement
+public class PhysicalLink extends Link<PhysicalSwitch, PhysicalPort> implements Neo4jable
 {
     public PhysicalLink(String name, PhysicalPort src, PhysicalPort dst) {
         super(name, src, dst);

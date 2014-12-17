@@ -18,5 +18,8 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/netty-3.9.5.Final.jar"/>
 	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/google-collections-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/fluent-hc-4.3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/httpclient-4.3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cchen/EclipseWorkspace/VisualVNO/lib/httpcore-4.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

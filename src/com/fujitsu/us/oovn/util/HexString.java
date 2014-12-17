@@ -3,7 +3,6 @@ package com.fujitsu.us.oovn.util;
 /**
  * A special type of SectionedString, each section being a hex number
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
- *
  */
 public class HexString extends SectionedString
 {

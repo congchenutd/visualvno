@@ -6,7 +6,7 @@ import java.util.Map;
 import org.neo4j.graphdb.Node;
 
 import com.fujitsu.us.oovn.core.VNO;
-import com.fujitsu.us.oovn.element.NetworkElement;
+import com.fujitsu.us.oovn.element.Neo4jable;
 import com.fujitsu.us.oovn.exception.InvalidConfigurationException;
 import com.google.gson.JsonObject;
 
@@ -56,7 +56,7 @@ public abstract class ElementFactory
      * @param vno   The VNO the element belongs to. Null if physical.
      * @return      A network element object
      */
-    public static NetworkElement fromNode(Node node, VNO vno)
+    public static Neo4jable fromNode(Node node, VNO vno)
     {
         String type = node.getProperty("type").toString();
         return _factories.containsKey(type) ? _factories.get(type).create(node, vno)
@@ -66,7 +66,7 @@ public abstract class ElementFactory
     /**
      * Convenient for physical elements
      */
-    public static NetworkElement fromNode(Node node) {
+    public static Neo4jable fromNode(Node node) {
         return fromNode(node, null);
     }
 
@@ -82,7 +82,7 @@ public abstract class ElementFactory
      * @return      A network element object
      * @throws      InvalidConfigurationException
      */
-    public static NetworkElement fromJson(String type, JsonObject json,
+    public static Neo4jable fromJson(String type, JsonObject json,
                                           JsonObject parentJson, VNO vno)
                                         throws InvalidConfigurationException
     {
@@ -105,7 +105,7 @@ public abstract class ElementFactory
     /**
      * Convenient for physical elements
      */
-    public static NetworkElement fromJson(String type, JsonObject json,
+    public static Neo4jable fromJson(String type, JsonObject json,
                                           JsonObject parentJson)
                                     throws InvalidConfigurationException {
         return fromJson(type, json, parentJson, null);
@@ -117,7 +117,7 @@ public abstract class ElementFactory
      * @param vno   The VNO the element belongs to. Null if physical
      * @return      A network element object
      */
-    protected abstract NetworkElement create(Node node, VNO vno);
+    protected abstract Neo4jable create(Node node, VNO vno);
     
     /**
      * Create a new or fetch an existing network element based on given JsonObject
@@ -127,7 +127,7 @@ public abstract class ElementFactory
      * @return      A network element object
      * @throws      InvalidConfigurationException
      */
-    protected abstract NetworkElement create(JsonObject json, JsonObject parentJson, VNO vno) 
+    protected abstract Neo4jable create(JsonObject json, JsonObject parentJson, VNO vno) 
                                     throws InvalidConfigurationException;
 
     /**

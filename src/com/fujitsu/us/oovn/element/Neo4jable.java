@@ -6,7 +6,7 @@ import com.fujitsu.us.oovn.map.MapBase;
  * The interface for all network elements that can be saved in Neo4j
  * @author Cong Chen <Cong.Chen@us.fujitsu.com>
  */
-public interface NetworkElement
+public interface Neo4jable
 {
     /**
      * @return a variable name for Neo4J query, without ()
