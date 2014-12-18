@@ -12,10 +12,10 @@ public class MyTest
     {
         WebKAT.setServer("http://192.168.56.101:9000");
         
-//        filter (switch = 1);
-//        (filter (ipSrc = 10.0.0.1 & ipDst = 10.0.0.2); port:=2 + 
+//        (filter (switch = 1));
+//        ((filter (ipSrc = 10.0.0.1 & ipDst = 10.0.0.2); port:=2 + 
 //        (filter (ipSrc = 10.0.0.1 & ipDst = 10.0.0.3); port:=1 +  
-//        (filter (ipDst = 10.0.0.1); port := 3)
+//        (filter (ipDst = 10.0.0.1); port := 3))
         Policy policy = 
             new Sequence(
                 new Filter(new Test("switch", "1")),
