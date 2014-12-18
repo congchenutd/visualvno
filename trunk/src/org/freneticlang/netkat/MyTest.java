@@ -39,9 +39,11 @@ public class MyTest
         
         System.out.println(policy);
         
+        // update the policy and retrieve the flow table of switch 1
         WebKAT.update(policy);
-
         JsonArray flowtable = WebKAT.flowTable(1);
+        
+        // pretty print
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(flowtable));
     }
